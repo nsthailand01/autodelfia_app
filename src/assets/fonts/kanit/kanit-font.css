@@ -1,0 +1,39 @@
+/* kanit-200 - thai_latin */
+@font-face {
+  font-family: 'Kanit';
+  font-style: normal;
+  font-weight: 200;
+  src: url('kanit-v6-thai_latin-200.eot'); /* IE9 Compat Modes */
+  src: local('Kanit ExtraLight'), local('Kanit-ExtraLight'),
+       url('kanit-v6-thai_latin-200.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('kanit-v6-thai_latin-200.woff2') format('woff2'), /* Super Modern Browsers */
+       url('kanit-v6-thai_latin-200.woff') format('woff'), /* Modern Browsers */
+       url('kanit-v6-thai_latin-200.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('kanit-v6-thai_latin-200.svg#Kanit') format('svg'); /* Legacy iOS */
+}
+/* kanit-300 - thai_latin */
+@font-face {
+  font-family: 'Kanit';
+  font-style: normal;
+  font-weight: 300;
+  src: url('kanit-v6-thai_latin-300.eot'); /* IE9 Compat Modes */
+  src: local('Kanit Light'), local('Kanit-Light'),
+       url('kanit-v6-thai_latin-300.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('kanit-v6-thai_latin-300.woff2') format('woff2'), /* Super Modern Browsers */
+       url('kanit-v6-thai_latin-300.woff') format('woff'), /* Modern Browsers */
+       url('kanit-v6-thai_latin-300.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('kanit-v6-thai_latin-300.svg#Kanit') format('svg'); /* Legacy iOS */
+}
+/* kanit-regular - thai_latin */
+@font-face {
+  font-family: 'Kanit';
+  font-style: normal;
+  font-weight: 400;
+  src: url('kanit-v6-thai_latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Kanit Regular'), local('Kanit-Regular'),
+       url('kanit-v6-thai_latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('kanit-v6-thai_latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('kanit-v6-thai_latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('kanit-v6-thai_latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('kanit-v6-thai_latin-regular.svg#Kanit') format('svg'); /* Legacy iOS */
+}

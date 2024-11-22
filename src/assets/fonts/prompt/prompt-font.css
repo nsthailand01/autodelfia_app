@@ -1,0 +1,26 @@
+/* prompt-300 - thai */
+@font-face {
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 300;
+  src: url('prompt-v4-thai-300.eot'); /* IE9 Compat Modes */
+  src: local('Prompt Light'), local('Prompt-Light'),
+       url('prompt-v4-thai-300.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('prompt-v4-thai-300.woff2') format('woff2'), /* Super Modern Browsers */
+       url('prompt-v4-thai-300.woff') format('woff'), /* Modern Browsers */
+       url('prompt-v4-thai-300.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('prompt-v4-thai-300.svg#Prompt') format('svg'); /* Legacy iOS */
+}
+/* prompt-regular - thai */
+@font-face {
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 400;
+  src: url('prompt-v4-thai-regular.eot'); /* IE9 Compat Modes */
+  src: local('Prompt'), local('Prompt-Regular'),
+       url('prompt-v4-thai-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('prompt-v4-thai-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('prompt-v4-thai-regular.woff') format('woff'), /* Modern Browsers */
+       url('prompt-v4-thai-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('prompt-v4-thai-regular.svg#Prompt') format('svg'); /* Legacy iOS */
+}

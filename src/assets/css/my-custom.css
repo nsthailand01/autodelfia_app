@@ -1,0 +1,82 @@
+/* // @import '../../../../assets/bango-dash/css/app-style.css';
+// @import '../../assets/bango-dash/css/icons.css';
+// @import '../../../../assets/bango-dash/css/bootstrap.min.css'; */
+
+label,
+input {
+  margin-right: 8px;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-weight: 300;
+}
+
+.h4,
+h4 {
+  font-size: 20px !important;
+  line-height: 28px !important;
+  font-family: "Kanit" !important;
+}
+
+h4 i {
+  margin-right: 5px;
+}
+
+form .form-header {
+  color: #223035;
+  line-height: 3rem;
+  /* // font-size: 16px; */
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #223035;
+  font-family: "Kanit" !important;
+}
+
+.text-uppercase {
+  text-transform: uppercase !important;
+}
+
+.custom-radio .custom-control-label::before {
+  border-radius: 50%;
+}
+.custom-radio .custom-control-input:checked ~ .custom-control-label::before {
+  background-color: #007bff;
+}
+.custom-radio .custom-control-input:checked ~ .custom-control-label::after {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23fff'/%3E%3C/svg%3E");
+}
+.custom-radio
+  .custom-control-input:disabled:checked
+  ~ .custom-control-label::before {
+  background-color: rgba(0, 123, 255, 0.5);
+}
+
+.col-form-label {
+  padding-top: calc(0.375rem + 1px);
+  padding-bottom: calc(0.375rem + 1px);
+  margin-bottom: 0;
+  font-size: inherit;
+  line-height: 1.5;
+  font-weight: 600 !important;
+}
+
+.custom-control-label {
+  font-weight: 500 !important;
+}
+
+div.indent-50 {
+  /* // text-indent: 50px; */
+  margin-left: 50px;
+}
+
+div.indent-100 {
+  margin-left: 100px;
+}
+
+.page-title {
+  font-weight: 600 !important;
+  font-size: 28px !important;
+}

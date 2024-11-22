@@ -1,0 +1,13 @@
+/* maitree-regular - thai */
+@font-face {
+  font-family: 'Maitree';
+  font-style: normal;
+  font-weight: 400;
+  src: url('maitree-v5-thai-regular.eot'); /* IE9 Compat Modes */
+  src: local('Maitree'),
+       url('maitree-v5-thai-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('maitree-v5-thai-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('maitree-v5-thai-regular.woff') format('woff'), /* Modern Browsers */
+       url('maitree-v5-thai-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('maitree-v5-thai-regular.svg#Maitree') format('svg'); /* Legacy iOS */
+}

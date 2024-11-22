@@ -1,0 +1,68 @@
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+thead>tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #e9e9e9
+}
+
+th .mat-checkbox-frame {
+  border-color: white !important;
+}
+
+// freez column
+table tr td,
+table tr th {
+  /*max-width: 10vw;*/
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+th.sticky-col {
+  position: -webkit-sticky;
+  position: sticky;
+  background-color: #009879;
+}
+
+td.sticky-col {
+  position: -webkit-sticky;
+  position: sticky;
+  background-color: white;
+}
+
+.first-col {
+  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
+  left: 0px;
+}
+
+.second-col {
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  left: 50px;
+}
+
+.third-col {
+  width: 75px;
+  min-width: 75px;
+  max-width: 75px;
+  left: 95px;
+}

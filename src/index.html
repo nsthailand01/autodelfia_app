@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>AutoDelfia</title>
+
+  <!--<base id="baseHref" href="/">-->
+
+  <!--<script>
+    (function () {
+      window['_app_base'] = '/' + window.location.pathname.split('/')[1] + '/';
+      console.log('_app_base >> ', window['_app_base']);
+    })();
+  </script>-->
+
+  <script type='text/javascript'>
+    var base = document.location.pathname.split('/')[1];
+    console.log('base href= >> ', base);
+    if (base === '') {
+      document.write('<base href="/" />');
+      // window['_app_base'] = '/';
+    } else {
+      document.write('<base href="/' + base + '/" />');
+      // window['_app_base'] = '/' + base + '/';
+    }
+
+
+  </script>
+
+  <!--<script>
+    (function () {
+        document.getElementById('baseHref').href = "/" + window.location.pathname.split('/')[1] + "/";
+        window['_app_base'] = '/' + window.location.pathname.split('/')[1] + '/';
+    })();
+  </script>-->
+  <!--<base href="/">
+   <script>
+    var str = document.location.href;
+    console.log('href >> ', str);
+    document.write('<base href="' + str + '" />');
+  </script>-->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<!-- <body
+  class="hold-transition sidebar-collapse sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed mat-typography">
+  <app-root></app-root>
+</body> -->
+
+<body class="hold-transition layout-fixed layout-navbar-fixed layout-footer-fixed mat-typography">
+  <app-root></app-root>
+</body>
+
+</html>

@@ -1,0 +1,145 @@
+@import "../src/assets/fonts/custom-font.css";
+@import "../src/assets/css/my-custom.css";
+@import "../src/assets/css/mat-table.css";
+
+.topcorner {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.required-asterisk {
+  color: red;
+  font-weight: bold;
+  margin-left: 3px;
+  font-size: 1.2em;
+}
+
+.timepicker-overlay {
+  z-index: 1100 !important;
+}
+
+.timepicker-backdrop-overlay {
+  z-index: 1100 !important;
+}
+
+.ngx-timepicker {
+  height: 31px !important;
+}
+
+app-print-page {
+  /* hide the printing component from @media screen */
+  display: none;
+}
+
+@media print {
+  /* invert the display (show/hide) properties of the main */
+  /* aplication component and the printing component       */
+
+  app-print-page {
+    display: block;
+  }
+
+  app-main-page {
+    display: none;
+  }
+}
+
+.swal2-title {
+  font-family: "Kanit" !important;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: "Kanit", Roboto, "Helvetica Neue", sans-serif !important;
+}
+
+.content-wrapper {
+  min-height: calc(100vh - 112px);
+  padding: 10px;
+}
+
+// .main-sidebar { background-color: rgb(6, 100, 6) !important }
+
+.font-kanit {
+  font-family: "Kanit", sans-serif !important;
+}
+
+.font-prompt {
+  font-family: "Prompt", sans-serif !important;
+}
+
+.font-maitree {
+  font-family: "Maitree", sans-serif !important;
+}
+
+* {
+  font-family: "Kanit", Roboto, "Helvetica Neue", sans-serif;
+  // font-size: 16px;
+  font-weight: 300;
+}
+
+.mat-icon {
+  font-family: "Material Icons" !important;
+}
+
+// Printable
+@media print {
+  body * {
+    // visibility: hidden;
+    // height: auto;
+    // margin: 0 !important;
+    // margin: 80mm 0mm 20mm 0mm;
+    size: 210mm 297mm portrait;
+  }
+
+  @page {
+    // size: A4 !important;
+    // size: 210mm 297mm portrait;
+    margin: 27mm 16mm 27mm 16mm;
+  }
+
+  // @page: first {
+  //   margin: 27mm 16mm 27mm 16mm;
+  // }
+
+  #section-to-print,
+  #section-to-print * {
+    visibility: visible;
+    // height: auto;
+  }
+
+  #section-to-print {
+    // position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  #no-print {
+    display: none;
+  }
+
+  .page-break-before {
+    // height: 0;
+    // margin: 0;
+    // padding: 0;
+    // padding-top: 20px;
+    margin: 27mm 16mm 27mm 16mm;
+    display: block;
+    page-break-before: always;
+    page-break-after: always;
+  }
+
+  .avoid-break {
+    page-break-inside: avoid;
+  }
+}
+
+th.mat-header-cell {
+  background-color: #007bff;
+  color: #ffffff;
+  height: 25px !important;
+  min-height: 25px !important;
+}
