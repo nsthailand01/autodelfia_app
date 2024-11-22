@@ -1,0 +1,22 @@
+.mat-dialog-actions {
+  justify-content: flex-start;
+}
+
+
+.header, .dialog-message {
+  text-transform: lowercase;
+}
+
+.header::first-letter, .dialog-message::first-letter {
+  text-transform: uppercase;
+}
+
+.btn-cancel {
+  background-color: red;
+  color: #fff;
+}
+
+/*.modal__content, dialog-layout, mat-dialog-container, .mat-dialog-container, #cdk-overlay-0, .cdk-overlay-pane {
+  z-index: 9999 !important;
+}*/
+

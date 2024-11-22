@@ -1,0 +1,105 @@
+<app-breadcrumb-navigator pageTitle="ชนิดตัวอย่าง" currentPageName="ชนิดตัวอย่าง"></app-breadcrumb-navigator>
+
+<!-- toolbar button -->
+<div class="form-footer mb-2">
+  <button type="submit" class="btn btn-dark shadow-dark m-1" (click)="goBack()">
+    <i class="fa fa-times mr-1"></i>Cancel
+  </button>
+  <button type="submit" class="btn btn-success shadow-success m-1" (click)="doSave()"><i
+      class="fa fa-check-square-o mr-1"></i>Save
+  </button>
+</div> <!-- end toolbar button -->
+
+<!-- <div>
+  {{this.sampleTypeForm.value |json}}
+</div> -->
+
+<div id="accordion">
+  <!-- ชนิดตัวอย่าง -->
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOnex" aria-expanded="true"
+          aria-controls="collapseOne">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-user-circle-o"></i>ชนิดตัวอย่าง
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+      <div class="card-body">
+        <form [formGroup]="sampleTypeForm">
+          <div class="form-row">
+            <div class="col-md-12">
+              <div class="form-check">
+                <mat-checkbox [(ngModel)]="isDefault" [ngModelOptions]="{standalone: true}"
+                  (change)="onDefaultCheckedChange($event)">Default
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-12">
+              <label for="input-samplecode" class="col-form-label">รหัสตัวอย่าง</label>
+              <input type="text" class="form-control form-control-sm" id="input-samplecode"
+                formControlName="sampleTypeCode">
+            </div>
+            <div class="col-md-12">
+              <label for="input-sampletypename" class="col-form-label">ชื่อตัวอย่าง</label>
+              <input type="text" class="form-control form-control-sm" id="input-sampletypename"
+                formControlName="sampleTypeName">
+            </div>
+            <div class="col-md-12">
+              <label for="input-sampletypenameeng" class="col-form-label">ชื่อตัวอย่าง (Eng)</label>
+              <input type="text" class="form-control form-control-sm" id="input-sampletypenameeng"
+                formControlName="sampleTypeNameEng">
+            </div>
+            <!-- <div class="col-md-12">
+              <label for="input-siteid" class="col-form-label">วัตถุประสงค์</label>
+              <input type="text" class="form-control form-control-sm" id="input-siteid" formControlName="profileID">
+            </div> -->
+
+            <div class="form-group col-md-6">
+              <label for="input-profile" class="col-form-label">วัตถุประสงค์</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-profile" placeholder="วัตถุประสงค์"
+                  formControlName="profileName" readonly>
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="openProfilePicker()">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <div class="w-100"></div>
+
+            <div class="col-md-12" hidden>
+              <label for="input-siteid" class="col-form-label">Site</label>
+              <input type="text" class="form-control form-control-sm" id="input-siteid" formControlName="siteID">
+            </div>
+
+            <!-- <label for="" class="col-form-label">Picture</label>
+            <div class="form-group col-md-4">
+              <img height="150px" width="150px" [src]="dom.bypassSecurityTrustUrl(imgsrc)">
+              <input type="file" (change)="fileChange($event)">
+            </div> -->
+
+            <label for="" class="col-form-label">Picture</label>
+            <div class="form-group col-md">
+              <img *ngIf="!imageBaseData" class="img-signature mr-3" [src]="dom.bypassSecurityTrustUrl(imgsrc)">
+              <img id="imgSignature" *ngIf="imageBaseData" class="img-signature mr-3" [src]="imageBaseData">
+
+              <input type="file" #file placeholder="Choose file" accept="image/*" (change)="fileChange($event)"
+                style="display:none;">
+              <button type="button" class="btn btn-success btn-sm" (click)="file.click()">Upload Picture</button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> <!-- จบ ชนิดตัวอย่าง -->
+
+</div>

@@ -1,0 +1,72 @@
+<div class="modal-content" style="z-index:1000000">
+  <ngx-loading [show]="isLoading"></ngx-loading>
+
+  <div class="modal-header">
+    <h4 class="modal-title pull-left page-title font-kanit">{{ title }}</h4>
+    <div><small>LISSentSampleHD</small></div>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <div class="form-inline">
+      <div class="form-group col-md-12 mb-2">
+        <label for="input-filter">คำค้นหา &nbsp;<small>(Sent Sample)</small>&nbsp;: </label>
+        <input type="text" class="form-control form-control-sm col-sm" id="input-filter"
+          (click)="pageConfig.currentPage = 1" placeholder="" #input [(ngModel)]="textFilter">
+      </div>
+    </div>
+
+    <div class="pull-right">
+      <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
+
+    <div class="form-group">
+      <div class="table-responsive-md">
+        <table id="tableCustomer" class="table table-hover table-sm table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <td>Sent Sample No</td>
+              <td>Sent Sample Date</td>
+              <td>Number Of Samples</td>
+              <td>Site Name</td>
+              <td>Sent to SiteName</td>
+              <td>Remark</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="!pickItems?.length">
+              <td colspan="100" class="text-center">
+                ไม่มีรายการ
+              </td>
+            </tr>
+
+            <tr
+              *ngFor="let item of pickItems | filterBy: { $or: [{SentSampleNo: textFilter}, {SiteName : textFilter}, {SentToSiteName: textFilter}, {Remark: textFilter}] } | paginate: pageConfig; let i = index"
+              (click)="highlightRow(item)" (dblclick)="onSelected()" [ngClass]="{'highlight' : item == selectedItem}">
+              <th scope="row">{{( (pageConfig.currentPage - 1) * pageConfig.itemsPerPage + i + 1) | number:'0.0-0' }}
+              </th>
+              <td>{{ item.SentSampleNo }}</td>
+              <td>{{ item.SentSampleDate | localDatetimePipe }}</td>
+              <td>{{ item.NumberOFSamples }}</td>
+              <td>{{ item.SiteName }}</td>
+              <td>{{ item.SentToSiteName }}</td>
+              <td>{{ item.Remark }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pull-right">
+      <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="onSelected()">Select</button>
+    <button type="button" class="btn btn-secondary" (click)="onCancel()">Close</button>
+  </div>
+</div>

@@ -1,0 +1,117 @@
+<!-- ผลการตรวจคัดกรอง NIPT -->
+<div class="card m-1">
+  <div class="card-header" id="headingTen">
+    <h5 class="mb-my-0">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false"
+        aria-controls="collapseTen">
+        <h4 class="form-header text-uppercase">
+          <i class="fa fa-file-text-o"></i>ผลการตรวจคัดกรอง NIPT
+        </h4>
+      </button>
+    </h5>
+  </div>
+
+  <div id="collapseTen" class="collapse show " aria-labelledby="headingTen">
+    <form [formGroup]="requestsForm">
+      <div class="card card-primary card-outline border border-primary  d-flex flex-row flex-nowrap overflow-auto">
+        <div class="card-body">
+
+          <div class="table-responsive">
+            <table class="table table-striped table-hover table-responsive ">
+              <thead class="thead-light">
+                <tr>
+                  <th [width]="270">
+                    รายการตรวจ (Test)
+                  </th>
+                  <th [width]="220" class="text-center">
+                    ผลการประเมินความเสี่ยง
+                  </th>
+                  <th [width]="150" class="text-center">
+                    ค่าความเสี่ยง
+                  </th>
+                  <th [width]="200" class="text-center">
+                    ค่า Cut-off ความเสี่ยง
+                  </th>
+                  <th [width]="150">
+                    วิธีตรวจ
+                  </th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Trisomy 21 (Down’s Syndrome)</td>
+                  <td>
+                    <input type="text" class="form-control form-control-sm text-center font-weight-bold" [ngClass]="{'text-primary': requestsForm.get('riskResultT21Downs').value == '1',
+                      'text-danger': requestsForm.get('riskResultT21Downs').value == '2'}" [value]="requestsForm.get('riskResultT21Downs').value == '1' ? 'ความเสี่ยงต่ำ' 
+                      : requestsForm.get('riskResultT21Downs').value == '2' ? 'ความเสี่ยงสูง' : '-' " readonly>
+                  </td>
+                  <td><input type="text" class="form-control form-control-sm text-center"
+                      value="1:{{requestsForm.get('riskValueT21Downs').value}}" readonly></td>
+                  <td><input type="text" class="form-control form-control-sm text-center"
+                      formControlName="riskCutOffT21Downs" value="1:{{requestsForm.get('riskCutOffT21Downs').value}}"
+                      readonly></td>
+                  <td rowspan="4">Non-Invasive Prenatal Testing (NIPT)</td>
+                </tr>
+                <tr>
+                  <td>Trisomy 18 (Edward’s Syndrome)</td>
+                  <td><input type="text" class="form-control form-control-sm text-center font-weight-bold"
+                      [ngClass]="{'text-primary': requestsForm.get('riskResultT18Edwards').value == '1', 'text-danger': requestsForm.get('riskResultT18Edwards').value == '2'}"
+                      [value]="requestsForm.get('riskResultT18Edwards').value == '1' ? 'ความเสี่ยงต่ำ' 
+                      : requestsForm.get('riskResultT18Edwards').value == '2' ? 'ความเสี่ยงสูง' : '-' " readonly></td>
+                  <td><input type="text" class="form-control form-control-sm text-center"
+                      value="1:{{requestsForm.get('riskValueT18Edwards').value}}" readonly></td>
+                  <td><input type="text" class="form-control form-control-sm text-center"
+                      formControlName="riskCutOffT18Edwards"
+                      value="1:{{requestsForm.get('riskCutOffT18Edwards').value}}" readonly></td>
+                  <!-- <td></td> -->
+                </tr>
+                <tr>
+                  <td>Trisomy 13 (Patau Syndrome)</td>
+                  <td><input type="text" class="form-control form-control-sm text-center font-weight-bold"
+                      [ngClass]="{'text-primary': requestsForm.get('riskResultT13Patau').value == '1', 'text-danger': requestsForm.get('riskResultT13Patau').value == '2'}"
+                      [value]="requestsForm.get('riskResultT13Patau').value == '1' ? 'ความเสี่ยงต่ำ' 
+                      : requestsForm.get('riskResultT13Patau').value == '2' ? 'ความเสี่ยงสูง' : '-' " readonly></td>
+                  <td><input type="text" class="form-control form-control-sm text-center"
+                      value="1:{{requestsForm.get('riskValueT13Patau').value}}" readonly></td>
+                  <td><input type="text" class="form-control form-control-sm text-center"
+                      formControlName="riskCutOffT13Patau" value="1:{{requestsForm.get('riskCutOffT13Patau').value}}"
+                      readonly></td>
+                  <!-- <td></td> -->
+                </tr>
+                <tr>
+                  <td>เพศของทารก (Fetus Sex)</td>
+                  <td colspan="3" class="text-center">
+                    <input type="text" class="form-control form-control-sm text-center"
+                      [value]="requestsForm.get('fetalSex').value == '1' ? 'ชาย (Male)' : requestsForm.get('fetalSex').value == '2' ? 'หญิง (Female)' : '-' "
+                      readonly>
+                  </td>
+                  <!-- <td>
+                    <input type="text" class="form-control form-control-sm text-center" value="nmol/L" readonly>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control form-control-sm text-center"
+                      formControlName="ansValueCorrMoM_UE3UPD"
+                      [value]="requestsForm.get('ansValueCorrMoM_UE3UPD').value | number: '1.2-2'" readonly>
+                  </td> -->
+                </tr>
+              </tbody>
+
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div> <!-- ผลการตรวจคัดกรอง NIPT -->
+
+
+
+
+<div class="d-flex flex-row flex-nowrap overflow-auto">
+  <!-- <div class="card card-block mx-2" style="min-width: 300px;">Card</div>
+  <div class="card card-block mx-2" style="min-width: 300px;">Card</div>
+  <div class="card card-block mx-2" style="min-width: 300px;">Card</div> -->
+</div>

@@ -1,0 +1,97 @@
+@import '../../../../assets/css/my-table.scss';
+
+// .section::-webkit-scrollbar-thumb {
+//   border: 5px solid transparent;
+//   border-radius: 100px;
+//   background-color: #8070d4;
+//   background-clip: content-box;
+// }
+
+.my-container {
+  // min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 1rem;
+  padding-top: 0;
+}
+
+.my-content {
+  width: 100vw;
+  background-color: seashell;
+  border: 1px solid burlywood;
+  padding: 12px;
+  // padding-top: 0;
+}
+
+.form-inline .col-form-label {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 3px;
+}
+
+.input-group .form-control {
+  margin: 0px !important;
+}
+
+.input-group {
+  align-self: flex-start;
+}
+
+.mat-stepper-horizontal-line {
+  flex: none !important;
+}
+
+.my-radio-group {
+  display: flex;
+  flex-direction: inline-grid;
+  /* display: inline-grid; */
+  /* display: grid; */
+  margin: 5px 0;
+}
+
+.hover-class:hover {
+  background-color: red;
+}
+
+// a.disabled {
+//   pointer-events: none;
+//   cursor: default;
+//   color: rosybrown;
+// }
+
+.far.disabled,
+.far[disabled],
+.disabled>.far,
+[disabled]>.far {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+a.disabled {
+  color: gray;
+  cursor: not-allowed;
+  pointer-events: none;
+  // text-decoration: underline;
+}
+
+.text-right {
+  justify-content: flex-end;
+}
+
+.third-col {
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+  left: 95px;
+}
+
+/* Disable Number Arrow */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}

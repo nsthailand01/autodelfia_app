@@ -1,0 +1,216 @@
+<app-breadcrumb-navigator pageTitle="กำหนดข้อมูลพนักงาน" currentPageName="กำหนดข้อมูลพนักงาน"
+  listPageUrl="/master-file/employee/lists">
+</app-breadcrumb-navigator>
+
+<!-- toolbar button -->
+<div class="form-footer mb-2">
+  <button type="submit" class="btn btn-dark shadow-dark m-1" (click)="goBack()">
+    <i class="fa fa-times mr-1"></i>Cancel
+  </button>
+  <button type="submit" class="btn btn-success shadow-success m-1" (click)="doSave()"><i
+      class="fa fa-check-square-o mr-1"></i>Save
+  </button>
+</div> <!-- end toolbar button -->
+
+<div id="accordion">
+  <!-- ชนิดตัวอย่าง -->
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOnex" aria-expanded="true"
+          aria-controls="collapseOne">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-user-circle-o"></i>กำหนดข้อมูลพนักงาน
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+      <div class="card-body">
+        <form [formGroup]="employeeForm">
+          <div class="form-row">
+            <div class="col-md-2">
+              <label for="input-employeeCode" class="col-form-label">รหัสพนักงาน</label>
+              <input type="text" class="form-control form-control-sm" id="input-employeeCode"
+                formControlName="employeeCode">
+            </div>
+            <div class="form-group col-md-2">
+              <label for="input-title" class="col-form-label">คำนำหน้า</label>
+              <select class="form-control form-control-sm" id="input-title" formControlName="title">
+                <option value="" selected hidden>Choose here</option>
+                <option value="นาย">นาย</option>
+                <option value="นาง">นาง</option>
+                <option value="นางสาว">นางสาว</option>
+                <option value="เด็กชาย">เด็กชาย</option>
+                <option value="เด็กหญิง">เด็กหญิง</option>
+              </select>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="input-firstName" class="col-form-label">ชื่อ</label>
+              <input type="text" class="form-control form-control-sm" id="input-firstName" placeholder="ชื่อ"
+                formControlName="firstName">
+            </div>
+            <div class="form-group col-md-3">
+              <label for="input-lastName" class="col-form-label">สกุล</label>
+              <input type="text" class="form-control form-control-sm" id="input-lastName" placeholder="สกุล"
+                formControlName="lastName">
+            </div>
+            <div class="form-group col-md-2">
+              <label for="input-race" class="col-form-label">เชื้อชาติ</label>
+              <div class="input-group input-group-sm">
+                <select class="form-control form-control-sm" name="race" formControlName="race">
+                  <option value="" selected hidden>Choose race</option>
+                  <option *ngFor="let race of races" [value]="race.raceName">{{race.raceName}}</option>
+                </select>
+              </div>
+
+
+            </div>
+          </div>
+
+          <div class="w-100"></div>
+
+          <div class="form-row">
+
+            <div class="form-group col-md-2">
+              <label for="input-positionCode" class="col-form-label">รหัสตำแหน่ง</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-positionCode" placeholder=""
+                  formControlName="positionCode">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="onPositionPick()">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label for="input-positionName" class="col-form-label">ชื่อตำแหน่ง</label>
+              <input type="text" class="form-control form-control-sm" id="input-positionName"
+                formControlName="positionName" readonly>
+            </div>
+
+
+            <div class="form-group col-md-2">
+              <label for="input-identityCard" class="col-form-label">เลขบัตรประจำตัวประชาชน</label>
+              <input type="text" class="form-control form-control-sm" id="input-identityCard"
+                placeholder="เลขบัตรประจำตัวประชาชน" formControlName="identityCard">
+            </div>
+
+            <div class="form-group col-md-2">
+              <label for="input-bloodGroups" class="col-form-label">กลุ๊ปเลือด</label>
+              <input type="text" class="form-control form-control-sm" id="input-bloodGroups" placeholder=""
+                formControlName="bloodGroups">
+            </div>
+
+            <div class="form-group col-md-1">
+              <label for="input-weight" class="col-form-label">น้ำหนัก</label>
+              <input type="number" class="form-control form-control-sm" id="input-weight" placeholder="น้ำหนัก"
+                formControlName="weight">
+            </div>
+
+            <div class="form-group col-md-1">
+              <label for="input-height" class="col-form-label">ส่วนสูง</label>
+              <input type="number" class="form-control form-control-sm" id="input-height" placeholder="น้ำหนัก"
+                formControlName="height">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-12">
+              <label for="input-remark" class="col-form-label">Remark</label>
+              <textarea class="form-control form-control-sm" id="input-remark" rows="3"
+                formControlName="remark"></textarea>
+            </div>
+          </div>
+
+
+          <div class="w-100 mb-2"></div>
+
+          <div class="form-row">
+            <div class="col-md-12">
+              <div class="card card-green card-outline">
+                <div class="card-header">
+                  Address
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md">
+                      <label for="input-address" class="col-form-label">ที่อยู่</label>
+                      <input type="text" class="form-control form-control-sm" id="input-address"
+                        formControlName="address">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-2">
+                      <label for="input-moo" class="col-form-label">หมู่ที่</label>
+                      <input type="text" class="form-control form-control-sm" id="input-moo" formControlName="moo">
+                    </div>
+                    <div class="col-md-2">
+                      <label for="input-roomNo" class="col-form-label">ห้อง</label>
+                      <input type="text" class="form-control form-control-sm" id="input-roomNo"
+                        formControlName="roomNo">
+                    </div>
+                    <div class="col-md-2">
+                      <label for="input-floorNo" class="col-form-label">ชั้น</label>
+                      <input type="text" class="form-control form-control-sm" id="input-floorNo"
+                        formControlName="floorNo">
+                    </div>
+                    <div class="col-md-2">
+                      <label for="input-building" class="col-form-label">อาคาร</label>
+                      <input type="text" class="form-control form-control-sm" id="input-building"
+                        formControlName="building">
+                    </div>
+                    <div class="col-md-2">
+                      <label for="input-village" class="col-form-label">หมู่บ้าน</label>
+                      <input type="text" class="form-control form-control-sm" id="input-village"
+                        formControlName="village">
+                    </div>
+                    <div class="col-md-2">
+                      <label for="input-lane" class="col-form-label">ตรอก/ซอย</label>
+                      <input type="text" class="form-control form-control-sm" id="input-lane" formControlName="lane">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4">
+                      <label for="input-street" class="col-form-label">ถนน</label>
+                      <input type="text" class="form-control form-control-sm" id="input-street"
+                        formControlName="street">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="input-district" class="col-form-label">แขวง/ตำบล</label>
+                      <input type="text" class="form-control form-control-sm" id="input-district"
+                        formControlName="district">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="input-amphur" class="col-form-label">เขต/อำเภอ</label>
+                      <input type="text" class="form-control form-control-sm" id="input-amphur"
+                        formControlName="amphur">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label for="input-province" class="col-form-label">จังหวัด</label>
+                      <input type="text" class="form-control form-control-sm" id="input-province"
+                        formControlName="province">
+                    </div>
+                    <div class="col-md-1">
+                      <label for="input-postCode" class="col-form-label">รหัสไปรษณีย์</label>
+                      <input type="text" class="form-control form-control-sm" id="input-postCode"
+                        formControlName="postCode">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>

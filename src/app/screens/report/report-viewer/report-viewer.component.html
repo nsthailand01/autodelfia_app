@@ -1,0 +1,7 @@
+<dx-report-viewer [reportUrl]="reportUrl" height="850px">
+  <dxrv-request-options [invokeAction]="invokeAction" [host]="hostUrl"></dxrv-request-options>
+  <dxrv-tabpanel-settings width="500" position="Right"></dxrv-tabpanel-settings>
+  <dxrv-callbacks (CustomizeMenuActions)="customizeMenuActions($event)"
+    (ParametersSubmitted)="parametersSubmitted($event)" (BeforeRender)="beforeRender($event)">
+  </dxrv-callbacks>
+</dx-report-viewer>

@@ -1,0 +1,204 @@
+<app-breadcrumb-navigator pageTitle="นำส่งตัวอย่าง" currentPageName="นำส่งตัวอย่าง" listPageUrl="/delivery-note/lists">
+</app-breadcrumb-navigator>
+
+<!-- <div>
+  {{ this.requestLists | json }}
+</div>
+<hr>
+<div>
+  {{ this.batchHdForm.value | json }}
+</div> -->
+
+<swal #swalDialog [title]="dialogTitle" icon="success" [text]="dialogDisplayText" [ngStyle]="{'z-index':10000 }"></swal>
+
+<!-- toolbar button -->
+<div class="form-footer mb-2">
+  <button type="button" class="btn btn-md btn-dark shadow-dark m-1" (click)="goBack()">
+    <i class="fa fa-times"></i>Cancel
+  </button>
+  <button type="submit" class="btn btn-md btn-success shadow-success m-1" (click)="doSave()">
+    <i class="fa fa-check-square-o"></i>Save
+  </button>
+  <button type="button" class="btn btn-md btn-info shadow-info m-1" (click)="doSentSample()">
+    <i class="fa fa-check-square-o"></i>Sent
+  </button>
+  <button type="button" class="btn btn-md btn-danger shadow-danger m-1" (click)="doDelete()">
+    <i class="far fa-trash-alt"></i>Delete
+  </button>
+</div> <!-- end toolbar button -->
+
+<div id="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+          aria-controls="collapseOne">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-user-circle-o"></i>นำส่งตัวอย่าง
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+      <div class="card-body">
+        <form [formGroup]="batchHdForm">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="input-1" class="col-form-label">นำส่งถึง</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-1" placeholder=""
+                  formControlName="sentSampleID">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="openSentSamplePicker()">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="input-batchdate" class="col-form-label">วันที่</label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-batchdate" #dpBatchDate="bsDatepicker" bsDatepicker
+                  formControlName="batchDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="dpBatchDate.toggle()">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="input-3" class="col-form-label">การทดสอบ</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-3" placeholder=""
+                  formControlName="profileName" readonly> <!-- ProfileID-->
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="openLabProfilePicker()">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="input-batchno" class="col-form-label">เลขที่</label>
+              <input type="text" class="form-control form-control-sm" id="input-batchno" placeholder=""
+                formControlName="batchNo">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="input-numberOfSamples" class="col-form-label">จำนวนตัวอย่าง</label>
+              <input type="number" class="form-control form-control-sm" id="input-numberOfSamples" placeholder=""
+                formControlName="numberOFSamples">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="input-sampletype" class="col-form-label">ชนิดตัวอย่าง</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-sampletype" placeholder=""
+                  formControlName="sampleTypeName">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="openSampleTypePicker()">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="input-analystdays" class="col-form-label">จำนวนวันตรวจวิเคราะห์</label>
+              <input type="number" class="form-control form-control-sm" id="input-analystdays" placeholder=""
+                formControlName="analystDays">
+            </div>
+
+            <!-- <div class="form-group col-md-6">
+              <label for="input-8" class="col-form-label">กำหนดแล้วเสร็จ</label>
+              <input type="date" class="form-control form-control-sm" id="input-8" placeholder="กำหนดแล้วเสร็จ"
+                formControlName="dueDate">
+            </div> -->
+
+            <div class="form-group col-md-6">
+              <label for="input-duedate" class="col-form-label">กำหนดแล้วเสร็จ</label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-duedate" #dpDueDate="bsDatepicker" bsDatepicker
+                  formControlName="dueDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="dpDueDate.toggle()">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="input-empid" class="col-form-label">ผู้จัดส่ง</label>
+              <input type="text" class="form-control form-control-sm" id="input-empid" placeholder=""
+                formControlName="employeeID">
+            </div>
+
+            <div class="form-group col-md-6">
+              <!-- <span style="margin-right:2%;">การชำระเงิน : </span> -->
+              <label for="" class="col-form-label">การชำระเงิน</label>
+              <div class="custom-control">
+                <mat-radio-button value="1" (change)="radioChange($event)" checked>ไม่แจ้งหนี้</mat-radio-button>
+                <mat-radio-button value="2" (change)="radioChange($event)">ชำระเงินแล้ว</mat-radio-button>
+                <mat-radio-button value="3" (change)="radioChange($event)">ยังไม่ชำระเงิน</mat-radio-button>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="input-barcode" class="col-form-label">Scan barcode</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" #inputBarcode id="input-barcode"
+                  placeholder="Scan barcode" (keyup.enter)="applyBarcode($event.target.value)" [(ngModel)]="barCode"
+                  [ngModelOptions]="{standalone: true}">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="applyBarcode(inputBarcode.value)">
+                    <i class="far fa-arrow-alt-circle-right"></i>
+                  </button>
+                </span>
+              </div>
+
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Data Detail -->
+<div class="container-fluid no-padding">
+  <div class="card card-green card-outline">
+    <div class="card-body">
+
+      <mat-tab-group dynamicHeight (selectedTabChange)="selectedTabChange($event)">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">post_add</mat-icon>Samples
+          </ng-template>
+          <ng-template matTabContent>
+            <app-samples-tab [itemLists]="this.requestLists" [requestFomsArray]="this.requestForms"
+              (itemsChangeEvent)="updateItemChanged($event)"></app-samples-tab>
+            <!-- <app-goods-tab [itemLists]="this.itemLists" (itemsChangeEvent)="updateItemChanged($event)"></app-goods-tab> -->
+            <!-- <app-items-tab [quotationForm]="this.quotationHeaderForm"></app-items-tab> -->
+          </ng-template>
+        </mat-tab>
+
+        <!-- <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">list</mat-icon>Audit
+          </ng-template>
+          <ng-template matTabContent>
+            Audit
+          </ng-template>
+        </mat-tab> -->
+      </mat-tab-group>
+
+      <hr />
+
+    </div>
+
+  </div>
+</div> <!-- Data Detail -->

@@ -1,0 +1,28 @@
+table {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-width: 500px;
+}
+
+th.mat-header-cell {
+  text-align: left;
+  max-width: 300px;
+}
+
+.mat-row:nth-child(even) {
+  background-color: #e4f0ec;
+}
+
+.mat-row:nth-child(odd) {
+  background: rgba(0, 0, 0, 0.025);
+}
+
+.mat-row:hover {
+  // cursor: pointer;
+  background: #b4b4b433;
+}
+
+// tbody.MuiTableBody-root>:nth-of-type(2n) {
+//   background-color: #fafafa;
+// }

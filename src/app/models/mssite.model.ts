@@ -1,0 +1,54 @@
+import { BaseModel } from './base.model';
+export class MSSiteModel extends BaseModel {
+  siteID: string = '';
+  spParmLastSiteID: string = '';
+  siteCode: string = '';
+  siteName: string = '';
+  siteNameEng: string = '';
+  shortName: string = '';
+  siteGroupID: number = null;
+  taxId: string = '';
+  companyRegisterNo: string = '';
+  address: string = '';
+  moo: string = '';
+  roomNo: string = '';
+  floorNo: string = '';
+  building: string = '';
+  village: string = '';
+  lane: string = '';
+  street: string = '';
+  district: string = '';
+  amphur: string = '';
+  province: string = '';
+  postCode: string = '';
+  contactName: string = '';
+  tel: string = '';
+  fax: string = '';
+  web: string = '';
+  latitude: number = null;
+  longtitude: number = null;
+  isActiveFlag: string = null;
+  parentSiteID: string = null;
+  logo: string = '';
+  picture: string = '';
+  siteFlag: string = '';
+  siteType: string = '';
+  createdBy: string = '';
+  createdDate: Date = new Date();
+  modifiedBy: string = '';
+  isDeleted: number = 0;
+  modifiedDate: Date = new Date();
+  remark: string = '';
+  runningFormat: string = '';
+  runPrefix: string = '';
+  runReceivePrefix: string = '';
+
+  reporterName: string = '';
+  reporterPosition: string = '';
+  reporterSignature: string = '';
+  guarantorName: string = '';
+  guarantorPosition: string = '';
+  guarantorSignature: string = '';
+
+  parentSiteName: string = '';
+}

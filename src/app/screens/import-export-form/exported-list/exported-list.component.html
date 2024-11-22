@@ -1,0 +1,38 @@
+<!-- <app-upload [disabled]="showProgress" (uploadStatus)="uploadStatus($event)"></app-upload> -->
+<h2 class="mt-3">File List</h2>
+<!-- <p *ngIf="showProgress"> progress <strong>{{percentage}}%</strong></p>
+<label class="error" [hidden]="!showDownloadError">ci sono stati errori durante il download</label>
+<label class="error" [hidden]="!showUploadError">ci sono stati errori durante l'upload</label> -->
+<hr>
+<div class="container">
+
+  <table class="TFtable">
+    <tr *ngFor="let file of files; let idx=index">
+      <td class="text-center" style="width: 40px;">{{idx+1}}</td>
+      <td>
+        {{file}}
+      </td>
+      <td style="width: 100px;">
+        <app-file-download [disabled]="showProgress" [fileName]="file" [filePath]="directory"
+          [templateType]="templateType" (downloadStatus)="downloadStatus($event)">
+        </app-file-download>
+      </td>
+      <td style="text-align:center; width: 50px;">
+        <button class="button delete" title="Delete" (click)="deleteFile(file)">
+          <i class="far fa-trash-alt"></i></button>
+      </td>
+    </tr>
+
+  </table>
+
+  <ol hidden>
+    <li *ngIf="!files || (files.length == 0)">{{templateType | titlecase}} file does not exist.</li>
+    <li *ngFor="let file of files">
+      <a>
+        {{file}}
+        <app-file-download [disabled]="showProgress" [fileName]="file" (downloadStatus)="downloadStatus($event)">
+        </app-file-download>
+      </a>
+    </li>
+  </ol>
+</div>

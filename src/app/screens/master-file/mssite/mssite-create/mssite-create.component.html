@@ -1,0 +1,379 @@
+<app-breadcrumb-navigator pageTitle="กำหนดหน่วยงานส่งตรวจ" currentPageName="กำหนดหน่วยงานส่งตรวจ">
+</app-breadcrumb-navigator>
+
+<!-- toolbar button -->
+<div class="form-footer mb-2">
+  <button type="submit" class="btn btn-dark shadow-dark m-1" (click)="goBack()">
+    <i class="fa fa-times mr-1"></i>Cancel
+  </button>
+  <button type="submit" class="btn btn-success shadow-success m-1" (click)="doSave()"><i
+      class="fa fa-check-square-o mr-1"></i>Save
+  </button>
+</div> <!-- end toolbar button -->
+
+<!-- <div>
+  {{this.msSiteForm.value |json}}
+</div> -->
+
+<div id="accordion">
+  <!-- ชนิดตัวอย่าง -->
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOnex" aria-expanded="true"
+          aria-controls="collapseOne">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-user-circle-o"></i>กำหนดหน่วยงานส่งตรวจ
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+      <div class="card-body">
+        <form [formGroup]="msSiteForm">
+          <div>
+
+            <div class="row">
+              <div fxLayoutAlign="center center">
+                <mat-checkbox [(ngModel)]="isActive" [ngModelOptions]="{standalone: true}">Is Active</mat-checkbox>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <label for="input-siteCode" class="col-form-label">รหัส Site</label>
+                <input type="text" class="form-control form-control-sm" id="input-siteCode" formControlName="siteCode">
+              </div>
+              <div class="col-md-4">
+                <label for="input-siteName" class="col-form-label">ชื่อหน่วยงาน</label>
+                <input type="text" class="form-control form-control-sm" id="input-siteName" formControlName="siteName">
+              </div>
+              <div class="col-md-4">
+                <label for="input-siteNameEng" class="col-form-label">ชื่อหน่วยงาน (Eng)</label>
+                <input type="text" class="form-control form-control-sm" id="input-siteNameEng"
+                  formControlName="siteNameEng">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <label for="input-shortName" class="col-form-label">ชื่อเรียก</label>
+                <input type="text" class="form-control form-control-sm" id="input-shortName"
+                  formControlName="shortName">
+              </div>
+              <div class="col-md-4">
+                <label for="input-taxId" class="col-form-label">เลขประจำตัวผู้เสียภาษี</label>
+                <input type="text" class="form-control form-control-sm" id="input-taxId" formControlName="taxId">
+              </div>
+              <div class="col-md-4">
+                <label for="input-companyRegisterNo" class="col-form-label">เลขที่จดทะเบียน</label>
+                <input type="text" class="form-control form-control-sm" id="input-companyRegisterNo"
+                  formControlName="companyRegisterNo">
+              </div>
+            </div>
+
+            <div class="w-100"></div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <label for="input-parentSiteID" class="col-form-label">Parent</label>
+                <!-- <input type="text" id="input-parentSiteID" class="form-control form-control-sm"
+                  formControlName="parentSiteID"> -->
+
+                <div class="input-group input-group-sm">
+                  <input type="text" class="form-control form-control-sm" id="input-parentSiteID" placeholder=""
+                    formControlName="parentSiteName" readonly>
+                  <span class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" (click)="openMSSitePicker()"
+                      [disabled]="isParent">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </span>
+                </div>
+
+
+              </div>
+              <div class="col-md-2">
+                <label for="input-siteFlag" class="col-form-label">Site Flag</label>
+                <select class="form-control form-control-sm" id="input-siteFlag" #cbSiteFlag
+                  (change)="onSiteFlagChange($event, cbSiteFlag.value)" formControlName="siteFlag">
+                  <option value="" selected hidden>Choose here</option>
+                  <option value="C">Center</option>
+                  <option value="S">Site</option>
+                  <option value="P">Parent</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label for="input-siteType" class="col-form-label">Site Type</label>
+                <select class="form-control form-control-sm" id="input-siteType" #siteType formControlName="siteType">
+                  <option value="" selected hidden>Choose here</option>
+                  <option value="Government">รัฐบาล</option>
+                  <option value="Company">เอกชน</option>
+                  <option value="Sate Enterprise">State Enterprise</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label for="input-runningFormat" class="col-form-label">Running Prefix</label>
+                <input type="text" class="form-control form-control-sm" id="input-runningFormat"
+                  formControlName="runPrefix">
+              </div>
+              <div class="col-md-2">
+                <label for="input-runReceivePrefix" class="col-form-label">ReceiveNo Prefix</label>
+                <input type="text" class="form-control form-control-sm" id="input-runReceivePrefix"
+                  formControlName="runReceivePrefix">
+              </div>
+            </div>
+
+            <div class="w-100"></div>
+            <div class="row">
+              <div class="col-md-4">
+                <label for="input-remark" class="col-form-label">Remark</label>
+                <textarea class="form-control form-control-sm" id="input-remark" formControlName="remark"></textarea>
+              </div>
+
+              <label for="" class="col-form-label">Logo</label>
+              <div class="form-group col-md">
+                <img *ngIf="!imgLogoString" class="img-logo-picture mr-3"
+                  [src]="dom.bypassSecurityTrustUrl(imgLogoNotAvailable)">
+                <img id="imgLogoString" *ngIf="imgLogoString" class="img-logo-picture mr-3" [src]="imgLogoString">
+                <input type="file" (change)="logoFileChange($event)" hidden>
+
+                <input type="file" #fileLogo placeholder="Choose file" accept="image/jpg, image/jpeg, image/png"
+                  (change)="logoFileChange($event)" style="display:none;">
+                <button type="button" class="btn btn-success btn-sm" (click)="fileLogo.click()">Upload File</button>
+                <button type="button" class="btn btn-link ml-1" (click)="removeImg('logo')">Remove</button>
+              </div>
+
+              <label for="" class="col-form-label">Picture</label>
+              <div class="form-group col-md">
+                <img *ngIf="!imgPictureString" class="img-logo-picture mr-3"
+                  [src]="dom.bypassSecurityTrustUrl(imgPictureNotAvailable)">
+                <img id="imgPictureString" *ngIf="imgPictureString" class="img-logo-picture mr-3"
+                  [src]="imgPictureString">
+                <input type="file" (change)="pictureFileChange($event)" hidden>
+
+                <input type="file" #filePicture placeholder="Choose file" accept="image/jpg, image/jpeg, image/png"
+                  (change)="pictureFileChange($event)" style="display:none;">
+                <button type="button" class="btn btn-success btn-sm" (click)="filePicture.click()">Upload File</button>
+                <button type="button" class="btn btn-link ml-1" (click)="removeImg('picture')">Remove</button>
+              </div>
+            </div>
+
+            <div class="w-100"></div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card card-primary card-outline">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label for="input-reporterName" class="col-form-label">ผู้รายงาน</label>
+                        <input type="text" class="form-control form-control-sm" id="input-reporterName"
+                          formControlName="reporterName">
+                      </div>
+                      <div class="col-md-3">
+                        <label for="input-reporterPosition" class="col-form-label">ตำแหน่งผู้รายงาน</label>
+                        <input type="text" class="form-control form-control-sm" id="input-reporterPosition"
+                          formControlName="reporterPosition">
+                      </div>
+                      <div class="col-md-3">
+                        <label for="input-guarantorName" class="col-form-label">ผู้รับรอง</label>
+                        <input type="text" class="form-control form-control-sm" id="input-guarantorName"
+                          formControlName="guarantorName">
+                      </div>
+                      <div class="col-md-3">
+                        <label for="input-guarantorPosition" class="col-form-label">ตำแหน่งผู้รับรอง</label>
+                        <input type="text" class="form-control form-control-sm" id="input-guarantorPosition"
+                          formControlName="guarantorPosition">
+                      </div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="row mt-2">
+                      <label for="" class="col-form-label">ลายเซ็นต์ผู้รายงาน</label>
+                      <div class="form-group col-md">
+                        <img *ngIf="!imgReporterSignString" class="img-logo-picture mr-3"
+                          [src]="dom.bypassSecurityTrustUrl(imgReporterNotAvailable)">
+                        <img id="imgReporterSignString" *ngIf="imgReporterSignString" class="img-logo-picture mr-3"
+                          [src]="imgReporterSignString">
+                        <input type="file" (change)="reporterSignFileChange($event)" hidden>
+
+                        <input type="file" #fileReporterSign placeholder="Choose file"
+                          accept="image/jpg, image/jpeg, image/png" (change)="reporterSignFileChange($event)"
+                          style="display:none;">
+                        <button type="button" class="btn btn-success btn-sm" (click)="fileReporterSign.click()">Upload
+                          File</button>
+                        <button type="button" class="btn btn-link ml-1"
+                          (click)="removeImg('reporterSign')">Remove</button>
+                      </div>
+
+                      <label for="" class="col-form-label">ลายเซ็นต์ผู้รับรอง</label>
+                      <div class="form-group col-md">
+                        <img *ngIf="!imgGuarantorSignString" class="img-logo-picture mr-3"
+                          [src]="dom.bypassSecurityTrustUrl(imgGuarantorNotAvailable)">
+                        <img id="imgGuarantorSignString" *ngIf="imgGuarantorSignString" class="img-logo-picture mr-3"
+                          [src]="imgGuarantorSignString">
+                        <input type="file" (change)="guarantorSignFileChange($event)" hidden>
+
+                        <input type="file" #fileGuarantorSign placeholder="Choose file"
+                          accept="image/jpg, image/jpeg, image/png" (change)="guarantorSignFileChange($event)"
+                          style="display:none;">
+                        <button type="button" class="btn btn-success btn-sm" (click)="fileGuarantorSign.click()">Upload
+                          File</button>
+                        <button type="button" class="btn btn-link ml-1"
+                          (click)="removeImg('guarantorSign')">Remove</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+
+
+              <!-- <div class="w-100"></div> -->
+
+            </div>
+
+
+
+            <!-- [IsActiveFlag] [varchar] (1) COLLATE Thai_CI_AS NULL ,/* A = ใช้งาน H= Onhold, I = Inactive*/
+            [ParentSiteID] [int]   NULL , /*Parent Site*/
+            [Logo] [varchar] (255) COLLATE Thai_CI_AS NULL ,
+            [Picture] [varchar] (255) COLLATE Thai_CI_AS NULL ,
+            [SiteFlag] [varchar] (50) COLLATE Thai_CI_AS NULL, /*C = Center, S = Site,P = Parent Site */
+            [SiteType] [varchar] (50) COLLATE Thai_CI_AS NULL,/*Government = รัฐบาล, Company = เอกชล ,State enterprise*/ -->
+
+          </div>
+
+          <div class="w-100 mb-2"></div>
+
+          <div class="form-row">
+            <div class="col-md-12">
+              <div class="card card-green card-outline">
+                <div class="card-header">
+                  Address
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md">
+                      <label for="input-address" class="col-form-label">ที่อยู่</label>
+                      <input type="text" class="form-control form-control-sm" id="input-address"
+                        formControlName="address">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-2">
+                      <label for="input-moo" class="col-form-label">หมู่ที่</label>
+                      <input type="text" class="form-control form-control-sm" id="input-moo" formControlName="moo">
+                    </div>
+                    <div class="col-md-2">
+                      <label for="input-roomNo" class="col-form-label">ห้อง</label>
+                      <input type="text" class="form-control form-control-sm" id="input-roomNo"
+                        formControlName="roomNo">
+                    </div>
+                    <div class="col-md-2">
+                      <label for="input-floorNo" class="col-form-label">ชั้น</label>
+                      <input type="text" class="form-control form-control-sm" id="input-floorNo"
+                        formControlName="floorNo">
+                    </div>
+                    <div class="col-md-2">
+                      <label for="input-building" class="col-form-label">อาคาร</label>
+                      <input type="text" class="form-control form-control-sm" id="input-building"
+                        formControlName="building">
+                    </div>
+                    <div class="col-md-2">
+                      <label for="input-village" class="col-form-label">หมู่บ้าน</label>
+                      <input type="text" class="form-control form-control-sm" id="input-village"
+                        formControlName="village">
+                    </div>
+                    <div class="col-md-2">
+                      <label for="input-lane" class="col-form-label">ตรอก/ซอย</label>
+                      <input type="text" class="form-control form-control-sm" id="input-lane" formControlName="lane">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4">
+                      <label for="input-street" class="col-form-label">ถนน</label>
+                      <input type="text" class="form-control form-control-sm" id="input-street"
+                        formControlName="street">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="input-district" class="col-form-label">แขวง/ตำบล</label>
+                      <input type="text" class="form-control form-control-sm" id="input-district"
+                        formControlName="district">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="input-amphur" class="col-form-label">เขต/อำเภอ</label>
+                      <input type="text" class="form-control form-control-sm" id="input-amphur"
+                        formControlName="amphur">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label for="input-province" class="col-form-label">จังหวัด</label>
+                      <input type="text" class="form-control form-control-sm" id="input-province"
+                        formControlName="province">
+                    </div>
+                    <div class="col-md-1">
+                      <label for="input-postCode" class="col-form-label">รหัสไปรษณีย์</label>
+                      <input type="text" class="form-control form-control-sm" id="input-postCode"
+                        formControlName="postCode">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4">
+                      <label for="input-contactName" class="col-form-label">ผู้ติดต่อ</label>
+                      <input type="text" class="form-control form-control-sm" id="input-contactName"
+                        formControlName="contactName">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="input-tel" class="col-form-label">เบอร์โทรศัพท์</label>
+                      <input type="text" class="form-control form-control-sm" id="input-tel" formControlName="tel">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="input-fax" class="col-form-label">แฟ็กซ์</label>
+                      <input type="text" class="form-control form-control-sm" id="input-fax" formControlName="fax">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label for="input-web" class="col-form-label">เว็บไซต์</label>
+                      <input type="text" class="form-control form-control-sm" id="input-web" formControlName="web">
+                    </div>
+                    <div class="col-md-3">
+                      <label for="input-latitude" class="col-form-label">Latitude</label>
+                      <input type="text" class="form-control form-control-sm" id="input-latitude"
+                        formControlName="latitude">
+                    </div>
+                    <div class="col-md-3">
+                      <label for="input-longtitude" class="col-form-label">Longitude</label>
+                      <input type="text" class="form-control form-control-sm" id="input-longtitude"
+                        formControlName="longtitude">
+                    </div>
+                  </div>
+
+
+                  <!-- <blockquote class="blockquote mb-0">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                    <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite>
+                    </footer>
+                  </blockquote> -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+
+
+  </div> <!-- จบ ชนิดตัวอย่าง -->
+
+</div>

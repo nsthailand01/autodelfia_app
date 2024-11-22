@@ -1,0 +1,68 @@
+<div class="modal-content" style="z-index:1000000">
+  <ngx-loading [show]="isLoading"></ngx-loading>
+
+  <div class="modal-header">
+    <h4 class="modal-title pull-left page-title font-kanit">{{ title }}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="form-inline">
+      <div class="form-group col-md-12 mb-2">
+        <label for="input-filter">คำค้นหา &nbsp;<small>(Employee Name)</small>&nbsp;: </label>
+        <input type="text" class="form-control form-control-sm col-sm" id="input-filter"
+          (click)="pageConfig.currentPage = 1" placeholder="" #input [(ngModel)]="textFilter">
+      </div>
+    </div>
+
+    <div class="pull-right">
+      <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
+
+    <div class="form-group">
+      <div class="table-responsive-md">
+        <table id="tableCustomer" class="table table-hover table-sm table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <td>Employee Code</td>
+              <td>Employee Name</td>
+              <td>Identity Card</td>
+              <td>License No</td>
+              <td>Start Date</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="!pickItems?.length">
+              <td colspan="100" class="text-center">
+                ไม่มีรายการ
+              </td>
+            </tr>
+
+            <tr
+              *ngFor="let item of pickItems | filterBy: { $or: [{EmployeeCode: textFilter}, {EmployeeName : textFilter}] } | paginate: pageConfig; let i = index"
+              (click)="highlightRow(item)" (dblclick)="onSelected()" [ngClass]="{'highlight' : item == selectedItem}">
+              <th scope="row">{{( (pageConfig.currentPage - 1) * pageConfig.itemsPerPage + i + 1) | number:'0.0-0' }}
+              </th>
+              <td>{{ item.EmployeeCode }}</td>
+              <td>{{ item.EmployeeName }}</td>
+              <td>{{ item.IdentityCard }}</td>
+              <td>{{ item.LicenseNo }}</td>
+              <td>{{ item.StartDate | localDatetimePipe}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pull-right">
+      <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="onSelected()">Select</button>
+    <button type="button" class="btn btn-secondary" (click)="onCancel()">Close</button>
+  </div>
+</div>

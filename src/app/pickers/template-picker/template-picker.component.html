@@ -1,0 +1,57 @@
+<div class="modal-content" style="z-index:1000000">
+  <ngx-loading [show]="isLoading"></ngx-loading>
+
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{ title }}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="pull-right"><pagination-controls (pageChange)="pageChanged($event)"></pagination-controls></div>
+
+    <div class="form-group">
+      <div class="table-responsive-md">
+        <table id="tableCustomer" class="table table-hover table-sm table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <td>Item Code</td>
+              <td>Item Name</td>
+              <td>Unit</td>
+              <td>ค้างรับ</td>
+              <td>ค้างส่ง</td>
+              <td>ยอดคงเหลือ</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="!pickItems?.length">
+              <td colspan="100" class="text-center">
+                ไม่มีรายการ
+                <!--<div class="text-center" *ngIf="!subscription?.closed">Loading...</div>-->
+              </td>
+            </tr>
+
+            <tr *ngFor="let item of pickItems | paginate: pageConfig; let i = index"
+                (click)="highlightRow(item)" (dblclick)="onSelected()"
+                [ngClass]="{'highlight' : item == selectedItem}">
+              <th scope="row">{{( (pageConfig.currentPage - 1) * pageConfig.itemsPerPage + i + 1) | number:'0.0-0' }}</th>
+              <td>{{ item.itemCode }}</td>
+              <td>{{ item.itemName }}</td>
+              <td>{{ item.baseUOMCode }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pull-right"><pagination-controls (pageChange)="pageChanged($event)"></pagination-controls></div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="onSelected()">Select</button>
+    <button type="button" class="btn btn-secondary" (click)="onCancel()">Close</button>
+  </div>
+</div>

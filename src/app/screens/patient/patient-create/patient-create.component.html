@@ -1,0 +1,903 @@
+<!-- <ngx-loading [show]="loading"></ngx-loading> -->
+<!-- Range -->
+<app-patient-register-range #range (uploaded)="doSearchData($event)" [forScienceCenter]="defaultValue.forScienceCenter">
+</app-patient-register-range> <!-- End Range -->
+<!-- ข้อมูลคนไข้ -->
+<mat-expansion-panel expanded>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-card-header>
+        <div>
+          <img src="assets/img/baby.png" mat-card-avatar />
+          <mat-card-title>ข้อมูลคนไข้</mat-card-title>
+        </div>
+      </mat-card-header>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <section>
+    <!-- toolbar -->
+    <div class="card card-green card-outline">
+      <div class="card-body">
+        <div class="ml-2 container-fluid no-padding">
+          <div class="d-flex">
+            <div class="row btn-toolbar">
+              <button class="btn btn-danger btn-sm mr-2" type="button" (click)="saveClick()" hidden>
+                <i class="far fa-save mr-2"></i>บันทึก
+              </button>
+              <button class="btn btn-primary btn-sm mr-2" type="button"
+                      (click)="createShipmentModal(createShipmentTemplate, 0)">
+                <i class="fas fa-file-export mr-2" aria-hidden="true"></i>สร้างใบนำส่ง
+              </button>
+              <button class="btn btn-success btn-sm mr-2" type="button" hidden>
+                <i class="fas fa-external-link-alt mr-2" aria-hidden="true"></i>Generate Shipment
+              </button>
+              <button class="btn btn-info btn-sm mr-2" type="button" (click)="doPrintPostCover2()" >
+                <i class="fas fa-print mr-2" aria-hidden="true"></i>พิมพ์ใบนำส่ง
+              </button>
+              <button class="btn btn-success btn-sm mr-2" type="button" (click)="doPrintBarcodeMultiple()" hidden>
+                <i class="fa-solid fa-barcode mr-2" aria-hidden="true"></i>พิมพ์บาร์โค้ด
+              </button>
+              <button class="btn  btn-sm mr-2" type="button" style="background-color: #28a745;color:white;" (click)="doPrintBarcodeMultiple()">
+                <i class="fa fa-barcode mr-2" aria-hidden="true"></i>พิมพ์บาร์โค้ด
+              </button>
+              <button class="btn btn-secondary btn-sm mr-2" type="button" (click)="doPrintRegisterForm()" hidden>
+                <i class="fa-brands fa-wpforms mr-2" aria-hidden="true"></i>พิมพ์แบบฟอร์มลงทะเบียน
+              </button>
+              <button class="btn btn-secondary btn-sm mr-2" type="button" (click)="doPrintPaperblod()">
+                <i class="fa-brands fa-wpforms mr-2" aria-hidden="true"></i>พิมพ์ใบส่งตรวจ Quad Test
+              </button>
+              <button class="btn btn-warning btn-sm mr-2" type="button" (click)="exportDataList()">
+                <i class="far fa-share-square mr-2" aria-hidden="true"></i>Export to CSV
+              </button>
+              <button class="btn btn-danger btn-sm mr-2 {{cldiv1}}" type="button" (click)="doExportNshoClick()">
+                <i class="fas fa-share mr-2" aria-hidden="true"></i>Export Excel (นำส่ง สปสช.)
+              </button>
+              <button class="btn btn-warning btn-sm mr-2" type="button" hidden>
+                <i class="far fa-share-square mr-2" aria-hidden="true"></i>Sent
+              </button>
+            </div>
+            <div class="ml-auto mr-3">
+              <span class="pt-2 pl-3 text-red font-italic font-weight-bold float-md-right">
+                <!-- xxx : -->
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- toolbar -->
+    <!-- ตารางข้อมูลคนไข้ -->
+    <app-samples-list-tab #samplesTab [(itemLists)]="this.requestLists" [range]="range.rangeForm"
+                          requester="sent-sample" (itemsChangeEvent)="onSamplesTabChange()" (editShipment)="onEditShipment($event)">
+    </app-samples-list-tab> <!-- ตารางข้อมูลคนไข้ -->
+  </section>
+</mat-expansion-panel> <!-- ข้อมูลคนไข้ -->
+<!-- Popup สร้างใบนำส่ง -->
+<ng-template #createShipmentTemplate id="createShipmentTemplate">
+  <div class="modal-header">
+    <div>
+      <!-- <img src="assets/img/nbs/newborn-bird2.png" mat-card-avatar class="mr-2" /> -->
+      <i class="fa-regular fa-share-from-square fa-2x mr-2" mat-card-avatar></i>
+      <mat-card-title>สร้างใบนำส่ง</mat-card-title>
+    </div>
+
+    <!-- <h1 class="modal-title pull-left">สร้างการนำส่ง</h1> -->
+    <button type="button" class="close pull-right" aria-label="Close" (click)="onCloseCreateShipment()">
+      <i class="fas fa-times-circle"></i>
+    </button>
+  </div>
+
+  <div class="container">
+    <div class="content">
+
+      <form [formGroup]="sentSampleForm">
+        <!--<input id="hdCheckInsert" [(ngModel)]="CheckInsert" type="hidden" formControlName="modelCheckInsert" />-->
+        <div class="d-flex flex-wrap form-inline align-items-center mt-2">
+          <label for="input-siteName" class="col-form-label col-2" style="justify-content: flex-end;">หน่วยงาน</label>
+          <div class="input-group input-group-sm col">
+            <input  type="text" class="form-control form-control-sm" id="input-siteName" placeholder=""
+                   formControlName="siteName" readonly>
+            <span class="input-group-append">
+              <button class="btn btn-outline-info {{clsnone}}" type="button" (click)="openMSSitePicker()" style="z-index: 1;">
+                <i class="fa fa-search"></i>
+              </button>
+            </span>
+          </div>
+
+          <label for="input-sentToSiteName" class="col-form-label col-2"
+                 style="justify-content: flex-end;">ส่งถึงหน่วยงาน</label>
+          <div class="input-group input-group-sm col">
+            <input type="text" class="form-control form-control-sm" id="input-sentToSiteName" placeholder=""
+                   formControlName="sentToSiteName" readonly>
+            <span class="input-group-append">
+              <button class="btn btn-outline-info {{clsnone}}" type="button" (click)="openSiteParentPicker()" style="z-index: 1;">
+                <i class="fa fa-search"></i>
+              </button>
+            </span>
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap form-inline align-items-center my-auto">
+          <label for="input-sentSampleDate" class="col-form-label col-2 text-red"
+                 style="justify-content: flex-end;">วันที่นำส่ง<span class="required-asterisk">*</span></label>
+          <div class="input-group input-group-sm col">
+            <input class="form-control col-12 col-md-5" id="input-sentSampleDate" #dpBatchDate="bsDatepicker" bsDatepicker
+                   formControlName="sentSampleDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                   (bsValueChange)="dateInputChange($event)">
+            <span class="input-group-append">
+              <button class="btn btn-outline-info" type="button" (click)="dpBatchDate.toggle()" style="z-index: 1;">
+                <i class="far fa-calendar-alt"></i>
+              </button>
+            </span>
+          </div>
+
+          <div  class="col-form-label col-2" style="justify-content: flex-end;">
+
+          </div>
+
+
+
+          <!--<label for="input-sentSampleNo" class="col-form-label col-2 text-red"
+                 style="justify-content: flex-end;">เลขที่ใบนำส่ง<span class="required-asterisk">*</span></label>
+          <div class="input-group input-group-sm col">
+            <input type="text" class="form-control form-control-sm" id="input-sentSampleNo" placeholder=""
+                   formControlName="sentSampleNo" readonly="readonly">
+          </div>-->
+        </div>
+
+
+        <div class="d-flex flex-wrap form-inline align-items-center my-auto">
+          <label for="input-employeeID" class="col-form-label col-2"
+                 style="justify-content: flex-end;">ผู้รวบรวมนำส่ง</label>
+          <div class="input-group input-group-sm col">
+            <input type="hidden" formControlName="employeeID" />
+            <input type="text" class="form-control form-control-sm" id="input-employeeID" placeholder=""
+                   formControlName="employeeName">
+            <span class="input-group-append">
+              <button class="btn btn-outline-secondary d-none" type="button" (click)="openEmployeePicker()"
+                      style="z-index: 1;">
+                <i class="fa fa-search"></i>
+              </button>
+            </span>
+          </div>
+
+          <label for="input-ownerOfFeverDoctor" class="col-form-label col-2"
+                 style="justify-content: flex-end;">หมอเจ้าของไข้</label>
+          <div class="input-group input-group-sm col">
+            <input type="text" class="form-control form-control-sm" id="input-ownerOfFeverDoctor" placeholder=""
+                   formControlName="ownerOfFeverDoctor">
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap form-inline align-items-center my-auto">
+          <label for="input-profile" class="col-form-label col-2"
+                 style="justify-content: flex-end;">วัตถุประสงค์</label>
+          <div class="input-group input-group-sm col">
+            <input type="hidden" formControlName="profileID"   />
+            <input type="text" class="form-control form-control-sm" id="input-profile" placeholder="วัตถุประสงค์"
+                   formControlName="profileName" (blur)="onProfileBlur($event)">
+            <span class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" (click)="openProfilePicker()">
+                <i class="fas fa-search"></i>
+              </button>
+            </span>
+          </div>
+
+          <label for="input-sampletype" class="col-form-label col-2"
+                 style="justify-content: flex-end;">ชนิดตัวอย่าง</label>
+          <div class="input-group input-group-sm col">
+            <input type="hidden" formControlName="sampleTypeID" />
+            <input type="text" class="form-control form-control-sm" id="input-sampletype" placeholder="ชนิดตัวอย่าง"
+                   formControlName="sampleTypeName" (blur)="onSampleTypeBlur($event)">
+            <span class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" (click)="openSampleTypePicker()">
+                <i class="fas fa-search"></i>
+              </button>
+            </span>
+          </div>
+
+          <!-- <label for="input-siteName" class="col-form-label col-2"
+      style="justify-content: flex-end;">ชนิดตัวอย่าง</label>
+    <div class="input-group input-group-sm col">
+      <select class="form-control form-control-sm col" formControlName="sampleType">
+        <option [ngValue]="null" disabled>Choose an sample type</option>
+        <option *ngFor="let sample of sampleTypes" [ngValue]="sample.value">
+          {{ sample.text }}
+        </option>
+      </select>
+    </div> -->
+          <!-- <mat-checkbox class="ml-3" [(ngModel)]="isDeliveryByThaiPost" [ngModelOptions]="{standalone: true}"
+      (change)="thaiPostChange($event)">
+      จัดส่งโดยไปรษณีย์ไทย
+    </mat-checkbox> -->
+        </div>
+
+        <div class="d-flex flex-wrap form-inline align-items-center my-auto">
+          <label for="input-numberOFSamples" class="col-form-label col-2"
+                 style="justify-content: flex-end;">จำนวนตัวอย่าง</label>
+          <div class="input-group input-group-sm col-1">
+            <input type="number" class="form-control form-control-sm text-center" id="input-numberOFSamples"
+                   placeholder="" formControlName="numberOFSamples" readonly>
+          </div>
+
+          <label for="input-numberOfAnalyst" class="col-form-label col-3"
+                 style="justify-content: flex-end;">จำนวนวิเคราะห์ Down</label>
+          <div class="input-group input-group-sm col-1">
+            <input type="number" class="form-control form-control-sm text-center" id="input-numberOfAnalyst"
+                   placeholder="" formControlName="numberOfAnalyst">
+          </div>
+
+          <label for="input-numberOfPregnantToxic" class="col-form-label col-2"
+                 style="justify-content: flex-end;">จำนวนครรภ์เป็นพิษ</label>
+          <div class="input-group input-group-sm col-1">
+            <input type="number" class="form-control form-control-sm text-center" id="input-numberOfPregnantToxic"
+                   placeholder="" formControlName="numberOfPregnantToxic">
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap form-inline align-items-center my-auto">
+          <label for="input-remark" class="col-form-label col-2" style="justify-content: flex-end;">หมายเหตุ</label>
+          <div class="input-group input-group-sm col">
+            <textarea class="form-control form-control-sm" rows="1" id="input-remark"
+                      formControlName="remark"></textarea>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- toolbar -->
+  <div class="card card-green card-outline">
+    <div class="card-body p-0">
+      <div class="ml-2 container-fluid no-padding">
+        <div class="d-flex" style="align-items: center;">
+          <div class="row btn-toolbar">
+            <!--<button mat-raised-button color="primary" class="btn-sm mr-2" (click)="saveShipmentClick()">
+              <mat-icon class="mr-2">save</mat-icon>บันทึกใบนำส่ง
+            </button>-->
+            <button mat-raised-button color="warn" class="btn-sm" (click)="saveSentSample()"
+                    [disabled]="disabledSentSample">
+              <mat-icon class="mr-2">save</mat-icon>นำส่ง
+            </button>
+          </div>
+          <span *ngIf="appSettingsModel.allowSentWhenIncomplete == 'N'" class="text-red font-weight-bold"
+                style="display:table-cell; vertical-align:middle;">
+            **ไม่อนุญาตให้ส่งตัวอย่าง
+            กรณีกรอกข้อมูลไม่ครบ**
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="ml-3 mr-3 mt-0 pt-0">
+    <div style="overflow-x:auto;">
+      <table class=" font-thkrub">
+        <!-- class = table table-hover table-responsive-md table-striped-->
+        <thead class="thead-light">
+          <tr>
+            <th scope="col" class="sticky-col first-col text-center" style="width: 50px;">ลำดับ</th>
+            <th>สถานะ</th>
+            <th>วันที่บันทึก</th>
+            <th>วันที่รับตัวอย่าง</th>
+            <th>เลขที่ใบนำส่ง</th>
+            <th>เลขที่ตัวอย่าง</th>
+            <th>หน่วยงานส่งตรวจ</th>
+            <th>ชื่อ-สกุล [คนไข้]</th>
+            <th>บัตรประชาชน</th>
+            <th>เบอร์โทรศัพท์</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="!createRequestSelected?.length">
+            <td colspan="100" class="text-center">
+              ไม่มีข้อมูล
+            </td>
+          </tr>
+
+          <tr *ngFor="let item of createRequestSelected | paginate: pageConfig; let idx = index"
+              [ngStyle]="{'color':item.inputCompleted ? 'black' : 'red' }">
+            <!-- [ngStyle]="{'color':item.isNew || item.isEdit ? 'red' : 'black' }"> -->
+            <!-- <td class="sticky-col first-col text-center">{{ idx + 1 }}</td> -->
+            <td scope="row" class="sticky-col first-col text-center">
+              {{
+( (pageConfig.currentPage - 1) *
+              pageConfig.itemsPerPage + idx + 1) | number:'0.0-0'
+              }}
+            </td>
+
+            <!-- สถานะ -->
+            <td>
+              <span class="material-icons" style="color: rgb(201, 0, 237); display:table-cell; vertical-align:middle;"
+                    *ngIf="['Draft'].includes(item.requestStatus)">description</span>
+
+              <span class="material-icons" style="color: rgb(126, 126, 245); display:table-cell; vertical-align:middle;"
+                    *ngIf="['Pending'].includes(item.requestStatus)">pending</span>
+
+              <span class="material-icons" style="color: orangered; display:table-cell; vertical-align:middle;"
+                    *ngIf="['In-Process'].includes(item.requestStatus)">pending_actions</span>
+
+              <span class="material-icons" style="color: green; display:table-cell; vertical-align:middle;"
+                    *ngIf="['Completed Report'].includes(item.requestStatus)">done_all</span>
+
+              <span style="display:table-cell; vertical-align:middle;">{{item.requestStatus}}</span>
+            </td>
+
+            <!-- วันที่บันทึก -->
+            <td>{{item.createdDate | localDatetimePipe}}</td>
+            <!-- วันที่รับตัวอย่าง -->
+            <td>{{item.receiveDate | localDatetimePipe}}</td>
+            <td>{{item.shiptoNo}}</td>
+            <!-- เลขที่ตัวอย่าง -->
+            <td>{{item.labNumber}}</td>
+            <td>{{item.siteName}}</td>
+            <!-- ชื่อ-สกุล [คนไข้] -->
+            <td>{{item.firstName}} {{item.lastName}}</td>
+            <td>{{item.identityCard}}</td>
+            <!-- เบอร์โทรศัพท์ -->
+            <td>{{item.phoneNo}}</td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </div>
+
+    <div style="margin-top: 5px;">
+      <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
+
+  </section>
+
+</ng-template> <!-- Popup สร้างใบนำส่ง -->
+
+<ng-template #printPostCoverTemplate>
+  <div class="modal-header">
+    <div>
+      <img src="assets/img/nbs/newborn-bird2.png" mat-card-avatar class="mr-2" />
+      <mat-card-title>สร้างการนำส่ง</mat-card-title>
+    </div>
+
+    <button type="button" class="close pull-right" aria-label="Close" (click)="onCloseCreateShipment()">
+      <i class="fas fa-times-circle"></i>
+    </button>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <div class="form-group row">
+        <label for="input-fromSentSampleNo" class="col-form-label col-2">เลขที่ใบนำส่ง</label>
+        <div class="input-group input-group-sm col">
+          <input type="text" class="form-control form-control-sm" id="input-fromSentSampleNo" placeholder=""
+                 formControlName="fromSentSampleNo">
+        </div>
+
+        <label for="input-toSentSampleNo" class="col-form-label col-2">ถึง</label>
+        <div class="input-group input-group-sm col">
+          <input type="text" class="form-control form-control-sm" id="input-toSentSampleNo" placeholder=""
+                 formControlName="toSentSampleNo">
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<div #printOptionRef class="modal fade" id="printOptionRef" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title">กรุณาเลือกใบนำส่ง</h1>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="onCloseModalRef('#printOptionRef')">
+          <i class="fas fa-times-circle"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <section>
+          <div style="display: flex; flex-direction: row;">
+            <div style="overflow-x:auto;" class="table-responsive">
+              <table class=" font-thkrub table-sm">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col" class="text-center" style="width: 50px;">ลำดับ</th>
+                    <th>วันที่ใบนำส่ง</th>
+                    <th>เลขที่ใบนำส่ง</th>
+                    <th>Tracking No</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="!sentSampleLists?.length">
+                    <td colspan="100" class="text-center">
+                      ไม่พบข้อมูลใบนำส่ง
+                    </td>
+                  </tr>
+
+                  <tr *ngFor="let item of sentSampleLists | paginate: printPageConfig; let idx = index"
+                      (click)="selectedSentSampleRow(item, $event)"
+                      [class.highlighted-row]="item === currentSampleToPrint" style="cursor:pointer">
+                    <td scope="row" class="text-center">
+                      {{
+( (printPageConfig.currentPage - 1) *
+                      printPageConfig.itemsPerPage +
+                      idx + 1) |
+                      number:'0.0-0'
+                      }}
+                    </td>
+                    <td class="text-center">{{item.SentSampleDate | localDatetimePipe}}</td>
+                    <td>{{item.SentSampleNo}}</td>
+                    <td>{{item.TrackingNo}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+          <div style="margin-top: 5px;">
+            <pagination-controls (pageChange)="printPageChanged($event)"></pagination-controls>
+          </div>
+
+        </section>
+
+        <div class="container" hidden>
+          <div class="content">
+            <!-- <div class="form-group row d-flex align-items-center pt-3">
+              <label for="input-shiptoNoToPrint" class="col-form-label col-3">เลขที่ใบนำส่ง</label>
+              <div class="input-group input-group-sm col">
+                <input #shiptoNoControl type="text" class="form-control form-control-sm" id="input-shiptoNoToPrint"
+                  placeholder="" [(ngModel)]="shiptoNoToPrint">
+              </div>
+            </div> -->
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" (click)="onConfirmPrintCover()">ยืนยัน</button>
+        <button class="btn btn-warning btn-sm" href="javascript:" #closebutton data-dismiss="modal">ยกเลิก</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div #printBarcodeMultipleRef class="modal fade" id="printBarcodeMultipleRef" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title">พิมพ์บาร์โค้ด</h1>
+        <button type="button" class="close pull-right" aria-label="Close"
+                (click)="onCloseModalRef('#printBarcodeMultipleRef')">
+          <i class="fas fa-times-circle"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <form [formGroup]="printBarcodeForm">
+          <div class="d-flex form-row form-inline align-items-center my-auto">
+            <label for="input-fromSentSampleNo" class="col-form-label col-2"
+                   style="justify-content: flex-end;">เลขที่ใบนำส่ง</label>
+            <div class="input-group input-group-sm col-4">
+              <input type="text" class="form-control form-control-sm" id="input-fromSentSampleNo" placeholder=""
+                     formControlName="fromSentSampleNo">
+              <div class="input-group-append">
+                <button class="m-0 btn btn-outline-info" type="button" (click)="openSentSamplehdPicker('from')"
+                        style="z-index: 1;">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+
+            <!--<label for="input-toSentSampleNo" class="col-form-label col-1"
+                       style="justify-content: flex-end;">ถึง</label>
+                     <div class="input-group input-group-sm col-4">
+                       <input type="text" class="form-control form-control-sm" id="input-toSentSampleNo" placeholder=""
+                         formControlName="toSentSampleNo">
+                       <div class="input-group-append">
+                         <button class="m-0 btn btn-outline-info" type="button" (click)="openSentSamplehdPicker('to')"
+                           style="z-index: 1;">
+                           <i class="fa fa-search"></i>
+                         </button>
+                       </div>
+                     </div>-->
+          </div>
+
+          <div class="d-flex form-row form-inline align-items-center my-auto" role="form">
+            <label class="col-form-label col-2" style="justify-content: flex-end;">เลขตัวอย่าง</label>
+            <div class="input-group input-group-sm my-auto col-4">
+              <input type="text" class="form-control form-control-sm" id="input-identityCard" placeholder=""
+                     formControlName="fromSampleNo">
+              <div class="input-group-append">
+                <button class="m-0 btn btn-outline-info" type="button" (click)="openLabNumberPicker('from')"
+                        style="z-index: 1;">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+
+            <label for="input-identityCard" class="col-form-label col-1" style="justify-content: flex-end;">ถึง</label>
+            <div class="input-group input-group-sm col-4">
+              <input type="text" class="form-control form-control-sm" id="input-identityCard" placeholder=""
+                     formControlName="toSampleNo">
+              <div class="input-group-append">
+                <button class="m-0 btn btn-outline-info" type="button" (click)="openLabNumberPicker('to')"
+                        style="z-index: 1;">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="form-group row">
+            <label for="input-fromSampleNo" class="col-form-label col-2">เลขตัวอย่าง</label>
+            <div class="input-group input-group-sm col">
+              <input type="text" class="form-control form-control-sm" id="input-fromSampleNo" placeholder=""
+                formControlName="fromSampleNo">
+            </div>
+
+            <label for="input-toSampleNo" class="col-form-label col-2">ถึง</label>
+            <div class="input-group input-group-sm col">
+              <input type="text" class="form-control form-control-sm" id="input-toSampleNo" placeholder=""
+                formControlName="toSampleNo">
+            </div>
+          </div> -->
+
+        </form>
+
+
+
+        <section hidden>
+          <div style="display: flex; flex-direction: row;">
+            <div style="overflow-x:auto;" class="table-responsive">
+              <table class=" font-thkrub table-sm">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col" class="text-center" style="width: 50px;">ลำดับ</th>
+                    <th>วันที่ใบนำส่ง</th>
+                    <th>เลขที่ใบนำส่ง</th>
+                    <th>Tracking No</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="!sentSampleLists?.length">
+                    <td colspan="100" class="text-center">
+                      ไม่พบข้อมูลใบนำส่ง
+                    </td>
+                  </tr>
+
+                  <tr *ngFor="let item of sentSampleLists | paginate: printPageConfig; let idx = index"
+                      (click)="selectedSentSampleRow(item, $event)"
+                      [class.highlighted-row]="item === currentSampleToPrint" style="cursor:pointer">
+                    <td scope="row" class="text-center">
+                      {{
+( (printPageConfig.currentPage - 1) *
+                      printPageConfig.itemsPerPage +
+                      idx + 1) |
+                      number:'0.0-0'
+                      }}
+                    </td>
+                    <td class="text-center">{{item.SentSampleDate | localDatetimePipe}}</td>
+                    <td>{{item.SentSampleNo}}</td>
+                    <td>{{item.TrackingNo}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+          <div style="margin-top: 5px;">
+            <pagination-controls (pageChange)="printPageChanged($event)"></pagination-controls>
+          </div>
+
+        </section>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" (click)="onConfirmPrintBarcodeMultiple()">พิมพ์บาร์โค้ด</button>
+        <button class="btn btn-warning btn-sm" href="javascript:" #closebutton data-dismiss="modal">ยกเลิก</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--<div #printRegisterFormRef class="modal fade" id="printRegisterFormRef" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title">พิมพ์แบบฟอร์มลงทะเบียน</h1>
+        <button type="button" class="close pull-right" aria-label="Close"
+          (click)="onCloseModalRef('#printRegisterFormRef')">
+          <i class="fas fa-times-circle"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <form [formGroup]="printBarcodeForm">
+          <div class="d-flex form-row form-inline align-items-center my-auto">
+            <label for="input-fromSentSampleNo" class="col-form-label col-2"
+              style="justify-content: flex-end;">เลขที่ใบนำส่ง</label>
+            <div class="input-group input-group-sm col-4">
+              <input type="text" class="form-control form-control-sm" id="input-fromSentSampleNo" placeholder=""
+                formControlName="fromSentSampleNo">
+              <div class="input-group-append">
+                <button class="m-0 btn btn-outline-info" type="button" (click)="openSentSamplehdPicker('from')"
+                  style="z-index: 1;">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="d-flex form-row form-inline align-items-center my-auto" role="form">
+            <label class="col-form-label col-2" style="justify-content: flex-end;">เลขตัวอย่าง</label>
+            <div class="input-group input-group-sm my-auto col-4">
+              <input type="text" class="form-control form-control-sm" id="input-identityCard" placeholder=""
+                formControlName="fromSampleNo">
+              <div class="input-group-append">
+                <button class="m-0 btn btn-outline-info" type="button" (click)="openLabNumberPicker('from')"
+                  style="z-index: 1;">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+
+            <label for="input-identityCard" class="col-form-label col-1" style="justify-content: flex-end;">ถึง</label>
+            <div class="input-group input-group-sm col-4">
+              <input type="text" class="form-control form-control-sm" id="input-identityCard" placeholder=""
+                formControlName="toSampleNo">
+              <div class="input-group-append">
+                <button class="m-0 btn btn-outline-info" type="button" (click)="openLabNumberPicker('to')"
+                  style="z-index: 1;">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+        </form>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" (click)="onConfirmPrintRegisterForm()">พิมพ์ฟอร์มลงทะเบียน</button>
+        <button class="btn btn-warning btn-sm" href="javascript:" #closebutton data-dismiss="modal">ยกเลิก</button>
+      </div>
+
+    </div>
+  </div>
+</div>-->
+
+<ng-template #warningAlertRef id="warningAlertRef" class="modal fade">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div>
+        <i class="fa-solid fa-bell mr-2 fa-2x text-primary"></i>
+        <mat-card-title class="text-primary">ข้อความแจ้งเตือน</mat-card-title>
+      </div>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRefWarningAlert.hide()">
+        <i class="fas fa-times-circle text-red"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <h3><b>สิทธิเบิก สปสช.</b></h3>
+      <ul>
+        <li>หญิงตั้งครรภ์ไทยทุกอายุที่มีเลขประจำตัว 13 หลัก</li>
+        <li>ใช้ได้เฉพาะวิธี Quad test ที่มี GA 14w 0d - 18w 0d เท่านั้น</li>
+        <li>หาก Quad test พบว่ามีความเสี่ยงสูงเท่านั้น จึงจะมีสิทธิ์เบิกการตรวจ invasive PND</li>
+        <li>กรณี GA 14w 0d - 14w 6d จะไม่มีการคำนวณความเสี่ยง NTD</li>
+      </ul>
+      <h3><b>ครรภ์แฝด</b></h3>
+      <ul>
+        <li>
+          <span class="text-red"><u>ไม่สามารถตรวจ</u></span> วิธี Quad test, Combined first-trimester screening test
+          และ
+          Integrated test ได้
+        </li>
+      </ul>
+    </div>
+
+    <div class="modal-footer text-center">
+      <button class="btn btn-danger btn-sm" (click)="modalRefWarningAlert.hide()">ตกลง</button>
+    </div>
+
+  </div>
+</ng-template>
+
+
+<div class="container" hidden>
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Vertical Center Modal</h3>
+      <a href="javascript:0" (click)="openWarningAlert(warningAlertRef)">Click to trigger modal</a>
+    </div>
+  </div>
+</div>
+
+
+
+<div #printRegisterFormRef class="modal fade" id="printRegisterFormRef" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title">พิมพ์ใบส่งตรวจ Quad Test</h1>
+        <button type="button" class="close pull-right" aria-label="Close"
+                (click)="onCloseModalRef('#printRegisterFormRef')">
+          <i class="fas fa-times-circle"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <form [formGroup]="printBarcodeForm">
+          <div class="d-flex form-row form-inline align-items-center my-auto">
+            <label for="input-fromSentSampleNo" class="col-form-label col-2"
+                   style="justify-content: flex-end;">เลขที่ใบนำส่ง</label>
+            <div class="input-group input-group-sm col-4">
+              <input type="text" class="form-control form-control-sm" id="input-fromSentSampleNo" placeholder=""
+                     formControlName="fromSentSampleNo">
+              <div class="input-group-append">
+                <button class="m-0 btn btn-outline-info" type="button" (click)="openSentSamplehdPicker('from')"
+                        style="z-index: 1;">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!--FunctionOnclick-->
+          <div class="d-flex form-row form-inline align-items-center my-auto" role="form">
+            <label class="col-form-label col-2" style="justify-content: flex-end;">เลขตัวอย่าง</label>
+            <div class="input-group input-group-sm my-auto col-4">
+              <input type="text" class="form-control form-control-sm" id="input-identityCard" placeholder=""
+                     formControlName="fromSampleNo">
+              <div class="input-group-append">
+                <button class="m-0 btn btn-outline-info" type="button" (click)="openLabNumberPicker('from')"
+                        style="z-index: 1;">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+
+            <label for="input-identityCard" class="col-form-label col-1" style="justify-content: flex-end;">ถึง</label>
+            <div class="input-group input-group-sm col-4">
+              <input type="text" class="form-control form-control-sm" id="input-identityCard" placeholder=""
+                     formControlName="toSampleNo">
+              <div class="input-group-append">
+                <button class="m-0 btn btn-outline-info" type="button" (click)="openLabNumberPicker('to')"
+                        style="z-index: 1;">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+        </form>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" (click)="onConfirmPrintRegisterForm()">พิมพ์</button>
+        <button class="btn btn-warning btn-sm" href="javascript:" #closebutton data-dismiss="modal">ยกเลิก</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div #exportNhsoRangeRef class="modal fade" id="exportNhsoRangeRef" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title">Export Excel (นำส่ง สปสช.)</h1>
+        <button type="button" class="close pull-right" aria-label="Close"
+                (click)="onCloseModalRef('#exportNhsoRangeRef')">
+          <i class="fas fa-times-circle"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <form [formGroup]="exportNhsoRangeForm">
+
+          <div class="form-group form-row">
+            <label for="input-slpayment" class="col-form-label col-3" style="justify-content: flex-end;">หน่วยงาน</label>
+            <div class="input-group input-group-sm col">
+              <input type="text" class="form-control form-control-sm" id="input-siteName" placeholder=""
+                     formControlName="siteName"  [readonly]="(!forScienceCenter)">
+              <div class="input-group-append">
+                <button id="btnclear" class="btn btn-outline-secondary {{clCheckHospital2}}" type="button" style="z-index: 1;" (click)="clearSite()">
+                  <i class="fa fa-times"></i>
+                </button>
+                <button class="m-0 btn btn-outline-info {{clCheckHospital}}" type="button" (click)="openMSSitePicker2()" style="z-index: 1;">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group form-row">
+            <label for="input-fromCreateDate" class="col-form-label col-3">วันที่อนุมัติ</label>
+            <div class="input-group input-group-sm col">
+              <input class="form-control form-control-sm" id="input-fromCreateDate"
+                     #dpFromSentSampleDate="bsDatepicker" bsDatepicker formControlName="fromCreateDate"
+                     [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+              <div class="input-group-append">
+                <button class="btn btn-outline-info" type="button" (click)="dpFromSentSampleDate.toggle()"
+                        style="z-index: 1;">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+
+            <label for="input-toCreateDate" class="col-form-label col-2">ถึง</label>
+            <div class="input-group input-group-sm col">
+              <input class="form-control form-control-sm" id="input-toCreateDate" #dpToSentSampleDate="bsDatepicker"
+                     bsDatepicker formControlName="toCreateDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+              <div class="input-group-append">
+                <button class="btn btn-outline-info" type="button" (click)="dpToSentSampleDate.toggle()"
+                        style="z-index: 1;">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+           <!--สัญชาติ--> 
+          <div class="form-group form-row">
+            <label class="col-form-label col-3">สัญชาติ</label>
+            <div class="input-group input-group-sm col">
+              <mat-radio-group class="pl-2 tp-radio-group" formControlName="nationality"><br />
+                <mat-radio-button class="tp-radio-button" value="all">ทั้งหมด</mat-radio-button><br />
+                <mat-radio-button class="tp-radio-button" value="thaiOnly">เฉพาะคนไทย</mat-radio-button><br />
+                <mat-radio-button class="tp-radio-button" value="foreignerOnly">เฉพาะต่างชาติ</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+
+          <div class="form-group form-row">
+            <label for="input-slpayment" class="col-form-label col-3"
+                   style="justify-content: flex-end;">สิทธิเบิกจ่าย</label>
+            <div class="input-group input-group-sm col">
+              <select class="form-control form-control-sm" id="input-slpayment" [(ngModel)]="selectedpayment" formControlName="slpayment">
+                <!--<option [ngValue]="null" disabled selected>กรุณาเลือกสิทธิเบิกจ่าย</option>-->
+                <!--<option *ngFor="let sso of ssoRights" [ngValue]="sso.value">
+                  {{ sso.text }}
+                </option>-->
+                <option ngValue="SSOPayment" class="font-weight-bold">สปสช</option>
+                <option ngValue="CashPayment" class="font-weight-bold">เงินสด</option>
+                <option ngValue="SitePayment" class="font-weight-bold">แจ้งหนี้หน่วยงานส่งตรวจ</option>
+                <option ngValue="AnyJobPayment" class="font-weight-bold">โครงการต่างๆ</option>
+                <option ngValue="OtherPayment" class="font-weight-bold">อื่นๆ</option>
+                <option ngValue="all" class="text-red font-weight-bold">ทุกสิทธิเบิกจ่าย</option>
+              </select>
+            </div>
+          </div>
+        </form>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" (click)="onConfirmExportNhsoRange()">
+          <i class="fas fa-share mr-2"
+             aria-hidden="true"></i>นำส่ง
+        </button>
+        <button class="btn btn-warning btn-sm" href="javascript:" #closebutton data-dismiss="modal">ยกเลิก</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+

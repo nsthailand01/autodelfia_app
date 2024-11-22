@@ -1,0 +1,305 @@
+<!-- Main Sidebar Container -->
+<!--<style>
+  .sidebar-dark-info .nav-sidebar > .nav-item > .nav-link.active, .sidebar-light-info .nav-sidebar > .nav-item > .nav-link.active {
+    background-color: #c8a1fd;
+    color: #ffffff;
+  }
+</style>-->
+<aside class="main-sidebar sidebar-dark-info elevation-4">
+  <!-- Brand Logo -->
+  <a href="/" class="brand-link">
+    <div class="{{hiddenAdmin1}}">
+      <img src="{{pathImage}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+    </div>
+    <div class="{{hiddenAdmin2}}" >
+      <img src="{{pathImageEdit}}"  class="brand-image img-circle elevation-3"
+           style="opacity: .8;">
+    </div>
+    <div class="container">
+      <h3 class="brand-text font-weight-light">{{apptitlelogin1}}</h3>
+  <h3 style="margin-left:48px; margin-top:-20px;" class="brand-text font-weight-light">{{apptitlelogin2}}</h3>
+      <!--<h3 class="brand-text font-weight-light">{{appTitle}}</h3>-->
+    </div>
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar user panel (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <img src="assets/img/avatar6.png" class="img-circle elevation-2" alt="User Image">
+      </div>
+      <div class="info">
+        <a href="#" class="d-block">{{employeeName}}</a>
+      </div>
+    </div>
+
+    <!-- SidebarSearch Form -->
+    <div class="form-inline" hidden>
+      <div class="input-group" data-widget="sidebar-search">
+        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group-append">
+          <button class="btn btn-sidebar">
+            <i class="fas fa-search fa-fw"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar nav-child-indent flex-column" data-widget="treeview" role="menu"
+        data-accordion="true">
+        <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+        <!--<li class="nav-item has-treeview" [ngClass]="subIsActive(['/dashboard']) ? 'menu-open active': '' ">
+          <a href="javascript:" class="nav-link" [ngClass]="subIsActive(['/dashboard']) ? 'active': '' ">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              DASHBOARD
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a [routerLink]="['/dashboard']" class="nav-link" [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{exact:true}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Dashboard</p>
+              </a>
+            </li>
+          </ul>
+        </li>-->
+
+        <li class="nav-item has-treeview" [ngClass]="mainMenuSubIsActive() ? 'menu-open active': '' ">
+          <a href="javascript:" class="nav-link" [ngClass]="mainMenuSubIsActive() ? 'active': '' ">
+            <i class="nav-icon fas fa-copy"></i>
+            <p>
+              เมนูหลัก
+              <i class="fas fa-angle-left right"></i>
+              <!-- <span class="badge badge-info right">7</span> -->
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item" *ngIf="forDepartureHospital && config.OPEN_NEW_REGISTER_SCREEN">
+              <a [routerLink]="['/register-patient']" class="nav-link"
+                 [ngClass]="subMenuIsActive('register-patient') ? 'active': '' ">
+                <i class="fa-solid fa-envelope-circle-check nav-icon"></i>
+                <p>ลงทะเบียน & สร้างใบนำส่ง</p>
+              </a>
+            </li>
+            <!--<li class="nav-item" *ngIf="forDepartureHospital && !config.OPEN_NEW_REGISTER_SCREEN">
+    <a [routerLink]="['/sent-sample/lists']" class="nav-link"
+      [ngClass]="subMenuIsActive('sent-sample') ? 'active': '' ">
+      <i class="fa-solid fa-envelope-circle-check nav-icon"></i>
+      <p>ใบนำส่ง</p>
+    </a>
+  </li>-->
+            <li class="nav-item" *ngIf="forScienceCenter">
+              <a [routerLink]=" ['/receive-sample/lists']" class="nav-link"
+                 [ngClass]="subMenuIsActive('receive-sample') ? 'active': '' ">
+                <i class="fa-solid fa-hand-holding-heart nav-icon"></i>
+                <p>รับตัวอย่าง</p>
+              </a>
+            </li>
+            <li class="nav-item" *ngIf="forScienceCenter">
+              <a [routerLink]="['/request-sample/lists']" class="nav-link"
+                 [ngClass]="subMenuIsActive('request-sample')? 'active': '' ">
+                <i class="fa-solid fa-person-circle-plus nav-icon"></i>
+                <p>ลงทะเบียนคนไข้</p>
+              </a>
+            </li>
+            <li class="nav-item" *ngIf="forScienceCenter">
+              <a [routerLink]="['/import-export/lists']" class="nav-link"
+                 [ngClass]="subMenuIsActive('import-export')? 'active': '' ">
+                <i class="fa-solid fa-file-csv nav-icon"></i>
+                <p>Import & Export</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/approve-center/create']" [queryParams]="{utype: this.userType}" class="nav-link"
+                 [ngClass]="subMenuIsActive('approve-center')? 'active': '' ">
+                <i class="fa-solid fa-heart-circle-check nav-icon"></i>
+                <p>Approve & ผลตรวจน้ำคร่ำ</p>
+              </a>
+            </li>
+
+
+            <!--<li id="bntmenusendApi_New" class="nav-item {{checkRoleLab}}">
+              <a [routerLink]="['/dmsinvoice/lists']" class="nav-link"
+                 [ngClass]="subMenuIsActive('dmsinvoice')? 'active': '' ">
+                <i class="nav-icon fa fa-paper-plane mr-2"></i>
+                <p>InvoiceInfo</p>
+              </a>
+            </li>
+            <li id="bntmenusendApi_New2" class="nav-item {{checkRoleLab}}">
+              <a [routerLink]="['/dmsreceive/lists']" class="nav-link"
+                 [ngClass]="subMenuIsActive('dmsreceive')? 'active': '' ">
+                <i class="nav-icon fa fa-paper-plane mr-2"></i>
+                <p>ReceiptReport</p>
+              </a>
+            </li>-->
+
+            <li class="nav-item" hidden>
+              <a [routerLink]="['/process-status/lists']" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Process Status</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li hidden class="nav-item has-treeview" [ngClass]="subIsActive(['/x']) ? 'menu-open active': '' ">
+          <a href="javascript:" class="nav-link" [ngClass]="subIsActive(['/xx']) ? 'active': '' ">
+            <!-- <i class="nav-icon fas fa-tachometer-alt"></i> -->
+            <i class="nav-icon fab fa-readme"></i>
+            <p>
+              REPORTS
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a [routerLink]="['/report']" [queryParams]="{ report: 'AnalysisResultsReport' }" class="nav-link"
+                [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>ผลการตรวจวิเคราะห์</p>
+              </a>
+            </li>
+          </ul>
+          <ul class="nav nav-treeview" hidden>
+            <li class="nav-item">
+              <a [routerLink]="['/report2']" class="nav-link" [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{exact:true}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Report 2</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- <li class="nav-item has-treeview" [ngClass]="settingsSubIsActive() ? 'menu-open active': '' "
+          *ngIf="forDepartureHospital">
+          <a href="javascript:" class="nav-link" [ngClass]="settingsSubIsActive() ? 'active': '' ">
+            <i class="nav-icon fas fa-copy"></i>
+            <p>ตั้งค่า
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+
+          </ul>
+        </li> -->
+
+        <li class="nav-item has-treeview" [ngClass]="settingsSubIsActive() ? 'menu-open active': '' "
+          *ngIf="forScienceCenter">
+          <a href="javascript:" class="nav-link" [ngClass]="settingsSubIsActive() ? 'active': '' ">
+            <i class="nav-icon fas fa-copy"></i>
+            <p>ตั้งค่า
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a [routerLink]="['/master-file/objective/lists']" class="nav-link"
+                [ngClass]="subMenuIsActive('objective')? 'active': '' ">
+                <i class="fa-regular fa-circle-right nav-icon"></i>
+                <p>วัตถุประสงค์</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/master-file/sample-type/lists']" class="nav-link"
+                [ngClass]="subMenuIsActive('sample-type')? 'active': '' ">
+                <i class="fa-regular fa-circle-right nav-icon"></i>
+                <p>ชนิดตัวอย่าง</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/master-file/department/lists']" class="nav-link"
+                [ngClass]="subMenuIsActive('department')? 'active': '' ">
+                <i class="fa-regular fa-circle-right nav-icon"></i>
+                <p>แผนก (หน่วยงาน)</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/master-file/mssite/lists']" class="nav-link"
+                [ngClass]="subMenuIsActive('mssite')? 'active': '' ">
+                <i class="fa-regular fa-circle-right nav-icon"></i>
+                <p>หน่วยงานส่งตรวจ</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/master-file/mssite-group/lists']" class="nav-link"
+                [ngClass]="subMenuIsActive('mssite-group')? 'active': '' ">
+                <i class="fa-regular fa-circle-right nav-icon"></i>
+                <p>กลุ่มหน่วยงาน</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/master-file/position/lists']" class="nav-link"
+                [ngClass]="subMenuIsActive('position')? 'active': '' ">
+                <i class="fa-regular fa-circle-right nav-icon"></i>
+                <p>ตำแหน่ง</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/master-file/lab-group/lists']" class="nav-link"
+                [ngClass]="subMenuIsActive('lab-group')? 'active': '' ">
+                <i class="fa-regular fa-circle-right nav-icon"></i>
+                <p>กลุ่มการทดสอบ</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/master-file/employee/lists']" class="nav-link"
+                [ngClass]="subMenuIsActive('employee')? 'active': '' ">
+                <i class="fa-regular fa-circle-right nav-icon"></i>
+                <p>พนักงาน</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- <li class="nav-header" *ngIf="forDepartureHospital">ADMINISTRATOR</li>
+        <li class="nav-item" *ngIf="forDepartureHospital">
+          <a [routerLink]="['/account/list']" class="nav-link" [ngClass]="subMenuIsActive('account') ? 'active': '' ">
+            <i class="nav-icon fas fa-file"></i>
+            <p>กำหนดผู้ใช้งาน</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:" (click)="logout()" class="nav-link">
+            <i class="nav-icon fas fa-file"></i>
+            <p>Logout</p>
+          </a>
+        </li> -->
+
+
+        <li class="nav-header">ADMINISTRATOR</li>
+        <li class="nav-item" *ngIf="forScienceCenter">
+          <a [routerLink]="['/account/list']" class="nav-link" [ngClass]="subMenuIsActive('account') ? 'active': '' ">
+            <i class="fa-solid fa-users-gear nav-icon"></i>
+            <p>กำหนดผู้ใช้งาน</p>
+          </a>
+
+        </li>
+        <li class="nav-item" *ngIf="forScienceCenter">
+          <a [routerLink]="['/app-settings']" class="nav-link"
+            [ngClass]="subMenuIsActive('app-settings') ? 'active': '' ">
+            <i class="fa-solid fa-sliders nav-icon"></i>
+            <p>ตั้งค่าโปรแกรม</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="javascript:" (click)="logout()" class="nav-link">
+            <i class="fa-solid fa-unlock-keyhole nav-icon"></i>
+            <p>Logout</p>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

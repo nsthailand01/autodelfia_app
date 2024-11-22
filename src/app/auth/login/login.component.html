@@ -1,0 +1,82 @@
+<img class="wave" src="assets/img/login/wave.png">
+<!--<img class="wave" src="assets/img/login/wave-bg1.png">-->
+<div class="container">
+  <div class="img">
+    <img src="assets/img/login/bg.png">
+    <!--<img src="assets/img/login/bg-svg.png">-->
+  </div>
+  <div class="login-content">
+    <form [formGroup]="loginForm">
+
+      <ngx-spinner bdColor="rgba(0,0,0,0.25)" size="medium" color="#fff" type="ball-clip-rotate-pulse"
+                   [fullScreen]="false">
+        <p style="color: whitesmoke"> Loading... </p>
+      </ngx-spinner>
+
+      <div class="{{hiddenLogin1}}">
+        <img src="{{pathImage}}">
+      </div>
+      <div class="{{hiddenLogin2}}">
+        <img src="{{pathImageEdit}}">
+      </div>
+      <h2 class="title">{{appTitle}}</h2>
+      <!--<h3 style="font-size:30px; font-weight:bold;" class="title">{{apptitleName1}}</h3>
+      <h4 class="title">{{apptitleName2}}</h4>-->
+
+      <div class="input-div one" [ngClass]="isUsernameValid ? 'focus' : ''">
+        <div class="i">
+          <!--<i class="fas fa-user" style="color: #c8a1fd;"></i>-->
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="div">
+          <h5>Username</h5>
+          <input type="text" id="username" class="input" formControlName="username"
+                 (keydown.enter)="setFocus('password')">
+        </div>
+      </div>
+      <div class="input-div pass" [ngClass]="isUserPasswordValid? 'focus' : ''">
+        <div class="i" >
+          <!--<i  class="fas fa-lock" style="color: #c8a1fd;" ></i>-->
+          <i  class="fas fa-lock"></i>
+        </div>
+        <div class="div">
+          <h5>Password</h5>
+          <input type="password" id="password" class="input"  formControlName="password" autocomplete="off"
+                 (keydown.enter)="onSubmit()">
+        </div>
+      </div>
+
+      <div style="float: left;"><a [routerLink]="['/auth/register-user']">Register</a></div>
+      <div style="float: right;"><a [routerLink]="['/auth/forgot-password']">Forgot Password?</a></div>
+      <br>
+
+      <input type="button" style="background-color: #c8a1fd" class="btn" value="Login" (click)="onSubmit()">
+
+      <div class="d-none d-sm-inline-block">
+        <small><b>Copyright © 2023 MP GROUP (Thailand) CO.,LTD.</b><br /><b>Versiosn</b> {{appVersion}} - ({{appBuildDate}})</small>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+<!-- <div class="form-group">
+  <div class="buttons">
+    <div class="btn-group btn-group-justified">
+      <div class="btn btn-success" (click)="onSuccess()">Success</div>
+      <div class="btn btn-info" (click)="onInfo()">Info</div>
+      <div class="btn btn-danger" (click)="onError()">Error</div>
+      <div class="btn btn-warning" (click)="onWarning()">Warning</div>
+    </div>
+    <div class="btn-group btn-group-justified">
+      <div class="btn btn-default" (click)="onSimple()">Simple</div>
+      <div class="btn btn-blue" (click)="onAsyncLoading()">Async</div>
+      <div class="btn btn-teal" (click)="onConfirmation()">Confirm</div>
+      <div class="btn btn-black" (click)="onPrompt()">Prompt</div>
+    </div>
+    <div class="btn-group btn-group-justified">
+      <div class="btn btn-default" (click)="onHtml()">HTML</div>
+    </div>
+  </div>
+</div> -->

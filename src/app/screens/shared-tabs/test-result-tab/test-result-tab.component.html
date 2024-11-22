@@ -1,0 +1,523 @@
+<!-- ผลการตรวจคัดกรองภาวะครรภ์เป็นพิษ -->
+<div class="card m-2">
+  <div class="card-header" id="headingTen">
+    <h5 class="mb-my-0">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false"
+              aria-controls="collapseTen">
+        <h4 class="form-header text-uppercase">
+          <i class="fa fa-file-text-o"></i>ผลการตรวจคัดกรองดาวน์ซินโดรม
+        </h4>
+      </button>
+    </h5>
+    <!--<button class="{{dnonclassmain}}" (click)="clicknewfunctionHistoryMain()">เช็คประวัติ</button>-->
+    <!--<button class="{{dnonclass}}" (click)="clicknewfunctionHistory()">ครั้งที่ 1</button>
+    <button class="{{dnonclass2}}" (click)="clicknewfunctionHistory()">ครั้งที่ 2</button>
+    <button class="{{dnonclass3}}" (click)="clicknewfunctionHistory()">ครั้งที่ 3</button>-->
+    <div class="justify-content-end">
+
+      <!--<button *ngFor="let items of ListNewFunction; let i = index" (click)="clickNewFunction(i + 1)">ครั้งที่ {{ i + 1 }}</button>-->
+    </div>
+  </div>
+  <div id="collapseTen" class="collapse show" aria-labelledby="headingTen">
+
+    <form [formGroup]="requestsForm">
+      <div class="card card-primary card-outline border border-primary">
+        <div class="card-body">
+
+          <table class="table table-striped table-hover ">
+            <thead class="thead-light">
+              <tr>
+                <th width="150">
+                  รายการตรวจ (Test)
+                </th>
+                <th class="text-center">
+                  ผลการตรวจ (Value)
+                </th>
+                <th class="text-center">
+                  หน่วย (Unit)
+                </th>
+                <th class="text-center">
+                  CORR. MOM
+                </th>
+                <!-- <th *ngFor="let g of genreDiplomatiqueQuotas">
+                              <input type="hidden" value="{{g.libelle}}">{{g.libelle}}
+                            </th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AFP</td>
+                <td>
+                  <input type="text" class="form-control form-control-sm text-center"
+                         formControlName="ansValuePlain_AFP"
+                         [value]="requestsForm.get('ansValuePlain_AFP').value | number: '1.2-2'" readonly>
+                </td>
+                <td><input type="text" class="form-control form-control-sm text-center" value="U/mL" readonly></td>
+                <td>
+                  <input type="text" class="form-control form-control-sm text-center"
+                         formControlName="ansValueCorrMoM_AFP"
+                         [value]="requestsForm.get('ansValueCorrMoM_AFP').value | number: '1.2-2'" readonly>
+                </td>
+              </tr>
+              <tr>
+                <td>HCGB</td>
+                <td>
+                  <input type="text" class="form-control form-control-sm text-center"
+                         formControlName="ansValuePlain_HCGB"
+                         [value]="requestsForm.get('ansValuePlain_HCGB').value | number: '1.2-2'" readonly>
+                </td>
+                <td><input type="text" class="form-control form-control-sm text-center" value="ng/mL" readonly></td>
+                <td>
+                  <input type="text" class="form-control form-control-sm text-center"
+                         formControlName="ansValueCorrMoM_HCGB"
+                         [value]="requestsForm.get('ansValueCorrMoM_HCGB').value | number: '1.2-2'" readonly>
+                </td>
+              </tr>
+              <tr>
+                <td>INHIBIN</td>
+                <td>
+                  <input type="text" class="form-control form-control-sm text-center"
+                         formControlName="ansValuePlain_INHIBIN"
+                         [value]="requestsForm.get('ansValuePlain_INHIBIN').value | number: '1.2-2'" readonly>
+                </td>
+                <td><input type="text" class="form-control form-control-sm text-center" value="pg/mL" readonly></td>
+                <td>
+                  <input type="text" class="form-control form-control-sm text-center"
+                         formControlName="ansValueCorrMoM_INHIBIN"
+                         [value]="requestsForm.get('ansValueCorrMoM_INHIBIN').value | number: '1.2-2'" readonly>
+                </td>
+              </tr>
+              <tr>
+                <td>UE3UPD</td>
+                <td>
+                  <input type="text" class="form-control form-control-sm text-center"
+                         formControlName="ansValuePlain_UE3UPD"
+                         [value]="requestsForm.get('ansValuePlain_UE3UPD').value | number: '1.2-2'" readonly>
+                </td>
+                <td><input type="text" class="form-control form-control-sm text-center" value="nmol/L" readonly></td>
+                <td>
+                  <input type="text" class="form-control form-control-sm text-center"
+                         formControlName="ansValueCorrMoM_UE3UPD"
+                         [value]="requestsForm.get('ansValueCorrMoM_UE3UPD').value | number: '1.2-2'" readonly>
+                </td>
+              </tr>
+            </tbody>
+
+            <!-- <tbody formArrayName="resultsForms">
+              <tr *ngFor="let result of resultsForms?.controls; let idx = index" [formGroupName]="idx">
+                <td>{{result.value.testNameText}}</td>
+                <td class="text-center">{{result.value.value}}</td>
+                <td class="text-center">{{result.value.cT}}</td>
+                <td class="text-center">{{result.value.cORRMOM}}</td>
+              </tr>
+            </tbody> -->
+            <!-- <div *ngFor="let result of resultsForms?.controls; let idx = index" [formGroupName]="idx">
+              <div class="form-row">
+                <div class="input-group">
+                  <label for="" class="col-form-label col-form-label-w500 col-md-3">{{ result.value.patientMoreText
+                    }}</label>
+                  <mat-radio-group class="mt-2" formControlName="value">
+                    <mat-radio-button value="Y">มี</mat-radio-button>
+                    <mat-radio-button value="N">ไม่มี</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+            </div> -->
+
+          </table>
+
+          <!-- <div formArrayName="resultsForms">
+
+          </div> -->
+
+        </div>
+      </div>
+    </form>
+
+
+    <div class="card-body" hidden>
+      <form>
+        <div class="form-row">
+          <div class="container table-responsive">
+            <table class="table table-striped table-hover ">
+              <thead class="thead-light">
+              <th>รายการตรวจ (Test)</th>
+              <th>ผลการตรวจ (Value)</th>
+              <th>หน่วย (Unit)</th>
+              <th>CORR. MOM</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>AFP</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>hCGb</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>INHIBIN</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>UE3UPD</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> <!-- ผลการตรวจคัดกรองภาวะครรภ์เป็นพิษ -->
+<!-- ผลการประเมินความเสี่ยง -->
+<div class="card m-2">
+  <div class="card-header" id="headingEleven">
+    <h5 class="mb-my-0">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseEleven" aria-expanded="false"
+              aria-controls="collapseEleven">
+        <h4 class="form-header text-uppercase">
+          <i class="fa fa-file-text-o"></i>ผลการประเมินความเสี่ยง
+        </h4>
+      </button>
+    </h5>
+  </div>
+  <div id="collapseEleven" class="collapse show" aria-labelledby="headingEleven">
+    <div class="card-body">
+      <form [formGroup]="requestsForm">
+
+        <div class="form-row">
+          <div class="form-row form-inline">
+            <div class="form-group indent-50">
+              <label for="input-analystdate" class="col-form-label">วันที่วิเคราะห์</label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-analystdate" #dpAnalystDate="bsDatepicker" bsDatepicker
+                       [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="analystDate">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="dpAnalystDate.toggle()">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+              <!-- <input type="date" class="form-control form-control-sm" id="input-42" placeholder="วันที่วิเคราะห์"> -->
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="form-row">
+          <div class="container table-responsive">
+            <table class="table table-striped table-hover ">
+              <thead class="thead-light">
+              <th></th>
+              <th class="text-center">ค่าความเสี่ยง</th>
+              <th class="text-center">ค่า Cut-off ความเสี่ยง</th>
+              <th class="text-center">ผลการประเมินความเสี่ยง</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <!-- <td>Pre-eclampsia &lt; 32 weeks</td> -->
+                  <td>T21</td>
+                  <td>
+                    <input type="text" class="form-control form-control-sm text-center" formControlName="riskValueT21"
+                           [value]="requestsForm.get('riskValueT21').value | number: '1.2-2'" readonly>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control form-control-sm text-center"
+                           formControlName="riskCutOffT21"
+                           [value]="requestsForm.get('riskCutOffT21').value | number: '1.2-2'" readonly>
+                  </td>
+                  <td>
+                    <!--<input type="text" class="form-control form-control-sm text-center"
+                           [ngClass]="{'text-primary': requestsForm.get('riskAssessmentValueT21').value == '1',
+                      'text-danger': requestsForm.get('riskAssessmentValueT21').value == '2', 'font-weight-bold': requestsForm.get('riskAssessmentValueT21').value == '2'}"
+                           formControlName="riskAssessmentValueT21" [value]="requestsForm.get('riskAssessmentValueT21').value == '1' ? 'ความเสี่ยงต่ำ (Low Risk)'
+                      : requestsForm.get('riskAssessmentValueT21').value == '2' ? 'ความเสี่ยงสูง (High Risk)' : '-' "
+                           readonly>-->
+                    <input type="text" class="form-control form-control-sm text-center"  formControlName="riskAssessmentValueT21_2"
+                           [ngClass]="{'text-primary': requestsForm.get('riskAssessmentValueT21_2').value == 'ความเสี่ยงต่ำ (Low Risk)',
+                                     'text-danger': requestsForm.get('riskAssessmentValueT21_2').value == 'ความเสี่ยงสูง (High Risk)',
+                                     'font-weight-bold': requestsForm.get('riskAssessmentValueT21_2').value == 'ความเสี่ยงสูง (High Risk)' || requestsForm.get('riskAssessmentValueT21_2').value == 'ความเสี่ยงต่ำ (Low Risk)'}"
+                           readonly>
+                  </td>
+                </tr>
+                <tr>
+                  <!-- <td>Pre-eclampsia &lt; 34 weeks</td> -->
+                  <td>T18</td>
+                  <td>
+                    <input type="text" class="form-control form-control-sm text-center" formControlName="riskValueT18"
+                           [value]="requestsForm.get('riskValueT18').value | number: '1.2-2'" readonly>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control form-control-sm text-center"
+                           formControlName="riskCutOffT18"
+                           [value]="requestsForm.get('riskCutOffT18').value | number: '1.2-2'" readonly>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control form-control-sm text-center" formControlName="riskAssessmentValueT18_2"
+                         [ngClass]="{'text-primary': requestsForm.get('riskAssessmentValueT18_2').value == 'ความเสี่ยงต่ำ (Low Risk)',
+                                     'text-danger': requestsForm.get('riskAssessmentValueT18_2').value == 'ความเสี่ยงสูง (High Risk)',
+                                     'font-weight-bold': requestsForm.get('riskAssessmentValueT18_2').value == 'ความเสี่ยงสูง (High Risk)' || requestsForm.get('riskAssessmentValueT18_2').value == 'ความเสี่ยงต่ำ (Low Risk)'}"
+                         readonly>
+                  </td>
+                </tr>
+                <tr>
+                  <!-- <td>Pre-eclampsia &lt; 37 weeks</td> -->
+                  <td>T13</td>
+                  <td>
+                    <input type="text" class="form-control form-control-sm text-center" formControlName="riskValueT13"
+                           [value]="requestsForm.get('riskValueT13').value | number: '1.2-2'" readonly>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control form-control-sm text-center"
+                           formControlName="riskCutOffT13"
+                           [value]="requestsForm.get('riskCutOffT13').value | number: '1.2-2'" readonly>
+                  </td>
+                  <td>
+                    <!--<input type="text" class="form-control form-control-sm text-center"
+                           formControlName="riskAssessmentValueT13"
+                           [ngClass]="{'text-primary': requestsForm.get('riskAssessmentValueT13').value == '1',
+                      'text-danger': requestsForm.get('riskAssessmentValueT13').value == '2', 'font-weight-bold': requestsForm.get('riskAssessmentValueT13').value == '2'}"
+                           [value]="requestsForm.get('riskAssessmentValueT13').value == '1' ? 'ความเสี่ยงต่ำ (Low Risk)'
+                      : requestsForm.get('riskAssessmentValueT13').value == '2' ? 'ความเสี่ยงสูง (High Risk)' : '-' "
+                           readonly>-->
+                    <input type="text" class="form-control form-control-sm text-center"
+                           formControlName="riskAssessmentValueT13_2"
+                          [ngClass]="{'text-primary': requestsForm.get('riskAssessmentValueT13_2').value == 'ความเสี่ยงต่ำ (Low Risk)',
+                                     'text-danger': requestsForm.get('riskAssessmentValueT13_2').value == 'ความเสี่ยงสูง (High Risk)',
+                                     'font-weight-bold': requestsForm.get('riskAssessmentValueT13_2').value == 'ความเสี่ยงสูง (High Risk)' || requestsForm.get('riskAssessmentValueT13_2').value == 'ความเสี่ยงต่ำ (Low Risk)'}"
+                           readonly>
+                  </td>
+                </tr>
+                <tr>
+                  <!-- <td>Pre-eclampsia &gt; 37 weeks</td> -->
+                  <td>NTD</td>
+                  <td>
+                    <input type="text" class="form-control form-control-sm text-center" formControlName="riskValueNTD"
+                           [value]="requestsForm.get('riskValueNTD').value | number: '1.2-2'" readonly>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control form-control-sm text-center"
+                           formControlName="riskCutOffNTD"
+                           [value]="requestsForm.get('riskCutOffNTD').value | number: '1.2-2'" readonly>
+                  </td>
+                  <td>
+                    <!--<input type="text" class="form-control form-control-sm text-center"
+         formControlName="riskAssessmentValueNTD"
+         [ngClass]="{'text-primary': requestsForm.get('riskAssessmentValueNTD').value == '1',
+    'text-danger': requestsForm.get('riskAssessmentValueNTD').value == '2', 'font-weight-bold': requestsForm.get('riskAssessmentValueNTD').value == '2'}"
+         [value]="requestsForm.get('riskAssessmentValueNTD').value == '1' ? 'ความเสี่ยงต่ำ (Low Risk)'
+    : requestsForm.get('riskAssessmentValueNTD').value == '2' ? 'ความเสี่ยงสูง (High Risk)' : '-' "
+         readonly>-->
+
+                    <input type="text" class="form-control form-control-sm text-center"
+                           formControlName="riskAssessmentValueNTD_2"
+                           [ngClass]="{'text-primary': requestsForm.get('riskAssessmentValueNTD_2').value == 'ความเสี่ยงต่ำ (Low Risk)',
+                                     'text-danger': requestsForm.get('riskAssessmentValueNTD_2').value == 'ความเสี่ยงสูง (High Risk)',
+                                     'font-weight-bold': requestsForm.get('riskAssessmentValueNTD_2').value == 'ความเสี่ยงสูง (High Risk)' || requestsForm.get('riskAssessmentValueNTD_2').value == 'ความเสี่ยงต่ำ (Low Risk)'}"
+                           readonly />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> <!-- จบ ผลการประเมินความเสี่ยง -->
+<!-- ผลการวินิจฉัยจากการเจาะน้ำคร่ำ -->
+<div class="card m-2" hidden>
+  <div class="card-header" id="headingAmniotic">
+    <h5 class="mb-my-0">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseAmniotic"
+              aria-expanded="false" aria-controls="collapseAmniotic">
+        <h4 class="form-header text-uppercase">
+          <i class="fa fa-file-text-o"></i>ผลการวินิจฉัยจากการเจาะน้ำคร่ำ
+        </h4>
+      </button>
+    </h5>
+  </div>
+
+  <div id="collapseAmniotic" class="collapse show" aria-labelledby="headingAmniotic">
+    <div class="card-body">
+      <form [formGroup]="requestsForm">
+
+        <div class="form-row form-inline mb-2">
+          <div class="form-group indent-20">
+            <label for="input-amnioticDate" class="col-form-label">วันที่เจาะน้ำคร่ำ</label>
+            <div class="input-group input-group-sm">
+              <input class="form-control col-6" id="input-amnioticDate" #dpAmnioticDate="bsDatepicker" bsDatepicker
+                     [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="amnioticDate">
+              <span class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="dpAmnioticDate.toggle()">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row form-inline mb-2">
+          <div class="col-12">
+            <div class="input-group indent-20">
+              <label for="input-amnioticLab" class="col-form-label">ห้องปฏิบัติการที่ทำการตรวจวิเคราะห์น้ำคร่ำ</label>
+              <input type="text" style="width: 100%" class="form-control form-control-sm col-11" id="input-amnioticLab"
+                     placeholder="" formControlName="amnioticLab">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row form-inline mb-2">
+          <div class="input-group indent-20">
+            <label for="input-amnioticGAWeek" class="col-form-label">อายุครรภ์ ณ วันที่เจาะน้ำคร่ำ</label>
+            <input type="number" class="form-control form-control-sm col-sm-2 text-center" id="input-amnioticGAWeek"
+                   placeholder="" formControlName="amnioticGAWeek"> <label class="mr-2 ml-2">Weeks</label>
+            <input type="number" class="form-control form-control-sm col-sm-2 text-center" id="input-amnioticGADays"
+                   placeholder="" formControlName="amnioticGADays"> <label class="mr-2 ml-2">Days</label>
+          </div>
+        </div>
+
+        <div class="form-row form-inline mb-2">
+          <div class="input-group indent-20">
+            <label for="input-amnioticAnalysTechnique" class="col-form-label">เทคนิคการตรวจวิเคราะห์</label>
+            <select class="form-control form-control-sm" formControlName="amnioticAnalysTechnique"
+                    (change)="changeTechnique($event)" id="input-amnioticAnalysTechnique">
+              <option [ngValue]="null" disabled>Choose your item</option>
+              <option *ngFor="let tech of allTechnique" [value]="tech.name">
+                {{ tech.text }}
+              </option>
+            </select>
+
+            <!-- <input type="text" style="width: 100%" class="form-control form-control-sm col-sm-5 ml-2"
+              id="input-amnioticLab" placeholder="" formControlName="amnioticLab"> -->
+
+          </div>
+        </div>
+
+        <div class="form-row form-inline mb-2">
+          <div class="col-12">
+            <div class="input-group indent-80">
+              <label for="input-amnioticOtherTechnique" class="col-form-label">เทคนิคอื่น ๆ</label>
+              <input type="text" style="width: 100%" class="form-control form-control-sm col-11 ml-2"
+                     id="input-amnioticOtherTechnique" placeholder="" formControlName="amnioticOtherTechnique">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row form-inline mb-2">
+          <div class="input-group indent-20">
+            <label for="input-amnioticChromosomeAbnormal" class="col-form-label">ผลการวิเคราะห์ (Results)</label>
+            <select class="form-control form-control-sm" formControlName="amnioticChromosomeAbnormal"
+                    (change)="changeTechnique($event)" id="input-amnioticChromosomeAbnormal">
+              <option [ngValue]="null" disabled>Choose your item</option>
+              <option *ngFor="let ab of abnormalLists" [value]="ab.name">
+                {{ ab.text }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row form-inline mb-2">
+          <div class="col-12">
+            <div class="input-group indent-80">
+              <label for="input-amnioticOtherAbnormal" class="col-form-label">อื่น ๆ</label>
+              <input type="text" class="form-control form-control-sm col-11 ml-2" id="input-amnioticOtherAbnormal"
+                     placeholder="" formControlName="amnioticOtherAbnormal">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row form-inline mb-2">
+          <div class="input-group indent-20">
+            <label for="input-amnioticMiscarriage" class="col-form-label">การแท้งจากการเจาะน้ำคร่ำ (Miscarriage)</label>
+            <mat-radio-group class="mt-2" formControlName="amnioticMiscarriage" id="input-amnioticMiscarriage">
+              <mat-radio-button value="No Miscarriage">
+                ไม่เกิดการแท้ง
+              </mat-radio-button>
+              <mat-radio-button value="Miscarriage">เกิดการแท้ง</mat-radio-button>
+              <mat-radio-button value="Not Specified">ไม่ระบุ</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+
+        <div class="form-row form-inline mb-2">
+          <div class="input-group indent-20">
+            <label for="input-amnioticAnalysisReportFile" class="col-form-label">
+              ใบรายงานผลการตรวจวิเคราะห์
+              (PDF,JPEG)
+            </label>
+
+            <input type="file" #fileUpload placeholder="Choose file" accept=".jpg, .jpeg, .png, .pdf"
+                   onclick="value = null" (change)="onSelectFile($event)" style="display:none;">
+            <button type="button" class="btn btn-info btn-sm" (click)="fileUpload.click()"
+                    [disabled]="!requestsForm.get('labNumber').value">
+              <i class="fa fa-upload mr-1"></i>Choose file
+            </button>
+
+            <ng-template [ngIf]="requestsForm.get('amnioticAnalysisReportFile').value">
+              <div class="ml-1 pt-2">
+                <a href="javascript:0" (click)="downloadAmnioticFile()" style="color: blue; cursor: pointer;">
+                  {{ requestsForm.get('amnioticAnalysisReportFile').value }}
+                </a>
+              </div>
+            </ng-template>
+
+          </div>
+        </div>
+
+        <div class="form-row form-inline mb-2">
+          <div class="input-group indent-20">
+            <label for="input-amnioticRecorder" class="col-form-label">ผู้บันทึก</label>
+            <input type="text" style="width: 100%" class="form-control form-control-sm col-sm-5 ml-2"
+                   id="input-amnioticRecorder" placeholder="" formControlName="amnioticRecorder">
+            <label for="input-amnioticPhoneNo" class="col-form-label ml-2">เบอร์โทรศัพท์</label>
+            <input type="text" style="width: 100%" class="form-control form-control-sm col-sm-5 ml-2"
+                   id="input-amnioticPhoneNo" placeholder="" formControlName="amnioticPhoneNo">
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="col-md-12 text-center">
+          <button type="button" class="btn btn-primary mr-3" (click)="callParentSave()"
+                  [disabled]="!requestsForm.get('labNumber').value">
+            <i class="fa fa-floppy-o mr-1"></i>บันทึก
+          </button>
+          <button type="button" class="btn btn-warning" (click)="doClearAmnioticData()">
+            <i class="fa fa-trash-o mr-1"></i>ล้างข้อมูล
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div> <!-- จบ ผลการวินิจฉัยจากการเจาะน้ำคร่ำ -->
+<!-- Modal -->
+<div class="modal fade" id="ModalHistory" tabindex="-1" data-toggle="modal" data-keyboard="false" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 9000;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>

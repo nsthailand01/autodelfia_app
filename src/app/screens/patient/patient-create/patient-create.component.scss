@@ -1,0 +1,84 @@
+.card-body {
+  padding: 0.35rem;
+}
+
+.container {
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 0;
+  padding: 1rem;
+  padding-top: 0;
+}
+
+.content {
+  width: 100vw;
+  background-color: seashell;
+  border: 1px solid burlywood;
+  padding: 12px;
+  padding-top: 0;
+}
+
+.modal-header {
+  padding-bottom: 3px;
+}
+
+.input-group .form-control {
+  margin: 0px !important;
+}
+
+.input-group {
+  align-self: flex-start;
+}
+
+.row {
+  margin: 0.38rem !important;
+}
+
+.highlighted-row {
+  background-color: rgb(132, 198, 239);
+}
+
+.modal-body {
+  padding-bottom: 0;
+}
+
+.col-form-label {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#myModal .modal-dialog {
+  -webkit-transform: translate(0, -50%);
+  -o-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  top: 50%;
+  margin: 0 auto;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-weight: 300;
+  // font-size: 13px;
+}
+
+
+label {
+  display: table-cell;
+  font-weight: 600;
+  text-align: right;
+  // width: 33.01%;
+}
+
+
+
+
+
+
+
+
+
+
+

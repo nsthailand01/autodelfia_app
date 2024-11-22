@@ -1,0 +1,796 @@
+<!--SerchBefore-->
+<!--<div fxLayout fxLayout.lt-md="column wrap" fxLayoutAlign="start start" fxLayoutGap="15px">
+  <div fxFlex="20%">
+    <div>
+      <a mat-flat-button color="primary" (click)="onCreateNew()">
+        <i class="fa fa-plus-circle mr-2" aria-hidden="true"></i>Create New
+      </a>
+    </div>
+  </div>
+  <div fxFlex="60%">
+    <mat-form-field style="width: 100%;">
+      <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+  </div>
+  <div fxFlex="20%">
+    <mat-form-field appearance="fill">
+      <mat-label>Choose an date range</mat-label>
+      <mat-select [(ngModel)]="rangeSelectedValue" (selectionChange)="onRangeChange()">
+        <mat-option value="LastYear">Last Year</mat-option>
+        <mat-option value="LastMonth">Last Month</mat-option>
+        <mat-option value="LastWeek">Last Week</mat-option>
+        <mat-option value="ThisYear">This Year</mat-option>
+        <mat-option value="ThisMonth">This Month</mat-option>
+        <mat-option value="ThisWeek">This Week</mat-option>
+        <mat-option value="Today">Today</mat-option>
+        <mat-option value="All">All</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
+
+
+
+
+<table mat-table [dataSource]="dataSource" matSort matSortStart="desc" (matSortChange)="customSort($event)">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef disableClear width="25px">No.</th>
+    <td mat-cell *matCellDef="let element; let i = index;">
+      {{ (i+1) + (this.paginator.pageIndex * this.paginator.pageSize) | number:'1.0' }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="SentSampleDate">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> วันที่นำส่ง </th>
+    <td mat-cell *matCellDef="let element"> {{element.SentSampleDate | localDatetimePipe }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="SentSampleNo">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> เลขที่นำส่ง </th>
+    <td mat-cell *matCellDef="let element"> {{element.SentSampleNo}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="ReceiveNo">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> เลขที่ทะเบียนรับ </th>
+    <td mat-cell *matCellDef="let element">
+      <span class="material-icons" style="color: green;" *ngIf="element.ReceiveNo">done</span>
+      <span class="material-icons" style="color: orangered;" *ngIf="!element.ReceiveNo">
+        clear
+      </span> {{element.ReceiveNo}}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef hidden> สถานะ </th>
+    <td mat-cell *matCellDef="let element" hidden>
+      <div class="progress progress-md">
+        <div class="progress-bar progress-bar-success bg-success" role="progressbar" style="width: 55%;"></div>
+      </div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="percentage">
+    <th mat-header-cell *matHeaderCellDef class="text-center" hidden> % </th>
+    <td mat-cell *matCellDef="let element" class="text-center" hidden>
+      <span class="badge bg-red">
+        {{element.inputPercentage}}
+      </span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="numberOfSamples">
+    <th mat-header-cell *matHeaderCellDef class="text-center"> จำนวนตัวอย่าง </th>
+    <td mat-cell *matCellDef="let element" class="text-center"> {{element.NumberOFSamples}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="SiteName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Site </th>
+    <td mat-cell *matCellDef="let element"> {{element.SiteName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="EmployeeName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> ผู้จัดส่ง </th>
+    <td mat-cell *matCellDef="let element"> {{element.EmployeeName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="PatientNameLists">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> คนไข้ </th>
+    <td mat-cell *matCellDef="let element"> {{element.PatientNameLists}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="details">
+    <th mat-header-cell *matHeaderCellDef> Details </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button color="primary" (click)="redirectToDetails(element.SentSampleID)">
+        <mat-icon class="mat-18">reorder</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+   <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef> Delete </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button color="warn" (click)="redirectToDelete(element.SentSampleID)">
+        <mat-icon class="mat-18">delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<mat-paginator [pageSize]="200" [pageSizeOptions]="[100, 200, 300, 400, 500, 1000]">
+</mat-paginator>-->
+<!--SerchBefore-->
+<!--SearchAfter-->
+<style>
+
+  .form-check-input {
+    width: 20px;
+    height: 20px;
+  }
+
+</style>
+
+<mat-expansion-panel #matExpansionRangePanel expanded class="mb-3">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-card-header>
+        <div>
+          <img src="assets/img/nbs/childbirth.png" mat-card-avatar />
+          <mat-card-title>รับตัวอย่าง</mat-card-title>
+        </div>
+      </mat-card-header>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <p>เลือกช่วงข้อมูลเพื่อทำการค้นหา</p>
+
+
+  <div class="d-flex flex-row align-items-start">
+    <div class="container mt-0 pt-0" style="width: 52%;">
+      <div class="content">
+        <form [formGroup]="rangeForm">
+
+          <!-- หน่วยงาน -->
+          <div class="form-group row">
+            <label for="input-siteName" class="col-form-label col-2 pr-0">หน่วยงาน</label>
+            <div class="input-group input-group-sm col">
+              <input type="text" class="form-control form-control-sm" id="input-siteName" placeholder=""
+                     formControlName="siteName" readonly>
+
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" style="z-index: 1;" (click)="clearSite()">
+                  <i class="fa fa-times"></i>
+                </button>
+              </div>
+              <div class="input-group-append">
+                <button class="m-0 btn btn-outline-info" type="button" (click)="openMSSitePicker()" style="z-index: 1;">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- date range -->
+          <div class="form-group row">
+            <label for="input-siteName" class="col-form-label col-2"></label>
+            <div class="input-group input-group-sm col">
+              <select class="form-control form-control-sm col" formControlName="dateRangeSelectedValue">
+                <option [ngValue]="null" disabled>Choose an date range</option>
+                <option *ngFor="let date of dateRange" [ngValue]="date.value">
+                  {{ date.text }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <!-- วันที่นำส่ง -->
+          <div class="form-group row">
+            <label for="input-fromSentSampleDate" class="col-form-label col-2 pr-0">วันที่นำส่ง</label>
+            <div class="input-group input-group-sm col">
+              <input class="form-control form-control-sm" id="input-fromSentSampleDate"
+                     #dpFromSentSampleDate="bsDatepicker" bsDatepicker formControlName="fromSentSampleDate"
+                     [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" (bsValueChange)="dateInputChange($event)">
+              <div class="input-group-append">
+                <button class="btn btn-outline-info" type="button" (click)="dpFromSentSampleDate.toggle()"
+                        style="z-index: 1;">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+
+            <label for="input-toSentSampleDate" class="col-form-label col-2">ถึง</label>
+            <div class="input-group input-group-sm col">
+              <input class="form-control form-control-sm" id="input-toSentSampleDate" #dpToSentSampleDate="bsDatepicker"
+                     bsDatepicker formControlName="toSentSampleDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                     (bsValueChange)="dateInputChange($event)">
+              <div class="input-group-append">
+                <button class="btn btn-outline-info" type="button" (click)="dpToSentSampleDate.toggle()"
+                        style="z-index: 1;">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+
+
+          <!-- วันที่เกิด -->
+          <div class="form-group row">
+            <label for="input-fromBirthday" class="col-form-label col-2">วันที่เกิด</label>
+            <div class="input-group input-group-sm col">
+              <input class="form-control form-control-sm" id="input-fromBirthday"
+                     #dpFromBabeDateOfBirth="bsDatepicker" bsDatepicker formControlName="fromBirthday"
+                     [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" (bsValueChange)="fromBabeDoBChange($event)">
+              <div class="input-group-append">
+                <button class="btn btn-outline-info" type="button" (click)="dpFromBabeDateOfBirth.toggle()"
+                        style="z-index: 1;">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+
+            <label for="input-toBirthday" class="col-form-label col-2">ถึง</label>
+            <div class="input-group input-group-sm col">
+              <input class="form-control form-control-sm" id="input-toBirthday"
+                     #dpToBabeDateOfBirth="bsDatepicker" bsDatepicker formControlName="toBirthday"
+                     [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" (bsValueChange)="dateInputChange($event)">
+              <div class="input-group-append">
+                <button class="btn btn-outline-info" type="button" (click)="dpToBabeDateOfBirth.toggle()"
+                        style="z-index: 1;">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- วันที่รับตัวอย่าง -->
+          <div class="form-group row">
+            <label for="input-fromReceiveSampleDate" class="col-form-label col-2">วันที่รับตัวอย่าง</label>
+            <div class="input-group input-group-sm col">
+              <input class="form-control form-control-sm" id="input-fromReceiveSampleDate"
+                     #dpFromReceiveSampleDate="bsDatepicker" bsDatepicker formControlName="fromReceiveSampleDate"
+                     [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                     (bsValueChange)="fromReceiveSampleDateInputChange($event)">
+              <div class="input-group-append">
+                <button class="btn btn-outline-info" type="button" (click)="dpFromReceiveSampleDate.toggle()"
+                        style="z-index: 1;">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+
+            <label for="input-toReceiveSampleDate" class="col-form-label col-2">ถึง</label>
+            <div class="input-group input-group-sm col">
+              <input class="form-control form-control-sm" id="input-toReceiveSampleDate"
+                     #dpToReceiveSampleDate="bsDatepicker" bsDatepicker formControlName="toReceiveSampleDate"
+                     [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" (bsValueChange)="dateInputChange($event)">
+              <div class="input-group-append">
+                <button class="btn btn-outline-info" type="button" (click)="dpToReceiveSampleDate.toggle()"
+                        style="z-index: 1;">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- hn และ บัตรประชาชน -->
+          <div class="form-group row">
+            <label for="input-hN" class="col-form-label col-2">HN</label>
+            <div class="input-group input-group-sm col">
+              <input type="text" class="form-control form-control-sm" id="input-hN" placeholder=""
+                     formControlName="hN">
+            </div>
+
+
+            <label for="input-identityCard" class="col-form-label col-2">เลข ปชช.</label>
+            <div class="input-group input-group-sm col">
+              <input type="text" class="form-control form-control-sm" id="input-identityCard" placeholder=""
+                     formControlName="identityCard" mask="0 0000 00000 00 0">
+            </div>
+          </div>
+
+          <!-- สัญชาติ -->
+          <div class="form-group row">
+            <label class="col-form-label col-2">สัญชาติ</label>
+            <mat-radio-group class="pl-2" formControlName="nationality">
+              <mat-radio-button value="all">ทั้งหมด</mat-radio-button>
+              <mat-radio-button value="thaiOnly">แสดงเฉพาะคนไทย</mat-radio-button>
+              <mat-radio-button value="foreignerOnly">แสดงเฉพาะต่างชาติ</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+
+          <!-- เลขที่นำส่ง -->
+          <div class="form-group row">
+            <label for="input-fromSentSampleNo" class="col-form-label col-2 pr-0">เลขที่ใบนำส่ง</label>
+            <div class="input-group input-group-sm col">
+              <input type="text" class="form-control form-control-sm" id="input-fromSentSampleNo" placeholder=""
+                     formControlName="fromSentSampleNo" (keyup)="fromSentSampleNoKeyup($event)">
+            </div>
+
+            <label for="input-toSentSampleNo" class="col-form-label col-2">ถึง</label>
+            <div class="input-group input-group-sm col">
+              <input type="text" class="form-control form-control-sm" id="input-toSentSampleNo" placeholder=""
+                     formControlName="toSentSampleNo">
+            </div>
+          </div>
+
+          <!-- labnumber -->
+          <div class="form-group row">
+            <label for="input-fromSampleNo" class="col-form-label col-2 pr-0">Lab Number.</label>
+            <div class="input-group input-group-sm col">
+              <input type="text" class="form-control form-control-sm" id="input-fromSampleNo" placeholder=""
+                     formControlName="fromLabNumber" (keyup)="fromSampleNoKeyup($event)">
+            </div>
+
+            <label for="input-toSampleNo" class="col-form-label col-2">ถึง</label>
+            <div class="input-group input-group-sm col">
+              <input type="text" class="form-control form-control-sm" id="input-toSampleNo" placeholder=""
+                     formControlName="toLabNumber">
+            </div>
+          </div>
+
+          <!-- สถานะ -->
+          <div class="form-group row">
+            <label for="input-1" class="col-form-label col-2">สถานะ</label>
+            <mat-form-field appearance="fill" class="col-4">
+              <mat-label>Choose an status</mat-label>
+              <mat-select formControlName="documentStatus">
+                <mat-option value="Draft">Draft</mat-option>
+                <!--<mat-option value="Pending">Pending</mat-option>-->
+                <mat-option value="Shipment">Shipment</mat-option>
+                <mat-option value="Received">Received</mat-option>
+                <mat-option value="Rejected">Rejected</mat-option>
+                <!--<mat-option value="In-Process">In-Process</mat-option>-->
+                <mat-option value="Reported">Reported</mat-option>
+                <mat-option value="Approved">Approved</mat-option>
+                <mat-option value="All">All</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+
+     
+
+
+            <!-- FunctionClickSearch -->
+
+            <div class="input-group input-group-sm col">
+              <button #btnSearch id="btnSearch" mat-raised-button color="accent" class="w-100" (click)="doSearchClick()">
+                <mat-icon class="mr-2">search</mat-icon>ค้นหา
+              </button>
+
+
+            </div>
+
+
+
+          </div>
+
+
+
+
+
+        </form>
+      </div>
+    </div>
+
+
+    <div class="container mt-0 pt-0" style="width:48%;">
+      <div class="content">
+        <form [formGroup]="optionsForm">
+
+          <div class="form-group">
+            <div class="form-group row form-inline">
+              <label for="input-sampleType" class="col-form-label text-red col-3"
+                     style="justify-content: flex-end;">ชนิดตัวอย่าง</label>
+              <select class="form-control form-control-sm col" id="input-sampleType" formControlName="sampleType">
+                <option [ngValue]="null" disabled>Choose an sample type</option>
+                <option *ngFor="let sample of sampleTypes" [ngValue]="sample.value">
+                  {{ sample.text }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group row form-inline">
+              <label for="input-sampleStatus" class="col-form-label text-red col-3"
+                     style="justify-content: flex-end;">สถานะ</label>
+              <select class="form-control form-control-sm col" id="input-sampleStatus" formControlName="sampleStatus" (change)="onSelectChange($event)">
+                <option [ngValue]="null" disabled>Choose an sample status</option>
+                <!--<option *ngFor="let status of sampleStatus" [ngValue]="status.value">
+                  {{ status.text }}
+                </option>-->
+              <option value="Received">
+                Received
+              </option>
+              <option value="Rejected">
+                Rejected
+              </option>
+              </select>
+            </div>
+
+
+
+            <div class="form-group row form-inline">
+              <label for="input-paperResult" class="col-form-label col-3"
+                     [ngClass]="{'text-red': optionsForm.get('sampleType').value == 'Paper' }"
+                     style="justify-content: flex-end;">สาเหตุการปฏิเสธสิ่งส่งตรวจ</label>
+              <select class="form-control form-control-sm col" id="input-paperResult" formControlName="paperResult"  [disabled]="isDisabled" disabled>
+                <option [ngValue]="0"  disabled></option>
+                <!--<option [ngValue]="null" disabled>Choose an paper result</option>-->
+                <!--<option *ngFor="let result of paperResults" [ngValue]="result.value" [ngClass]="{'redText': result.value != '1', 'greenText': result.value == '1'}">-->
+                <option *ngFor="let result of paperResults" [ngValue]="result.value">
+                  {{ result.text }}
+                  <!-- [disabled]="['Paper','กระดาษ'].includes(optionsForm.get('sampleType').value)" -->
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group row form-inline">
+              <label for="input-remark" class="col-form-label col-3" style="justify-content: flex-end;">หมายเหตุ</label>
+              <textarea class="form-control form-control-sm col" id="input-remark" formControlName="remark"></textarea>
+            </div>
+
+
+
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+</mat-expansion-panel>
+
+
+<div class="d-flex justify-content-center text-white w-100 mb-3">
+  <div class="row btn-toolbar">
+
+    <button class="btn btn-danger btn-sm mr-2" type="button" (click)="doSaveReceiptClick($event)">
+      <i class="fas fa-tasks mr-2"></i>รับตัวอย่าง
+    </button>
+    <button class="btn btn-primary btn-sm mr-2" type="button" (click)="doGetSampleByBarcode()">
+      <i class="fas fa-barcode mr-2" aria-hidden="true"></i>รับตัวอย่างด้วยบาร์โค้ด
+    </button>
+    <button class="btn btn-success btn-sm mr-2" type="button" (click)="doPrintBarcodeMultiple()">
+      <i class="fa-solid fa-barcode mr-2" aria-hidden="true"></i>พิมพ์บาร์โค้ด
+    </button>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="checkbarcodeauto" (click)="checkboxauto()" [checked]="isCheckedauto"/>
+      <label for="checkbarcodeauto" style="color: black; padding-top: 5px; padding-left:2px;">
+        พิมพ์บาร์โค้ด(อัตโนมัติ)
+      </label>
+    </div>
+  </div>
+</div>
+
+
+
+<mat-expansion-panel #matExpansionPatientDetailPanel expanded class="mb-5">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-card-header>
+        <div>
+          <img src="assets/img/nbs/baby.png" mat-card-avatar />
+          <mat-card-title>ข้อมูลคนไข้</mat-card-title>
+        </div>
+      </mat-card-header>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <!-- <p>เลือกช่วงข้อมูลเพื่อทำการค้นหา</p> -->
+  <!-- ตารางข้อมูลคนไข้ -->
+
+  <div class="card pt-0">
+    <div class="card-body pt-0">
+      <div style="display: flex; flex-direction: row;">
+        <button mat-mini-fab color="primary" class="mb-1 mr-1 hover-class" (click)="onCreateNew()">
+          <mat-icon>add</mat-icon>
+        </button>
+        <div style="overflow-x:auto;" class="table-responsive">
+          <table class=" font-thkrub" width="100%">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col" class="sticky-col first-col text-center" style="width: 50px;">ลำดับ</th>
+                <th scope="col" class="sticky-col second-col text-center"
+                    style="width: 60px; padding-left: 2px; padding-right: 2px;">
+
+                  <!--<mat-checkbox class="mt-2"  (change)="checkAllCheckBox($event)"  >
+    เลือก
+    </mat-checkbox>-->
+                  <mat-checkbox class="mt-2" (change)="$event ? masterToggle() : null;checkAllCheckBox($event)" [checked]="selection.hasValue() && isAllSelected()"
+                                [disabled]="!multiSelection">
+                    เลือก
+                  </mat-checkbox>
+
+
+                  <!--<mat-checkbox (change)="$event ? masterToggle() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue()">
+    </mat-checkbox>-->
+
+
+
+                </th>
+                <th class="sticky-col third-col text-center">Action</th>
+                <th>สถานะ</th>
+                <th>วันที่บันทึก</th>
+                <th>วันที่เจาะเลือด</th>
+                <th>วันที่รับตัวอย่าง</th>
+                <th>เลขที่ใบนำส่ง</th>
+                <th>เลขที่ตัวอย่าง</th>
+                <th>หน่วยงานส่งตรวจ</th>
+                <th>ชื่อ-สกุล</th>
+                <th>HN</th>
+                <th>บัตรประชาชน</th>
+                <th>เบอร์โทรศัพท์</th>
+                <th>สาเหตุการปฏิเสธสิ่งส่งตรวจ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!itemLists?.length">
+                <td colspan="100" class="text-center">
+                  ไม่มีข้อมูล
+                </td>
+              </tr>
+              <!--<tr *ngFor="let item of itemLists | paginate: pageListConfig; let idx = index">-->
+              <tr *ngFor="let item of itemLists | paginate: pageListConfig; let idx = index"
+                  [ngStyle]="{'color': (item.isNew || item.isEdit) && (requester == 'sent-sample') ? 'red' : 'black' }"
+                  [ngClass]="{'text-red': item.requestStatus == 'Rejected', 'text-purple': (item.requestStatus != 'Rejected')}">
+                <td scope="row" class="sticky-col first-col text-center">
+                  {{((pageListConfig.currentPage - 1) * pageListConfig.itemsPerPage + idx + 1) | number:'0.0-0'}}
+                </td>
+
+                <!--CheckBox-->
+                <td class="sticky-col second-col text-center">
+                  <!--<mat-checkbox (click)="setRowSelectedCheck($event)" (change)="onCheckedChange($event, item)"
+     [checked]="item.isSelected" [(ngModel)]="item.isSelected" [disabled]="!multiSelection">
+    </mat-checkbox>-->
+                  <mat-checkbox (click)="setRowSelectedCheck($event)"
+                                (change)="$event ? selection.toggle(item) : null"
+                                [checked]="item.isSelected" [(ngModel)]="item.isSelected" [disabled]="!multiSelection">
+                  </mat-checkbox>
+                </td>
+
+                <!--ItemAnother-->
+                <td class="sticky-col third-col text-center">
+
+                  <div style="font-size: 24px;" class="ml-2 mr-2">
+                    <span (click)="onPrintBarcodeClick(item)">
+                      <i class="fa-solid fa-barcode fa-sm mr-2 text-blue" style="cursor: pointer;"></i>
+                    </span>
+
+                    <span (click)="doPrintNewForm(item)">
+                      <i class="fa fa-print fa-sm mr-2 text-orange" style="cursor: pointer;" title="พิมพ์ใบส่งตรวจ Quad Test"></i>
+                    </span>
+
+                    <!--<ng-container *ngIf="referenceName == 'receive'; then receive else sample "></ng-container>-->
+                    <!--<ng-template #receive>-->
+                    <!--<a href="javascript:" class="edit">
+        <i class="material-icons" aria-hidden="true" title="Edit"
+           (click)="redirectToDetails(item.sentSampleID)">&#xE254;</i>
+      </a>-->
+                    <!--</ng-template>-->
+
+                    <ng-container *ngIf="item.requestStatus === 'Shipment'; else disabledEditShipment">
+                      <a href="javascript:" class="mr-2" title="แก้ไขใบนำส่ง" (click)="doEditShipment(item)">
+                        <i class="fa-solid fa-envelope-circle-check text-green"></i>
+                      </a>
+                    </ng-container>
+                    <ng-template #disabledEditShipment>
+                      <a href="javascript:" class="mr-2" title="แก้ไขใบนำส่ง"
+                         style="color: rgb(171, 220, 134); cursor: not-allowed;">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                      </a>
+                    </ng-template>
+
+                    <ng-container *ngIf="item.requestStatus !== 'Draft'; else canDelete">
+                      <!-- <i class="delete disabled far fa-trash-alt fa-lg" style="color: rgb(252, 157, 157);"></i> -->
+                      <a href="javascript:" class="delete" style="color: rgb(252, 157, 157); cursor: not-allowed;">
+                        <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
+                      </a>
+                    </ng-container>
+                    <ng-template #canDelete>
+                      <!-- <i class="delete far fa-trash-alt fa-lg" style="cursor: pointer;" (click)="onDeleteItem(idx)"></i> -->
+                      <a href="javascript:" class="delete" style="color: red;" (click)="redirectToDelete(item.SentSampleID)">
+                        <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
+                      </a>
+                    </ng-template>
+                  </div>
+
+                </td>
+                <!--สถานะ-->
+                <td>
+                  <span style="cursor: pointer;" title="{{item.requestStatus}} {{item.receiptRemark}}">{{item.requestStatus}}</span>
+                </td>
+                <!-- วันที่บันทึก -->
+                <td>{{item.createdDate | localDatetimePipe}}</td>
+                <!-- วันที่เจาะเลือด -->
+                <td>{{item.sampleDate | localDatetimePipe}}</td>
+                <!-- วันที่รับตัวอย่าง -->
+                <td>{{item.receiveDate | localDatetimePipe}}</td>
+                <!-- เลขที่ใบนำส่ง -->
+                <td>{{item.shiptoNo}}</td>
+                <!-- เลขที่ตัวอย่าง -->
+                <td>{{item.labNumber}}</td>
+                <!-- หน่วยงานส่งตรวจ -->
+                <td>{{item.siteName}}</td>
+                <!-- ชื่อ-สกุล [คนไข้] -->
+                <td>{{item.firstName}} {{item.lastName}}</td>
+                <!-- ชื่อ-สกุล [คนไข้] -->
+                <td>{{item.hN}}</td>
+                <!-- บัตรประชาชน -->
+                <td>{{item.identityCard}}</td>
+                <!-- เบอร์โทรศัพท์ -->
+                <td>{{item.phoneNo}}</td>
+                <td class="d-none">{{item.requestID}}</td>
+
+                <td>
+
+                  <div *ngIf="item.filterPaperCompleteness === '99'">
+                    <span title="{{item.receiptRemark}}">{{item.receiptRemark}}</span>
+                  </div>
+                  <div *ngIf="item.filterPaperCompleteness != '99'">
+                    <span title="{{item.refuseName}}">{{item.refuseName}}</span>
+                  </div>
+
+
+                </td>
+
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+
+      <div style="margin-top: 5px;">
+        <div class="float-left">
+          Size:
+          <select class="selectpicker" (change)="handlePageSizeChange($event)"
+                  [(ngModel)]="pageListConfig.itemsPerPage">
+            <option *ngFor="let size of listPageSizes" [ngValue]="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+
+        <div class="float-right">
+        <pagination-controls id="itemListPage" (pageChange)="pageListChanged($event)"></pagination-controls>
+      </div><br>
+
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <!-- ตารางข้อมูลคนไข้ -->
+
+</mat-expansion-panel>
+
+
+
+
+<!--SearchAfter-->
+
+
+
+
+
+<div #printBarcodeMultipleRef class="modal fade" id="printBarcodeMultipleRef" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title">พิมพ์บาร์โค้ด</h1>
+        <button type="button" class="close pull-right" aria-label="Close"
+                (click)="onCloseModalRef('#printBarcodeMultipleRef')">
+          <i class="fas fa-times-circle"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <form [formGroup]="printBarcodeForm">
+          <div class="d-flex form-row form-inline align-items-center my-auto">
+            <label for="input-fromSentSampleNo" class="col-form-label col-2"
+                   style="justify-content: flex-end;">เลขที่ใบนำส่ง</label>
+            <div class="input-group input-group-sm col-4">
+              <input type="text" class="form-control form-control-sm" id="input-fromSentSampleNo" placeholder=""
+                     formControlName="fromSentSampleNo">
+              <div class="input-group-append">
+                <button class="m-0 btn btn-outline-info" type="button" (click)="openSentSamplehdPicker('from')"
+                        style="z-index: 1;">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="d-flex form-row form-inline align-items-center my-auto" role="form">
+            <label class="col-form-label col-2" style="justify-content: flex-end;">เลขตัวอย่าง</label>
+            <div class="input-group input-group-sm my-auto col-4">
+              <input type="text" class="form-control form-control-sm" id="input-identityCard" placeholder=""
+                     formControlName="fromSampleNo">
+              <div class="input-group-append">
+                <button class="m-0 btn btn-outline-info" type="button" (click)="openLabNumberPicker('from')"
+                        style="z-index: 1;">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+
+            <label for="input-identityCard" class="col-form-label col-1" style="justify-content: flex-end;">ถึง</label>
+            <div class="input-group input-group-sm col-4">
+              <input type="text" class="form-control form-control-sm" id="input-identityCard" placeholder=""
+                     formControlName="toSampleNo">
+              <div class="input-group-append">
+                <button class="m-0 btn btn-outline-info" type="button" (click)="openLabNumberPicker('to')"
+                        style="z-index: 1;">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+
+
+        <section hidden>
+          <div style="display: flex; flex-direction: row;">
+            <div style="overflow-x:auto;" class="table-responsive">
+              <table class=" font-thkrub table-sm">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col" class="text-center" style="width: 50px;">ลำดับ</th>
+                    <th>วันที่ใบนำส่ง</th>
+                    <th>เลขที่ใบนำส่ง</th>
+                    <th>Tracking No</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="!sentSampleLists?.length">
+                    <td colspan="100" class="text-center">
+                      ไม่พบข้อมูลใบนำส่ง
+                    </td>
+                  </tr>
+
+                  <tr *ngFor="let item of sentSampleLists | paginate: printPageConfig; let idx = index"
+                      (click)="selectedSentSampleRow(item, $event)"
+                      [class.highlighted-row]="item === currentSampleToPrint" style="cursor:pointer">
+                    <td scope="row" class="text-center">
+                      {{ ((printPageConfig.currentPage - 1) *  printPageConfig.itemsPerPage + idx + 1) | number:'0.0-0'}}
+                    </td>
+                    <td class="text-center">{{item.SentSampleDate | localDatetimePipe}}</td>
+                    <td>{{item.SentSampleNo}}</td>
+                    <td>{{item.TrackingNo}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+          <div style="margin-top: 5px;">
+            <pagination-controls (pageChange)="printPageChanged($event)"></pagination-controls>
+          </div>
+
+        </section>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" (click)="onConfirmPrintBarcodeMultiple()">พิมพ์บาร์โค้ด</button>
+        <button class="btn btn-warning btn-sm" href="javascript:" #closebutton data-dismiss="modal">ยกเลิก</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+

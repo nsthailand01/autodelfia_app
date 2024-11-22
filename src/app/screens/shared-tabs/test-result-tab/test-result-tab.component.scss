@@ -1,0 +1,63 @@
+@import '../../../../assets/bango-dash/css/icons.css';
+
+.mb-my-0 {
+  margin-bottom: -20px !important;
+}
+
+input {
+  border: none;
+  background: transparent;
+}
+
+
+div.indent-20 {
+  /* // text-indent: 50px; */
+  margin-left: 20px;
+}
+
+div.indent-50 {
+  margin-left: 50px;
+}
+
+div.indent-80 {
+  margin-left: 80px;
+}
+
+input[type="text"] {
+  border: 1px solid #a0a0a0;
+}
+
+input.form-control {
+  border: 1px solid #a0a0a0;
+}
+
+mat-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.file {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.download-box {
+  background: #fff;
+  border-radius: 2px;
+  display: inline-block;
+  height: 20px;
+  margin: 1rem;
+  position: relative;
+  width: 100%;
+}
+
+.download-box-1 {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.download-box-1:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}

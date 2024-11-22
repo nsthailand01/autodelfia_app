@@ -1,0 +1,45 @@
+<!-- <button (click)="printDiv('print-section','Title')">print</button> -->
+
+<!-- toolbar button -->
+<div class="form-footer mb-2" id="no-print">
+  <button type="submit" class="btn btn-md btn-success shadow-success m-1" (click)="printTheBarcode()">
+    <i class="fa fa-print mr-2" aria-hidden="true"></i>Print
+  </button>
+  <button type="button" class="btn btn-md btn-secondary shadow-secondary m-1" (click)="goBack()">
+    <i class="fa fa-backward mr-2" aria-hidden="true"></i>Back
+  </button>
+</div> <!-- end toolbar button -->
+
+<div id="section-to-print" class="card_font" style="width: 5cm;">
+  <div *ngFor="let request of requestLists; let idx = index">
+    <div class="roundcorners-card m-2">
+      <div class="d-flex bd-highlight">
+        <div class="bd-highlight" style="font-size: 11px;">{{ request.fullName }}</div>
+        <div class="bd-highlight ml-auto">อายุ {{ calculateAge(request.birthday) }} ปี</div>
+      </div>
+
+      <div class="mt-0">{{ request.siteName }}</div>
+
+      <td class="mt-0">
+        <ngx-barcode [bc-value]="request.labNumber" [bc-display-value]="true" [bc-margin-top]="1" [bc-text-margin]="1"
+          [bc-font-size]="10" [bc-width]="1" [bc-height]="30">
+        </ngx-barcode>
+      </td>
+
+      <td class="rotate_cell">
+        <p class="rotate_text ml-1" style="font-size: 8px;">{{ request.receiveDate | localDatetimePipe }}</p>
+      </td>
+
+      <td class="rotate_cell">
+        <p class="rotate_text" style="font-size: 8px;">{{ timeNow }}</p>
+      </td>
+
+      <div>{{ request.profileName }}</div>
+
+    </div>
+
+    <div *ngIf="(idx+1) % 13 == 0">
+      <div class="avoid-break"></div>
+    </div>
+  </div>
+</div>

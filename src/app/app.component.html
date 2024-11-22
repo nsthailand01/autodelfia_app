@@ -1,0 +1,26 @@
+<!-- <app-appheader></app-appheader>
+<app-appmenu></app-appmenu>
+<div class="content-wrapper">
+  <router-outlet></router-outlet>
+</div>
+<app-appfooter></app-appfooter> -->
+
+<ng-snotify></ng-snotify>
+<ngx-loading-bar></ngx-loading-bar>
+<router-outlet></router-outlet>
+
+<!-- #212121 -->
+<ngx-scrolltop [backgroundColor]="'#FF5252'" [symbolColor]="'#fafafa'" [size]="40" [mode]="'classic'" position="right"
+  theme="gray" aria-label="Back to Top">
+</ngx-scrolltop>
+
+<div style="position: relative">
+  <ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="medium" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Please wait... </p>
+  </ngx-spinner>
+</div>
+
+<!-- <ngx-spinner
+  bdColor="rgba(0, 0, 0, 1)">
+  template="<img src='https://media.giphy.com/media/o8igknyuKs6aY/giphy.gif' />"
+</ngx-spinner> -->

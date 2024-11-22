@@ -1,0 +1,219 @@
+<mat-expansion-panel #matExpansionRangePanel expanded class="mb-3">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-card-header>
+        <div>
+          <img src="assets/img/mother.png" mat-card-avatar />
+          <mat-card-title>ลงทะเบียน & สร้างใบนำส่ง</mat-card-title>
+        </div>
+      </mat-card-header>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <p>เลือกช่วงข้อมูลเพื่อทำการค้นหา</p>
+
+  <div class="container">
+    <div class="content">
+
+      <form [formGroup]="rangeForm">
+
+        <div class="form-group row">
+          <label for="input-siteName" class="col-form-label col-2">หน่วยงาน</label>
+          <div class="input-group input-group-sm col">
+            <input type="text" class="form-control form-control-sm" id="input-siteName" placeholder=""
+                   formControlName="siteName" readonly>
+            <!-- <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" style="z-index: 1;" (click)="clearSite()">
+          <i class="fa fa-times"></i>
+        </button>
+      </div> -->
+            <div class="input-group-append">
+              <button id="btnclear" class="btn btn-outline-secondary" [disabled]="(!forScienceCenter)" type="button" style="z-index: 1;" (click)="clearSite()" >
+                <i class="fa fa-times"></i>
+              </button>
+              <button class="m-0 btn btn-outline-info" type="button" (click)="openMSSitePicker()" style="z-index: 1;"
+                      [disabled]="(!forScienceCenter)">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="input-siteName" class="col-form-label col-2"></label>
+          <div class="input-group input-group-sm col">
+            <select class="form-control form-control-sm col" formControlName="dateRangeSelectedValue">
+              <option [ngValue]="null" disabled>Choose an date range</option>
+              <option *ngFor="let date of dateRange" [ngValue]="date.value">
+                {{ date.text }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="input-fromSentSampleDate" class="col-form-label col-2">วันที่บันทึก</label>
+          <div class="input-group input-group-sm col">
+            <input class="form-control form-control-sm" id="input-fromSentSampleDate"
+                   #dpFromSentSampleDate="bsDatepicker" bsDatepicker formControlName="fromSentSampleDate"
+                   [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" (bsValueChange)="dateInputChange($event)">
+            <div class="input-group-append">
+              <button class="btn btn-outline-info" type="button" (click)="dpFromSentSampleDate.toggle()"
+                      style="z-index: 1;">
+                <i class="far fa-calendar-alt"></i>
+              </button>
+            </div>
+          </div>
+
+          <label for="input-toSentSampleDate" class="col-form-label col-2">ถึง</label>
+          <div class="input-group input-group-sm col">
+            <input class="form-control form-control-sm" id="input-toSentSampleDate" #dpToSentSampleDate="bsDatepicker"
+                   bsDatepicker formControlName="toSentSampleDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                   (bsValueChange)="dateInputChange($event)">
+            <div class="input-group-append">
+              <button class="btn btn-outline-info" type="button" (click)="dpToSentSampleDate.toggle()"
+                      style="z-index: 1;">
+                <i class="far fa-calendar-alt"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+
+        <!--SearchNew-->
+
+
+        <div class="form-group row">
+          <label for="input-fromShiptoDate" class="col-form-label col-2">วันที่นำส่ง</label>
+          <div class="input-group input-group-sm col">
+            <input class="form-control form-control-sm" id="input-fromShiptoDate"
+                   #dpCreateDate="bsDatepicker" bsDatepicker formControlName="fromShiptoDate"
+                   [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" autocomplete="off">
+            <div class="input-group-append">
+              <button class="btn btn-outline-info" type="button" (click)="dpCreateDate.toggle()"
+                      style="z-index: 1;">
+                <i class="far fa-calendar-alt"></i>
+              </button>
+            </div>
+          </div>
+
+          <label for="input-toShiptoDate" class="col-form-label col-2">ถึง</label>
+          <div class="input-group input-group-sm col">
+            <input class="form-control form-control-sm" id="input-toShiptoDate" #dpReceiveDate="bsDatepicker"
+                   bsDatepicker formControlName="toShiptoDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                   autocomplete="off">
+            <div class="input-group-append">
+              <button class="btn btn-outline-info" type="button" (click)="dpReceiveDate.toggle()"
+                      style="z-index: 1;">
+                <i class="far fa-calendar-alt"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="form-group row">
+          <label for="input-fromCreateDate" class="col-form-label col-2">วันที่รับตัวอย่าง</label>
+          <div class="input-group input-group-sm col">
+            <input class="form-control form-control-sm" id="input-fromCreateDate"
+                   #dpCreateDate="bsDatepicker" bsDatepicker formControlName="fromReceiveDate"
+                   [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" autocomplete="off">
+            <div class="input-group-append">
+              <button class="btn btn-outline-info" type="button" (click)="dpCreateDate.toggle()"
+                      style="z-index: 1;">
+                <i class="far fa-calendar-alt"></i>
+              </button>
+            </div>
+          </div>
+
+          <label for="input-toCreatedDate" class="col-form-label col-2">ถึง</label>
+          <div class="input-group input-group-sm col">
+            <input class="form-control form-control-sm" id="input-toCreatedDate" #dpReceiveDate="bsDatepicker"
+                   bsDatepicker formControlName="toReceiveDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                   autocomplete="off">
+            <div class="input-group-append">
+              <button class="btn btn-outline-info" type="button" (click)="dpReceiveDate.toggle()"
+                      style="z-index: 1;">
+                <i class="far fa-calendar-alt"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+
+
+        <!--SearchNew-->
+
+
+        <div class="form-group row">
+          <label for="input-fromSentSampleNo" class="col-form-label col-2">เลขที่ใบนำส่ง</label>
+          <div class="input-group input-group-sm col">
+            <input type="text" class="form-control form-control-sm" id="input-fromSentSampleNo" placeholder=""
+                   formControlName="fromSentSampleNo" autocomplete="off">
+          </div>
+
+          <label for="input-toSentSampleNo" class="col-form-label col-2">ถึง</label>
+          <div class="input-group input-group-sm col">
+            <input type="text" class="form-control form-control-sm" id="input-toSentSampleNo" placeholder=""
+                   formControlName="toSentSampleNo" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="input-fromSampleNo" class="col-form-label col-2">Lab Number</label>
+          <div class="input-group input-group-sm col">
+            <input type="text" class="form-control form-control-sm" id="input-fromSampleNo" placeholder=""
+                   formControlName="fromSampleNo" autocomplete="off" (keyup)="fromLabNumberKeyup($event)">
+          </div>
+
+          <label for="input-toSampleNo" class="col-form-label col-2">ถึง</label>
+          <div class="input-group input-group-sm col">
+            <input type="text" class="form-control form-control-sm" id="input-toSampleNo" placeholder=""
+                   formControlName="toSampleNo" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="input-hN" class="col-form-label col-2">HN.</label>
+          <div class="input-group input-group-sm col">
+            <input type="text" class="form-control form-control-sm" id="input-hN" placeholder="" formControlName="hN" autocomplete="off">
+          </div>
+
+          <label for="input-identityCard" class="col-form-label col-2">เลขบัตร ปชช.</label>
+          <div class="input-group input-group-sm col">
+            <input type="text" class="form-control form-control-sm" id="input-identityCard" placeholder=""
+                   formControlName="identityCard" mask="0 0000 00000 00 0" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="input-1" class="col-form-label col-2">สถานะ</label>
+          <mat-form-field appearance="fill" class="col-4">
+            <mat-label>Choose an status</mat-label>
+            <mat-select formControlName="documentStatus">
+              <mat-option value="Draft">Draft</mat-option>
+              <!--<mat-option value="Pending">Pending</mat-option>-->
+              <mat-option value="Shipment">Shipment</mat-option>
+              <mat-option value="Received">Received</mat-option>
+              <mat-option value="Rejected">Rejected</mat-option>
+              <!--<mat-option value="In-Process">In-Process</mat-option>-->
+              <mat-option value="Reported">Reported</mat-option>
+              <mat-option value="Approved">Approved</mat-option>
+              <mat-option value="All">All</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      </form>
+
+      <mat-card-actions>
+        <button id="btnSearchTest" mat-raised-button color="accent" (click)="doSearchClick()">
+          <mat-icon class="mr-2">search</mat-icon>ค้นหา
+        </button>
+      </mat-card-actions>
+
+    </div>
+  </div>
+</mat-expansion-panel>

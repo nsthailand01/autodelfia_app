@@ -1,0 +1,289 @@
+<div fxLayout fxLayout.lt-md="column wrap" fxLayoutAlign="start start" fxLayoutGap="15px">
+  <div fxFlex="20%">
+    <div>
+      <a mat-flat-button color="primary" (click)="onCreateNew()" class="mr-2">
+        <i class="fa fa-plus-circle mr-2" aria-hidden="true"></i>Create New</a>
+      <!-- <a mat-flat-button color="accent" (click)="onReportPrintClick(null)">
+        <i class="fa fa-print mr-2" aria-hidden="true"></i>Print</a> -->
+    </div>
+  </div>
+  <div fxFlex="60%">
+    <mat-form-field style="width: 100%;">
+      <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+  </div>
+  <div fxFlex="20%">
+    <mat-form-field appearance="fill">
+      <mat-label>Choose an date range</mat-label>
+      <mat-select [(ngModel)]="rangeSelectedValue" (selectionChange)="onRangeChange()">
+        <mat-option value="LastYear">Last Year</mat-option>
+        <mat-option value="LastMonth">Last Month</mat-option>
+        <mat-option value="LastWeek">Last Week</mat-option>
+        <mat-option value="ThisYear">This Year</mat-option>
+        <mat-option value="ThisMonth">This Month</mat-option>
+        <mat-option value="ThisWeek">This Week</mat-option>
+        <mat-option value="Today">Today</mat-option>
+        <mat-option value="All">All</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
+<!-- <div fxLayout fxLayout.lt-md="column wrap" fxLayoutAlign="start center" fxLayoutGap.gt-sm="250px"
+  fxLayoutGap.lt.md="20px">
+  <div>
+    <a mat-flat-button color="primary" (click)="onCreateNew()" class="mr-2">
+      <i class="fa fa-plus-circle mr-2" aria-hidden="true"></i>Create New</a>
+    <a mat-flat-button color="accent" (click)="onReportPrintClick(null)">
+      <i class="fa fa-print mr-2" aria-hidden="true"></i>Print</a>
+  </div>
+  <mat-form-field fxFlex="50%">
+    <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
+  <mat-form-field fxFlex="50%">
+    <input matInput type="text" placeholder="LASTNAME">
+  </mat-form-field>
+</div> -->
+
+<table mat-table [dataSource]="dataSource" matSort matSortStart="desc" (matSortChange)="customSort($event)">
+
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear width="25px">No.</th>
+    <td mat-cell *matCellDef="let element; let i = index;">
+      {{ (i+1) + (this.paginator.pageIndex * this.paginator.pageSize) | number:'1.0' }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="SentSampleDate">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> วันที่นำส่ง </th>
+    <td mat-cell *matCellDef="let element"> {{element.SentSampleDate | localDatetimePipe }} </td>
+  </ng-container>
+
+  <!-- <ng-container matColumnDef="sentSampleNo">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> เลขที่นำส่ง </th>
+    <td mat-cell *matCellDef="let element"> {{element.SentSampleNo}} </td>
+  </ng-container> -->
+
+  <ng-container matColumnDef="ReceiveNo" *ngIf="false">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> เลขที่ทะเบียนรับ </th>
+    <td mat-cell *matCellDef="let element">
+      <div style="display:table;">
+        <span class="material-icons" style="color: green; display:table-cell; vertical-align:middle;"
+          *ngIf="element.ReceiveNo">check_circle_outline</span>
+        <span class="material-icons" style="color: orangered; display:table-cell; vertical-align:middle;"
+          *ngIf="!element.ReceiveNo">highlight_off</span>
+        <span>{{ element.ReceiveNo }}</span>
+      </div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="NumberOfSamples">
+    <th mat-header-cell *matHeaderCellDef class="text-center"> จำนวนตัวอย่าง </th>
+    <td mat-cell *matCellDef="let element" class="text-center"> {{ element.NumberOFSamples }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="SiteName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> หน่วยงานส่งตรวจ </th>
+    <td mat-cell *matCellDef="let element"> {{element.SiteName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="UserName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> ชื่อผู้ใช้ </th>
+    <td mat-cell *matCellDef="let element"> {{element.UserName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="EmployeeName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> ผู้จัดส่ง </th>
+    <td mat-cell *matCellDef="let element"> {{element.EmployeeName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="PatientName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> คนไข้ </th>
+    <td mat-cell *matCellDef="let element"> {{element.PatientNameLists}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef> Status </th>
+
+    <td mat-cell *matCellDef="let element">
+      <div style="display:table;">
+        <span class="material-icons" style="color: rgb(126, 126, 245); display:table-cell; vertical-align:middle;"
+          *ngIf="element.ApproveProgress == 'Draft'">pending</span>
+
+        <span class="material-icons" style="color: orangered; display:table-cell; vertical-align:middle;"
+          *ngIf="element.ApproveProgress == 'In-Process'">pending_actions</span>
+
+        <span class="material-icons" style="color: green; display:table-cell; vertical-align:middle;"
+          *ngIf="element.ApproveProgress == 'Completed Report'">done_all</span>
+
+        <span style="display:table-cell; vertical-align:middle;">{{ element.ApproveProgress }}</span>
+      </div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="details">
+    <th mat-header-cell *matHeaderCellDef> Details </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button color="primary" (click)="redirectToDetails(element.SentSampleID)">
+        <mat-icon class="mat-18">reorder</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- <ng-container matColumnDef="print">
+    <th mat-header-cell *matHeaderCellDef> Print </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button color="primary" (click)="onReportPrintClick(element.SentSampleID)">
+        <mat-icon class="mat-18">print</mat-icon>
+      </button>
+    </td>
+  </ng-container> -->
+
+  <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef> Delete </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button color="warn" (click)="redirectToDelete(element.SentSampleID)"
+        [disabled]="element.ReceiveNo != '' ">
+        <mat-icon class="mat-18">delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-paginator [pageSize]="200" [pageSizeOptions]="[100, 200, 300, 400, 500, 1000]">
+</mat-paginator>
+
+
+<div #reportSelector id="ModalReportSelector" class="modal fade" tabindex="-1" role="dialog" data-backdrop="false"
+  style="background-color: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title">ตัวเลือกการพิมพ์</h1>
+      </div>
+
+      <div class="modal-body">
+        <form>
+          <div class="row justify-content-center">
+            <div class="form-row">
+              <div class="input-group">
+                <mat-radio-group class="mt-2" [(ngModel)]="reportType" [ngModelOptions]="{standalone: true}">
+                  <mat-radio-button value="cover">พิมพ์ใบปะหน้า</mat-radio-button>
+                  <mat-radio-button value="deliver">พิมพ์ใบนำส่ง
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onReportSelected()">
+          <i class="fa fa-print mr-1" aria-hidden="true"></i>Print
+        </button>
+        <button class="btn btn-warning" href="javascript:" #closebutton data-dismiss="modal"><i class="fa fa-times mr-1"
+            aria-hidden="true"></i>Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div #multipleRangeParams id="ModalMultipleRangeParams" class="modal fade" tabindex="-1" role="dialog"
+  data-backdrop="false" style="background-color: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title">Report Parameter</h1>
+      </div>
+
+      <div class="modal-body">
+
+        <form [formGroup]="rangeForm">
+          <div class="form-row">
+            <div class="col">
+              <label for="input-receiveDate" class="col-form-label">จากวันที่นำส่ง</label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-fromSentSampleDate" #dpFromSentSampleDate="bsDatepicker"
+                  bsDatepicker formControlName="fromSentSampleDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                  required>
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="dpFromSentSampleDate.toggle()">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="col">
+              <label for="input-receiveDate" class="col-form-label">ถึงวันที่นำส่ง</label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-toSentSampleDate" #dpToSentSampleDate="bsDatepicker" bsDatepicker
+                  formControlName="toSentSampleDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" required>
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="dpToSentSampleDate.toggle()">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col">
+              <label for="input-sampletype" class="col-form-label">ชนิดตัวอย่าง</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-sampletype"
+                  formControlName="sampleTypeName" placeholder="" readonly>
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col">
+              <!-- <label for="input-profileID" class="col-form-label">การทดสอบ</label>
+              <input type="text" name="profileID" class="form-control form-control-sm" id="input-profileID"
+                placeholder="การทดสอบ" [(ngModel)]="profileID"> -->
+
+              <label for="input-3" class="col-form-label">การทดสอบ</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-3" placeholder=""
+                  formControlName="profileName" readonly>
+                <!-- ProfileID-->
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row mt-3">
+            <div class="col">
+              <!-- <mat-checkbox [(ngModel)]="isExportDup" [ngModelOptions]="{standalone: true}"
+                (change)="onStatusCheckedChange($event, 'Pending')">นำข้อมูลออกซ้ำได้
+              </mat-checkbox> -->
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="doPrintRange()"><i class="fa fa-print mr-1"></i>Export</button>
+        <button class="btn btn-warning" href="javascript:" #closebutton data-dismiss="modal"><i
+            class="far fa-times-circle mr-1"></i>Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,200 @@
+<app-breadcrumb-navigator pageTitle="ผู้ใช้งาน" currentPageName="ผู้ใช้งาน" listPageUrl="/account/list">
+</app-breadcrumb-navigator>
+
+<app-upload></app-upload>
+
+<!-- toolbar button -->
+<div class="form-footer mb-2">
+  <button mat-raised-button color="accent" class="m-1" (click)="doNew()">
+    <mat-icon>add_circle_outline</mat-icon> New
+  </button>
+  <button mat-raised-button color="primary" class="m-1" (click)="createUser(registerForm.value)"
+    [disabled]="!(registerForm.valid)">
+    <mat-icon>save_alt</mat-icon> Save
+  </button>
+  <button type="button" mat-raised-button color="warn" (click)="goBack()">
+    <mat-icon>cancel_presentation</mat-icon> Cancel
+  </button>
+</div> <!-- end toolbar button -->
+
+<div  class="accordion">
+  <div class="card">
+    <div class="card-header" id="headerOne">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+          aria-controls="collapseOne">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-user-circle-o"></i>ผู้ใช้งาน
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+      <div class="card-body">
+        <!-- <form [formGroup]="registerForm" autocomplete="off" novalidate (ngSubmit)="createUser(registerForm.value)"
+          fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px"> -->
+        <form fxLayout="column" [formGroup]="registerForm" autocomplete="off" novalidate>
+          <mat-card-content>
+
+            <div class="box">
+              <div class="form-check">
+                <mat-checkbox class="m-2" formControlName="forDepartureHospital">
+                  สำหรับโรงพยาบาลต้นทาง
+                </mat-checkbox>
+              </div>
+              <div class="form-check">
+                <mat-checkbox class="m-2" formControlName="forScienceCenter"
+                              (click)="(userInfo.forDepartureHospital && (!userInfo.forScienceCenter)) ? $event.preventDefault() : true;">
+                  สำหรับศูนย์บริการตรวจวิเคราะห์ (LAB)
+                </mat-checkbox>
+              </div>
+              <div class="form-check">
+                <mat-checkbox class="m-2" formControlName="isReporter"
+                              (click)="(userInfo.forDepartureHospital && (!userInfo.forScienceCenter)) ? $event.preventDefault() : true;">
+                  Reporter
+                </mat-checkbox>
+              </div>
+              <div class="form-check">
+                <mat-checkbox class="m-2" formControlName="isApprover"
+                              (click)="(userInfo.forDepartureHospital && (!userInfo.forScienceCenter)) ? $event.preventDefault() : true;">
+                  Approver
+                </mat-checkbox>
+              </div>
+            </div>
+
+            <div class="box">
+              <mat-form-field fxFlex>
+                <input matInput type="text" placeholder="Username" formControlName="userName" id="userName">
+                <mat-hint align="end">Not more than 25 characters long.</mat-hint>
+                <mat-error *ngIf="hasError('userName', 'required')">Username is required</mat-error>
+                <mat-error *ngIf="hasError('userName', 'maxlength')">You have more than 25 characters</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex>
+                <input matInput type="text" placeholder="Email address" formControlName="email" id="email"
+                       pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
+                <mat-error *ngIf="hasError('email', 'required')">Email is required</mat-error>
+                <mat-error *ngIf="hasError('email', 'email')">Please enter a valid email address</mat-error>
+              </mat-form-field>
+
+              <div class="line-breaking"></div>
+
+              <mat-form-field fxFlex>
+                <input matInput type="password" placeholder="User password" #userPassword formControlName="userPassword"
+                       id="userPassword" autocomplete="off">
+                <mat-hint align="end">Password must be at least 4 characters.</mat-hint>
+                <mat-error *ngIf="hasError('userPassword', 'required')">Password is required</mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex>
+                <input matInput type="password" placeholder="Confirm password" formControlName="confirmPassword"
+                       id="confirmPassword" autocomplete="off">
+                <mat-error *ngIf="hasError('confirmPassword', 'required')">Confirm password is required</mat-error>
+                <mat-error *ngIf="form.confirmPassword.errors?.mustMatch">Passwords must match</mat-error>
+              </mat-form-field>
+
+              <!-- <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.gt-md="0px">
+    </div> -->
+
+            </div>
+
+            <div class="input-row">
+              <mat-form-field fxFlex>
+                <input matInput type="text" placeholder="ชื่อผู้ใช้งาน" formControlName="officerName" id="officerName">
+              </mat-form-field>
+            </div>
+
+
+
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.gt-md="0px">
+              <mat-form-field fxFlex>
+                <input matInput type="text" placeholder="Employee" formControlName="employeeName" id="employeeName">
+                <button mat-icon-button matSuffix mat-stroked-button (click)="openEmployeePicker()">
+                  <mat-icon>search</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field fxFlex>
+                <input matInput type="text" placeholder="Telephone" formControlName="tel" id="tel">
+              </mat-form-field>
+
+              <mat-form-field fxFlex>
+                <input matInput type="text" placeholder="HNID" formControlName="hNID" id="hNID" autocomplete="off">
+                <button mat-icon-button matSuffix mat-stroked-button>
+                  <mat-icon>search</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.gt-md="0px">
+              <mat-form-field fxFlex>
+                <input matInput type="text" placeholder="หน่วยงานส่งตรวจ (Site)" formControlName="siteName"
+                       id="siteName">
+                <button mat-icon-button matSuffix mat-stroked-button (click)="openMSSitePicker()">
+                  <mat-icon>search</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field fxFlex>
+                <input matInput type="text" placeholder="User Group" formControlName="userGroupID" id="userGroupID"
+                       autocomplete="off">
+                <button mat-icon-button matSuffix mat-stroked-button>
+                  <mat-icon>search</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.gt-md="0px">
+              <mat-form-field>
+                <mat-label style="padding-left:5px;">Begin date</mat-label>
+                <input matInput [matDatepicker]="dpBeginDate" style="padding-left:5px;" formControlName="beginDate" />
+                <mat-datepicker-toggle matSuffix [for]="dpBeginDate"></mat-datepicker-toggle>
+                <mat-datepicker #dpBeginDate></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label style="padding-left:5px;">End date</mat-label>
+                <input matInput [matDatepicker]="dpEndDate" style="padding-left:5px;" formControlName="endDate" />
+                <mat-datepicker-toggle matSuffix [for]="dpEndDate"></mat-datepicker-toggle>
+                <mat-datepicker #dpEndDate></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.gt-md="0px">
+              <mat-form-field appearance="fill">
+                <mat-label>User Type</mat-label>
+                <mat-select formControlName="userType" required>
+                  <mat-option value="A">Admin</mat-option>
+                  <mat-option value="U">User</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>User Status</mat-label>
+                <mat-select formControlName="userSatatus" required>
+                  <mat-option value="A">Active</mat-option>
+                  <mat-option value="I">Inactive</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <label for="" class="col-form-label">Signature</label>
+            <div class="form-group col-md">
+              <img *ngIf="!imageBaseData" class="img-signature mr-3" [src]="dom.bypassSecurityTrustUrl(imgsrc)">
+              <img id="imgSignature" *ngIf="imageBaseData" class="img-signature mr-3" [src]="imageBaseData">
+              <input type="file" (change)="fileChange($event)" hidden>
+
+              <!-- <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)"
+      style="display:none;"> -->
+              <input type="file" #file placeholder="Choose file" accept="image/*" (change)="fileChange($event)"
+                     style="display:none;">
+              <button type="button" class="btn btn-success btn-sm" (click)="file.click()">Upload File</button>
+            </div>
+
+          </mat-card-content>
+          <!-- <mat-card-actions>
+            <button mat-raised-button color="primary" [disabled]="!(registerForm.valid)">Create</button>
+            <button type="button" mat-raised-button color="warn" (click)="goBack()">Cancel</button>
+          </mat-card-actions> -->
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

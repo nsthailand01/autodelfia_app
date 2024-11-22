@@ -1,0 +1,143 @@
+// .container {
+//   border: solid 1px red;
+//   width: 600px;
+//   height: 600px;
+//   position: relative;
+// }
+
+h1 {
+  margin: 0 0 0px;
+}
+
+// td {
+//   vertical-align: middle;
+//   text-align: center;
+
+// }
+
+.translate-rotate {
+  background: lightBlue;
+  position: absolute;
+  // height: 100%;
+  // width: 100%;
+  // left: 0;
+  // top: 0;
+  text-align: center;
+
+  transform: rotate(-90deg) scale(1.3);
+  // transform-origin: left top;
+  white-space: nowrap;
+  // vertical-align: middle;
+  // margin-left: -5px;
+  vertical-align: top;
+
+}
+
+.card-data {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.cardx {
+  width: 40%;
+  height: 100px;
+  line-height: 100px;
+  background-color: grey;
+  margin: 10px;
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.roundcorners-card {
+  border-radius: 5px;
+  border: 1px solid #73AD21;
+  padding: 3px;
+  width: 5cm;
+  height: 3cm;
+}
+
+
+.rotate_text {
+  -webkit-transform: rotate(-90deg) scale(1.3);
+  -moz-transform: rotate(-90deg) scale(1.3);
+  -ms-transform: rotate(-90deg) scale(1.3);
+  transform: rotate(-90deg) scale(1.3);
+
+  position: relative;
+  // vertical-align: bottom;
+  // text-align: center;
+  width: 20px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.rotated_cell {
+  height: 100px;
+  vertical-align: center;
+}
+
+// th,
+// td {
+//   border: 1px solid black;
+//   width: 23px !important;
+// }
+
+.nopadding {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+[class*="col-"] {
+  margin-bottom: 0px !important;
+}
+
+// // A4
+// @media print and (width: 4cm) and (height: 2.5cm) {
+//   @page {
+//     margin: 3cm;
+//   }
+// }
+
+
+.card_desc {
+  // display: block;
+  font-size: 8px;
+}
+
+.card_font {
+  font-size: 8px;
+}
+
+// break {
+//   flex-basis: 100%;
+//   width: 0px;
+//   height: 0px;
+//   overflow: hidden;
+// }
+
+
+#content2::before {
+  content: "";
+  white-space: pre;
+  float: left;
+  background-color: #87CEEB;
+  clear: left;
+}
+
+.break {
+  flex-basis: 100%;
+  height: 20;
+}
+
+
+// @media print and (width: 6.0cm) and (height: 3.5cm) {
+//   @page {
+//     margin: 1cm;
+//   }
+// }

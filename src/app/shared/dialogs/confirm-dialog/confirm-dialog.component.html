@@ -1,0 +1,14 @@
+
+  <h1 mat-dialog-title>
+    <strong>{{ data.title }}</strong>
+  </h1>
+
+  <div mat-dialog-content style="margin-bottom:10px">
+    <span class="content-span full-width" [innerHTML]="data.message"></span>
+    <!--<p [innerHTML]="data.content"></p>-->
+  </div>
+
+  <div mat-dialog-actions style="margin-bottom:3px">
+    <button mat-raised-button color="warn" tabindex="-1" (click)="onDismiss()" [mat-dialog-close]="false">{{ data.cancelText }}</button>
+    <button mat-raised-button color="primary" (click)="onConfirm()" [mat-dialog-close]="true">{{ data.confirmText }}</button>
+  </div>

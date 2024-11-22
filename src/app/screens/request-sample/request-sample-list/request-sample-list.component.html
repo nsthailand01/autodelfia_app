@@ -1,0 +1,154 @@
+<div fxLayout fxLayout.lt-md="column wrap" fxLayoutAlign="start start" fxLayoutGap="15px">
+  <div fxFlex="20%">
+    <div>
+      <a [routerLink]="['/request-sample/create']" mat-flat-button color="primary" (click)="onCreateNew()">
+        <i class="fa fa-plus-circle mr-2" aria-hidden="true"></i>Create New</a>
+    </div>
+  </div>
+  <div fxFlex="60%">
+    <mat-form-field style="width: 100%;">
+      <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+  </div>
+  <div fxFlex="20%">
+    <mat-form-field appearance="fill">
+      <mat-label>Choose an date range</mat-label>
+      <mat-select [(ngModel)]="rangeSelectedValue" (selectionChange)="onRangeChange()">
+        <mat-option value="LastYear">Last Year</mat-option>
+        <mat-option value="LastMonth">Last Month</mat-option>
+        <mat-option value="LastWeek">Last Week</mat-option>
+        <mat-option value="ThisYear">This Year</mat-option>
+        <mat-option value="ThisMonth">This Month</mat-option>
+        <mat-option value="ThisWeek">This Week</mat-option>
+        <mat-option value="Today">Today</mat-option>
+        <mat-option value="All">All</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
+
+<!-- <div fxLayout fxLayout.lt-md="column wrap" fxLayoutAlign="start center" fxLayoutGap.gt-sm="250px"
+  fxLayoutGap.lt.md="20px">
+  <div>
+    <a [routerLink]="['/request-sample/create']" mat-flat-button color="primary" (click)="onCreateNew()">
+      <i class="fa fa-plus-circle mr-2" aria-hidden="true"></i>Create New</a>
+  </div>
+  <mat-form-field fxFlex="40%">
+    <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
+</div> -->
+
+<table mat-table [dataSource]="dataSource" matSort (matSortChange)="customSort($event)">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear width="25px">No.</th>
+    <td mat-cell *matCellDef="let element; let i = index;">
+      {{ (i+1) + (this.paginator.pageIndex * this.paginator.pageSize) | number:'1.0' }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="LabNumber">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Lab Number </th>
+    <td mat-cell *matCellDef="let element"> {{element.LabNumber}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="SiteName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> หน่วยงานส่งตรวจ </th>
+    <td mat-cell *matCellDef="let element"> {{element.SiteName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="ReceiveNo">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> เลขที่ทะเบียนรับ </th>
+    <td mat-cell *matCellDef="let element"> {{element.ReceiveNo}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="ShiptoNo">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> เลขที่ใบนำส่ง </th>
+    <td mat-cell *matCellDef="let element"> {{element.ShiptoNo}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="ShiptoDate">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> ลงวันที่ </th>
+    <td mat-cell *matCellDef="let element"> {{element.ShiptoDate | localDatetimePipe}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="SampleTypeName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> ชนิดตัวอย่าง </th>
+    <td mat-cell *matCellDef="let element"> {{element.SampleTypeName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="FullName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> ชื่อ-สกุล หญิงตั้งครรภ์ </th>
+    <td mat-cell *matCellDef="let element"> {{element.FullName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="IdentityCard">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> เลขบัตรประจำตัวประชาชน </th>
+    <td mat-cell *matCellDef="let element"> {{element.IdentityCard}} </td>
+  </ng-container>
+
+  <!-- <ng-container matColumnDef="ga">
+    <th mat-header-cell *matHeaderCellDef> GA </th>
+    <td mat-cell *matCellDef="let element"><i class="fa fa-exclamation-triangle text-danger" aria-hidden="true"
+        data-toggle="tooltip" title="Hooray!"></i>
+    </td>
+  </ng-container> -->
+
+  <ng-container matColumnDef="InputPercentage">
+    <th mat-header-cell *matHeaderCellDef> สถานะ </th>
+    <td mat-cell *matCellDef="let element">
+      <div class="progress progress-md">
+        <div *ngIf="element.InputPercentage <= 50" class="progress-bar progress-bar-warning bg-warning"
+          role="progressbar" [ngStyle]="{width: element.InputPercentage + '%'}">
+        </div>
+        <div *ngIf="element.InputPercentage > 50 && element.InputPercentage < 100"
+          class="progress-bar progress-bar-info bg-info" role="progressbar"
+          [ngStyle]="{width: element.InputPercentage + '%'}"></div>
+        <div *ngIf="element.InputPercentage == 100" class="progress-bar progress-bar-success bg-success"
+          role="progressbar" [ngStyle]="{width: element.InputPercentage + '%'}"></div>
+      </div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="percentage">
+    <th mat-header-cell *matHeaderCellDef class="text-center"> % </th>
+    <td mat-cell *matCellDef="let element" class="text-center">
+      <span *ngIf="element.InputPercentage <= 50" class="badge bg-warning">{{ element.InputPercentage }}%</span>
+      <span *ngIf="element.InputPercentage > 50 && element.InputPercentage < 100" class="badge bg-info">{{
+        element.InputPercentage }}%</span>
+      <span *ngIf="element.InputPercentage == 100" class="badge bg-success">{{ element.InputPercentage }}%</span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="details">
+    <th mat-header-cell *matHeaderCellDef> Details </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button color="primary" (click)="redirectToDetails(element.RequestID)">
+        <mat-icon class="mat-18">reorder</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- <ng-container matColumnDef="update">
+    <th mat-header-cell *matHeaderCellDef> Update </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button color="accent" (click)="redirectToUpdate(element.RequestID)">
+        <mat-icon class="mat-18">system_update</mat-icon>
+      </button>
+    </td>
+  </ng-container> -->
+
+  <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef> Delete </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button color="warn" (click)="redirectToDelete(element.RequestID)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-paginator [pageSize]="200" [pageSizeOptions]="[100, 200, 300, 400, 500, 1000]">
+</mat-paginator>

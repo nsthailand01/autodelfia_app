@@ -1,0 +1,1325 @@
+<app-breadcrumb-navigator pageTitle="ลงทะเบียนคนไข้" currentPageName="ลงทะเบียนคนไข้"></app-breadcrumb-navigator>
+
+<!-- <div>
+  {{ this.patientForm.value | json}}
+</div> -->
+
+<!-- <div>
+  {{ this.requestsForm.value | json }}
+</div> -->
+
+<!-- toolbar button -->
+<div class="mb-2">
+  <button type="button" class="mr-1 btn btn-info waves-effect waves-light" (click)="onNewClick()">
+    <i class="mr-1 far fa-file" aria-hidden="true"></i> New</button>
+  <button type="submit" class="m-1 btn btn-danger shadow-danger" (click)="goBack()">
+    <i class="mr-1 fa fa-times"></i>Cancel
+  </button>
+  <button type="submit" class="m-1 btn btn-success shadow-success" (click)="doSave()"><i
+      class="mr-1 fa fa-check-square-o"></i>Save
+  </button>
+</div> <!-- end toolbar button -->
+
+<div id="accordion">
+  <!-- ลงทะเบียนตัวอย่าง -->
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+          aria-controls="collapseOne">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-user-circle-o"></i>ลงทะเบียนตัวอย่าง
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+      <div class="card-body">
+        <form [formGroup]="requestsForm">
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="input-labnumber" class="col-form-label">Lab Number<small> (auto)</small></label>
+              <input type="text" class="form-control form-control-sm" id="input-labnumber" placeholder="Lab Number"
+                formControlName="labNumber">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="input-2" class="col-form-label">เลขที่ทะเบียนรับ</label>
+              <input type="text" class="form-control form-control-sm" id="input-2" placeholder=""
+                formControlName="receiveNo">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-2">
+              <label for="input-3" class="col-form-label">วันที่รับตัวอย่าง</label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-sampleDate" #dpSampleDate="bsDatepicker" bsDatepicker
+                  [bsConfig]="bsConfig" formControlName="receiveDate">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="dpSampleDate.toggle()">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="input-shiptoNo" class="col-form-label">เลขที่ใบนำส่ง</label>
+              <input type="text" class="form-control form-control-sm" id="input-shiptoNo" placeholder=""
+                formControlName="shiptoNo">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="input-externalNo" class="col-form-label">External No.</label>
+              <input type="text" class="form-control form-control-sm" id="input-externalNo" placeholder=""
+                formControlName="externalNo">
+            </div>
+
+            <div class="form-group col-md-2">
+              <label for="input-5" class="col-form-label">ลงวันที่</label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-saveDate" #dpSaveDate="bsDatepicker" bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="shiptoDate">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="dpSaveDate.toggle()">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+
+            <div class="form-group col-md-6">
+              <label for="input-profile" class="col-form-label">วัตถุประสงค์</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-profile" placeholder="วัตถุประสงค์"
+                  formControlName="profileName" (blur)="onProfileBlur($event)">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="openProfilePicker()">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label for="input-sampletype" class="col-form-label">ชนิดตัวอย่าง</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-sampletype" placeholder="ชนิดตัวอย่าง"
+                  formControlName="sampleTypeName" (blur)="onSampleTypeBlur($event)">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="openSampleTypePicker()">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label for="input-samplestyle" class="col-form-label">ลักษณะตัวอย่าง</label>
+              <input type="text" name="input-samplestyle" id="input-samplestyle" class="form-control form-control-sm"
+                formControlName="sampleStyle">
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> <!-- จบ ลงทะเบียนตัวอย่าง -->
+
+  <!-- ข้อมูลหน่วยงานที่ส่งตรวจ -->
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+          aria-controls="collapseTwo">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-file-text-o"></i>ข้อมูลหน่วยงานที่ส่งตรวจ
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo">
+      <div class="card-body">
+        <form [formGroup]="requestsForm">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="input-sentsampleid" class="col-form-label">หน่วยงาน</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-sentsampleid" placeholder="หน่วยงาน"
+                  formControlName="siteName" (blur)="onSiteBlur($event)">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="openMSSitePicker()">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="input-9" class="col-form-label">จำนวนตัวอย่าง</label>
+              <input type="text" class="form-control form-control-sm" id="input-9" placeholder="จำนวนตัวอย่าง"
+                formControlName="numberOFSamples" readonly>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="input-sentlabby" class="col-form-label">แพทย์/ผู้ส่งตรวจ</label>
+              <input type="text" class="form-control form-control-sm" id="input-sentlabby"
+                placeholder="แพทย์/ผู้ส่งตรวจ" formControlName="sentLabbyID">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="input-sentlabtel" class="col-form-label">หมายเลขโทร.ติดต่อ (ผู้ส่ง)</label>
+              <input type="text" class="form-control form-control-sm" id="input-sentlabtel"
+                placeholder="หมายเลขโทร.ติดต่อ (ผู้ส่ง)" formControlName="sentLabTel">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="input-price" class="col-form-label">ค่าตรวจวิเคราะห์</label>
+              <input type="number" class="form-control form-control-sm" id="input-price" placeholder="ค่าตรวจวิเคราะห์"
+                formControlName="price">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="input-recieveResultby" class="col-form-label">ผู้รับรายงานผล</label>
+              <input type="text" class="form-control form-control-sm" id="input-recieveResultby"
+                placeholder="ผู้รับรายงานผล" formControlName="recieveResultby">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> <!-- จบ ข้อมูลหน่วยงานที่ส่งตรวจ -->
+
+  <!-- ข้อมูลหญิงตั้งครรภ์ -->
+  <div class="card">
+    <div class="card-header" id="headingThree">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
+          aria-controls="collapseThree">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-address-book-o"></i>ข้อมูลหญิงตั้งครรภ์
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseThree" class="collapse show" aria-labelledby="headingThree">
+      <div class="card-body">
+        <form [formGroup]="requestsForm">
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="input-patienTitle" class="col-form-label">คำนำหน้า</label>
+              <select class="form-control form-control-sm" id="input-patienTitle" formControlName="title">
+                <option value="" selected hidden>Choose here</option>
+                <option value="นาง">นาง</option>
+                <option value="นางสาว">นางสาว</option>
+                <option value="เด็กหญิง">เด็กหญิง</option>
+              </select>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label for="input-firstName" class="col-form-label">ชื่อ</label>
+              <input type="text" class="form-control form-control-sm" id="input-firstName" placeholder="ชื่อ"
+                formControlName="firstName">
+            </div>
+            <div class="form-group col-md-3">
+              <label for="input-lastName" class="col-form-label">สกุล</label>
+              <input type="text" class="form-control form-control-sm" id="input-lastName" placeholder="สกุล"
+                formControlName="lastName">
+            </div>
+
+            <div class="form-group col-md-2">
+              <label for="input-hn" class="col-form-label">HN</label>
+              <input type="text" class="form-control form-control-sm" id="input-hn" formControlName="hN">
+            </div>
+
+            <!-- new line -->
+            <div class="w-100"></div>
+
+            <div class="form-group col-md-3">
+              <label for="input-race" class="col-form-label">เชื้อชาติ</label>
+              <div class="input-group input-group-sm">
+                <select class="form-control form-control-sm" name="race" formControlName="race"
+                  (change)="onRaceChange($event)">
+                  <option value="" selected hidden>Choose race</option>
+                  <option *ngFor="let race of races" [value]="race.raceCode">{{race.raceName}}</option>
+                </select>
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="onAddNewRace()">
+                    <i class="fas fa-plus text-primary"></i>
+                  </button>
+                </span>
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="onEditRace()">
+                    <i class="fas fa-pencil-alt"></i>
+                  </button>
+                </span>
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="onRemoveRace()">
+                    <!-- <i class="fas fa-plus"></i> -->
+                    <i class="fas fa-trash-alt text-danger"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label for="input-identityCard" class="col-form-label">เลขบัตรประจำตัวประชาชน</label>
+              <input type="text" class="form-control form-control-sm" id="input-identityCard"
+                placeholder="เลขบัตรประจำตัวประชาชน" formControlName="identityCard">
+            </div>
+
+            <div class="form-group col-md-2">
+              <label for="input-birthday" class="col-form-label">วันเกิด<span class="required-asterisk">*</span></label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-birthday" #dpBirthDay="bsDatepicker" bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="birthday"
+                  (bsValueChange)="onBirthDayChange($event)">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="dpBirthDay.toggle()">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="input-20" class="col-form-label">อายุ</label>
+              <input type="number" class="form-control form-control-sm" id="input-20" placeholder="อายุ"
+                [(ngModel)]="age" [ngModelOptions]="{standalone: true}" readonly>
+            </div>
+            <!-- new line -->
+            <div class="w-100"></div>
+            <div class="form-group col-md-2">
+              <label for="input-weight" class="col-form-label">น้ำหนัก</label>
+              <input type="number" class="form-control form-control-sm" id="input-weight" placeholder="น้ำหนัก"
+                formControlName="weight">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="input-address" class="col-form-label">ที่อยู่</label>
+              <textarea class="form-control form-control-sm" rows="4" id="input-address" placeholder="ที่อยู่"
+                formControlName="address">
+            </textarea>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="input-23" class="col-form-label">เบอร์ติดต่อ</label>
+              <input type="text" class="form-control form-control-sm" id="input-23" placeholder="เบอร์ติดต่อ"
+                formControlName="phoneNo">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> <!-- จบ ข้อมูลหญิงตั้งครรภ์ -->
+
+  <!-- ประวัติการตั้งครรภ์ -->
+  <div class="card">
+    <div class="card-header" id="headingFour">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false"
+          aria-controls="collapseFour">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-file-text-o"></i>ประวัติการตั้งครรภ์
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseFour" class="collapse show" aria-labelledby="headingFour">
+      <div class="card-body">
+        <form [formGroup]="requestsForm">
+          <div class="form-row">
+            <div class="input-group">
+              <label for="input-24" class="col-form-label col-md-2">ตั้งครรภ์ครั้งที่</label>
+              <input type="number" class="form-control form-control-sm col-md-2" id="input-24"
+                placeholder="ตั้งครรภ์ครั้งที่" formControlName="pregnantNo">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="input-group">
+              <label for="input-25" class="col-form-label col-md-2">จำนวนทารกในครรภ์</label>
+              <mat-radio-group class="mt-2" formControlName="pregnantFlag">
+                <mat-radio-button value="1">ครรภ์เดี่ยว
+                </mat-radio-button>
+                <mat-radio-button value="2">ครรภ์แฝด (ไม่สามารถส่งตรวจได้)</mat-radio-button>
+                <mat-radio-button value="0">จำนวนทารกในครรภ์</mat-radio-button>
+              </mat-radio-group>
+              <input type="number" width="50px" class="form-control form-control-sm col-md-1" id="input-numberofOther"
+                formControlName="numberofOther">
+            </div>
+          </div>
+
+          <!-- <div class="form-row">
+            <div class="input-group">
+              <label for="input-25" class="col-form-label col-md-2">จำนวนการตั้งครรภ์</label>
+              <mat-radio-group class="mt-2" formControlName="pregnantFlag">
+                <mat-radio-button value="1">ครรภ์เดี่ยว
+                </mat-radio-button>
+                <mat-radio-button value="2">ครรภ์แฝด</mat-radio-button>
+                <mat-radio-button value="0">อื่น ๆ</mat-radio-button>
+              </mat-radio-group>
+              <input type="number" width="50px" class="form-control form-control-sm col-md-1" id="input-numberofOther"
+                formControlName="numberofOther">
+            </div>
+          </div> -->
+          <div class="form-row">
+            <div class="input-group">
+              <label class="col-form-label col-md-2">ตั้งครรภ์จากการผสมเทียม</label>
+              <mat-radio-group class="mt-2" name="artificialInseminationFlag"
+                formControlName="artificialInseminationFlag">
+                <mat-radio-button value="0">ไม่มี</mat-radio-button>
+                <mat-radio-button value="1">มี</mat-radio-button>
+              </mat-radio-group>
+              <span>
+                <select class="form-control form-control-sm" id="input-artificialInseminationValue"
+                  formControlName="artificialInseminationValue">
+                  <option value="" selected hidden>Choose here</option>
+                  <option value="0">IVF</option>
+                  <option value="1">GIFT</option>
+                  <option value="2">ZIFT</option>
+                  <option value="3">Clomiphene treatment</option>
+                  <option value="4">Donor egg</option>
+                  <option value="5">Donor insemination</option>
+                  <option value="6">ICSI</option>
+                  <option value="7">Other</option>
+                </select>
+              </span>
+            </div>
+          </div>
+
+          <!-- <div class="form-row">
+            <div class="input-group">
+              <label class="col-form-label col-md-2" for="PregnantNature">ตั้งครรภ์ธรรมชาติ</label>
+              <mat-checkbox class="mt-1"> ระบุ </mat-checkbox>
+              <input type="text" width="50px" class="form-control form-control-sm col-md-3"
+                formControlName="pregnantTypeOther">
+            </div>
+
+          </div> -->
+
+          <div class="m-1 border form-row justify-content-center border-primary" style="border-radius: 5px 5px;">
+            <div class="form-group col-md-3">
+              <label for="input-ovumCollectDate" class="col-form-label">วันที่เก็บไข่</label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-ovumCollectDate" #dpOvumCollectDate="bsDatepicker" bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="ovumCollectDate">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="dpOvumCollectDate.toggle()">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="input-embryoTransferDate" class="col-form-label">วันที่ย้ายตัวอ่อน</label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-embryoTransferDate" #dpEmbryoTransferDate="bsDatepicker"
+                  bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="embryoTransferDate">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="dpEmbryoTransferDate.toggle()">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="input-donorBirthdate" class="col-form-label">วันเดือนปีเกิด Donor</label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-donorBirthdate" #dpDonorBirthdate="bsDatepicker" bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="donorBirthdate">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="dpDonorBirthdate.toggle()">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="border card card-primary card-outline border-primary">
+            <div class="card-body">
+
+              <div formArrayName="patientMoreForms">
+                <div *ngFor="let more of moreForms.controls; let idx = index" [formGroupName]="idx">
+                  <div class="form-row">
+                    <div class="input-group">
+                      <label for="" class="col-form-label col-form-label-w500 col-md-5">{{ more.value.patientMoreText
+                        }}</label>
+                      <mat-radio-group class="mt-2" formControlName="value" [value]="more?.value?.value">
+                        <mat-radio-button value="1">มี</mat-radio-button>
+                        <mat-radio-button value="0">ไม่มี</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div> <!-- จบ ประวัติการตั้งครรภ์ -->
+
+  <!-- อายุครรภ์ -->
+  <div class="card">
+    <div class="card-header" id="headingFive">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false"
+          aria-controls="collapseFive">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-file-text-o"></i>อายุครรภ์ <span class="ml-3 text-danger font-kanit"
+              id="round-corners">**กรณีทำ
+              ULTRASOUND กรุณากรอก BPD หรือ CRL
+              เพื่อความแม่นยำในการตรวจวิเคราะห์</span>
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseFive" class="collapse show" aria-labelledby="headingFive">
+      <div class="card-body">
+        <form [formGroup]="requestsForm">
+
+          <div class="form-row form-inline">
+            <div class="input-group input-group-sm">
+              <mat-radio-group class="mt-2" name="riskAnalystAgeFlag" formControlName="riskAnalystAgeFlag">
+                <mat-radio-button value="ULT">ULTRASOUND</mat-radio-button>
+              </mat-radio-group>
+              <label for="input-ultrasoundDate" class="col-form-label">ตรวจเมื่อวันที่</label>
+              <input class="form-control form-control-sm" id="input-ultrasoundDate" #dpCheckDate="bsDatepicker"
+                bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="ultrasoundDate"
+                (bsValueChange)="calculateGA()">
+              <span class="input-group-append">
+                <button class="btn btn-outline-secondary form-control form-control-sm" (click)="dpCheckDate.toggle()">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+
+          <!-- <div class="form-row">
+            <div class="col-md-12">
+              <div class="form-row form-inline">
+                <div class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" id="GestationalAgeUltrasound"
+                    name="riskAnalystAgeFlag" value="ULT" formControlName="riskAnalystAgeFlag">
+                  <label class="custom-control-label" for="GestationalAgeUltrasound">ULTRASOUND</label>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="input-ultrasoundDate" class="col-form-label">ตรวจเมื่อวันที่</label>
+                  <div class="input-group input-group-sm">
+                    <input class="form-control" id="input-ultrasoundDate" #dpCheckDate="bsDatepicker" bsDatepicker
+                      [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="ultrasoundDate">
+                    <span class="input-group-append">
+                      <button class="btn btn-outline-secondary" (click)="dpCheckDate.toggle()">
+                        <i class="far fa-calendar-alt"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="form-row">
+            <div class="input-group input-group-sm indent-100">
+              <mat-radio-group class="mt-2" name="ultrasoundFlag" formControlName="ultrasoundFlag">
+                <mat-radio-button value="BPD">BPD</mat-radio-button>
+              </mat-radio-group>
+              <input type="number" class="mr-2 form-control form-control-sm col-md-1" id="input-ultBPD"
+                formControlName="ultrasound_BPD" (input)="calculateGA()">
+              <label for="input-ultBPD" class="col-form-label">mm</label>
+            </div>
+          </div>
+
+          <!-- <div class="form-row">
+            <div class="col-md-12">
+              <div class="form-row form-inline">
+                <div class="custom-control custom-radio indent-100">
+                  <input type="radio" class="custom-control-input" id="ultrasoundFlagBPD" name="ultrasoundFlag"
+                    value="BPD" formControlName="ultrasoundFlag">
+                  <label class="custom-control-label" for="ultrasoundFlagBPD">BPD</label>
+                </div>
+                <div class="form-group col-md-4">
+                  <input type="number" class="mr-2 form-control form-control-sm col-md-3" id="input-ultBPD"
+                    formControlName="ultrasound_BPD">
+                  <label for="input-ultBPD" class="col-form-label">mm</label>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="form-row">
+            <div class="input-group input-group-sm indent-100">
+              <mat-radio-group class="mt-2" name="ultrasoundFlag" formControlName="ultrasoundFlag">
+                <mat-radio-button value="CRL">CRL</mat-radio-button>
+              </mat-radio-group>
+              <input type="number" class="mr-2 form-control form-control-sm col-md-1" id="input-ultCRL"
+                formControlName="ultrasound_CRL">
+              <label for="input-ultCRL" class="col-form-label">mm</label>
+            </div>
+          </div>
+
+          <!-- <div class="form-row">
+            <div class="col-md-12">
+              <div class="form-row form-inline">
+                <div class="custom-control custom-radio indent-100">
+                  <input type="radio" class="custom-control-input" id="ultrasoundFlagCLR" name="ultrasoundFlag"
+                    value="CRL" formControlName="ultrasoundFlag">
+                  <label class="custom-control-label" for="ultrasoundFlagCLR">CRL</label>
+                </div>
+                <div class="form-group col-md-4">
+                  <input type="number" class="mr-2 form-control form-control-sm col-md-3" id="input-ultCRL"
+                    formControlName="ultrasound_CRL">
+                  <label for="input-ultCRL" class="col-form-label">mm</label>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="form-row form-inline">
+            <div class="input-group">
+              <mat-radio-group class="mt-2" name="riskAnalystAgeFlag" formControlName="riskAnalystAgeFlag">
+                <mat-radio-button value="GA">GA ณ วันเจาะเลือด</mat-radio-button>
+              </mat-radio-group>
+              <div class="form-group">
+                <label for="input-gAAgeWeeks" class="col-form-label">สัปดาห์</label>
+                <input type="number" class="mr-2 form-control form-control-sm col-md-4" id="input-gAAgeWeeks"
+                  placeholder="สัปดาห์" formControlName="gAAgeWeeks">
+                <label for="input-gAAgeDays" class="col-form-label">วัน</label>
+                <input type="number" class="form-control form-control-sm col-md-4" id="input-gAAgeDays"
+                  placeholder="วัน" formControlName="gAAgeDays">
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="form-row">
+            <div class="col-md-12">
+              <div class="form-row form-inline">
+                <div class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" id="GestationalAgeGA" name="riskAnalystAgeFlag"
+                    value="GA" formControlName="riskAnalystAgeFlag">
+                  <label class="custom-control-label" for="GestationalAgeGA"> (GA)</label>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="input-gAAgeWeeks" class="col-form-label">สัปดาห์</label>
+                  <input type="number" class="form-control form-control-sm col-md-4" id="input-gAAgeWeeks"
+                    placeholder="สัปดาห์" formControlName="gAAgeWeeks">
+                  <label for="input-gAAgeDays" class="col-form-label">วัน</label>
+                  <input type="number" class="form-control form-control-sm col-md-4" id="input-gAAgeDays"
+                    placeholder="วัน" formControlName="gAAgeDays">
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="form-row form-inline">
+            <div class="input-group">
+              <mat-radio-group class="mt-2" name="riskAnalystAgeFlag" formControlName="riskAnalystAgeFlag">
+                <mat-radio-button value="LMP">LMP</mat-radio-button>
+              </mat-radio-group>
+              <!-- <label for="input-lmpWeeks" class="col-form-label">สัปดาห์</label>
+                              <input type="number" class="mr-2 form-control form-control-sm col-md-3" id="input-lmpWeeks"
+                                formControlName="lMPWeeks">
+                              <label for="input-lmpDays" class="col-form-label">วัน</label>
+                              <input type="number" class="form-control form-control-sm col-md-3" id="input-lmpDays"
+                                formControlName="lMPDays"> -->
+
+              <label for="input-menses" class="col-form-label">ประจำเดือนครั้งสุดท้าย (LMP)</label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-menses" #dpMenses="bsDatepicker" bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY'}" formControlName="lMPDate">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="dpMenses.toggle()">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- <div class="form-row">
+            <div class="col-md-12">
+              <div class="form-row form-inline">
+                <div class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" id="GestationalAgeLMP" name="riskAnalystAgeFlag"
+                    value="LMP" formControlName="riskAnalystAgeFlag">
+                  <label class="custom-control-label" for="GestationalAgeLMP">LMP</label>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="input-lmpWeeks" class="col-form-label">สัปดาห์</label>
+                  <input type="number" class="form-control form-control-sm col-md-3" id="input-lmpWeeks"
+                    formControlName="lMPWeeks">
+                  <label for="input-lmpDays" class="col-form-label">วัน</label>
+                  <input type="number" class="form-control form-control-sm col-md-3" id="input-lmpDays"
+                    formControlName="lMPDays">
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <!-- <div class="form-row">
+            <div class="col-md-12">
+              <div class="form-row form-inline">
+                <div class="form-group col-md-4">
+                  <label for="input-menses" class="col-form-label">ประจำเดือนครั้งสุดท้าย (LMP)</label>
+                  <div class="input-group input-group-sm">
+                    <input class="form-control" id="input-menses" #dpMenses="bsDatepicker" bsDatepicker
+                      [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY'}" formControlName="lMPDate">
+                    <span class="input-group-append">
+                      <button class="btn btn-outline-secondary" (click)="dpMenses.toggle()">
+                        <i class="far fa-calendar-alt"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+        </form>
+      </div>
+    </div>
+  </div> <!-- จบ อายุครรภ์ -->
+
+  <!-- Ultrasound -->
+  <div class="card" hidden>
+    <div class="card-header" id="headingSix">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false"
+          aria-controls="collapseSix">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-file-text-o"></i>Ultrasound
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseSix" class="collapse show" aria-labelledby="headingSix">
+      <div class="card-body">
+        <form [formGroup]="requestsForm">
+          <div class="form-row form-inline">
+            <label for="input-ultNT" class="col-form-label">การทดสอบ NT</label>
+            <input type="number" class="form-control form-control-sm col-md-3" id="input-ultNT"
+              formControlName="ultrasound_NT">
+            <label for="input-ultNT" class="col-form-label">mm</label>
+          </div>
+
+          <label for="" class="col-form-label">การทดสอบ UTPI</label>
+          <div class="form-row form-inline indent-50">
+            <label for="input-utpi-lua" class="col-form-label">Left Uterine Artery</label>
+            <input type="number" class="form-control form-control-sm col-md-2" id="input-utpi-lua"
+              formControlName="ultrasound_UTPI_LUA">
+            <label for="input-utpi-lua" class="col-form-label">mm</label>
+            <label for="input-utpi-rua" class="col-form-label">Right Uterine Artery</label>
+            <input type="number" class="form-control form-control-sm col-md-2" id="input-utpi-rua"
+              formControlName="ultrasound_UTPI_RUA">
+            <label for="input-utpi-rua" class="col-form-label">mm</label>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> <!-- End Ultrasound -->
+
+  <!-- ความดันโลหิต -->
+  <div class="card" hidden>
+    <div class="card-header" id="headingSevent">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSevent"
+          aria-expanded="false" aria-controls="collapseSevent">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-file-text-o"></i>ความดันโลหิต
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseSevent" class="collapse show" aria-labelledby="headingSevent">
+      <div class="card-body">
+        <form [formGroup]="requestsForm">
+          <div class="form-row">
+            <div class="table-responsive">
+              <table class="table table-responsive-md table-striped table-hover">
+                <thead class="thead-light">
+                  <tr>
+                    <th style="min-width:50px">วันเดือนปี ที่วัด</th>
+                    <th>Left Syst #1</th>
+                    <th>Left Diast #1</th>
+                    <th>Left Syst #2</th>
+                    <th>Left Diast #2</th>
+                    <th>Right Syst #1</th>
+                    <th>Right Diast #1</th>
+                    <th>Right Syst #2</th>
+                    <th>Right Diast #2</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="min-width:50px">
+                      <div class="input-group input-group-sm">
+                        <input class="form-control" id="input-bloodPressureDate" #dpBloodPressureDate="bsDatepicker"
+                          bsDatepicker [bsConfig]="bsConfig" formControlName="bloodPressureDate">
+                        <span class="input-group-append">
+                          <button class="btn btn-outline-secondary" (click)="dpBloodPressureDate.toggle()">
+                            <i class="far fa-calendar-alt"></i>
+                          </button>
+                        </span>
+                      </div>
+                    </td>
+                    <td class="pt-2 pb-2">
+                      <input type="number" formControlName="bloodPressureLeftSyst1"
+                        class="form-control form-control-sm" />
+                    </td>
+                    <td class="pt-2 pb-2">
+                      <input type="number" formControlName="bloodPressureLeftDiast1"
+                        class="form-control form-control-sm" />
+                    </td>
+                    <td class="pt-2 pb-2">
+                      <input type="number" formControlName="bloodPressureLeftSyst2"
+                        class="form-control form-control-sm" />
+                    </td>
+                    <td class="pt-2 pb-2">
+                      <input type="number" formControlName="bloodPressureLeftDiast2"
+                        class="form-control form-control-sm" />
+                    </td>
+                    <td class="pt-2 pb-2">
+                      <input type="number" formControlName="bloodPressureRightSyst1"
+                        class="form-control form-control-sm" />
+                    </td>
+                    <td class="pt-2 pb-2">
+                      <input type="number" formControlName="bloodPressureRightDiast1"
+                        class="form-control form-control-sm" />
+                    </td>
+                    <td class="pt-2 pb-2">
+                      <input type="number" formControlName="bloodPressureRightSyst2"
+                        class="form-control form-control-sm" />
+                    </td>
+                    <td class="pt-2 pb-2">
+                      <input type="number" formControlName="bloodPressureRightDiast2"
+                        class="form-control form-control-sm" />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> <!-- จบ ความดันโลหิต -->
+
+  <!-- การเจาะเก็บตัวอย่างเลือด -->
+  <div class="card">
+    <div class="card-header" id="headingEight">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseEight" aria-expanded="false"
+          aria-controls="collapseEight">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-file-text-o"></i>การเจาะเก็บตัวอย่างเลือด
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseEight" class="collapse show" aria-labelledby="headingEight">
+      <div class="card-body">
+        <form [formGroup]="requestsForm">
+          <!-- <div class="form-row">
+            <div class="form-group col-md-2">
+              <label for="input-drawblooddate" class="col-form-label">วันเดือนปีที่เจาะเลือด</label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-drawblooddate" #dpBloodSampleDate="bsDatepicker" bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="sampleDate"
+                  (bsValueChange)="calculateGA()">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="dpBloodSampleDate.toggle()">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group col-md-2">
+              <label for="input-serumdate" class="col-form-label">วันเดือนปีที่แยกซีรั่ม</label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-serumdate" #dpSerumdate="bsDatepicker" bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="salumIntersectionDate">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="dpSerumdate.toggle()">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div> -->
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="input-drawblooddate" class="col-form-label">วันเดือนปีที่เจาะเลือด<span
+                  class="required-asterisk">*</span></label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-drawblooddate" #dpBloodSampleDate="bsDatepicker" bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="sampleDate"
+                  (bsValueChange)="calculateGA()">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="dpBloodSampleDate.toggle()">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group col-md-2">
+              <label class="col-form-label">เวลาเจาะเลือด</label>
+              <ngx-timepicker-field [format]="24" [defaultTime]="'23:11'" formControlName="bloodDrawingTime">
+              </ngx-timepicker-field>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="input-serumdate" class="col-form-label">วันเดือนปีที่แยกซีรั่ม<span
+                  class="required-asterisk">*</span></label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-serumdate" #dpSerumdate="bsDatepicker" bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="salumIntersectionDate">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="dpSerumdate.toggle()">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group col-md-2">
+              <label class="col-form-label">เวลาแยกซีรั่ม</label>
+              <ngx-timepicker-field [format]="24" [defaultTime]="'23:11'" formControlName="serumSeparateTime">
+              </ngx-timepicker-field>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div> <!-- จบ การเจาะเก็บตัวอย่างเลือด -->
+
+  <!-- การบันทึกข้อมูลในโปรแกรม สปสช. -->
+  <div class="card">
+    <div class="card-header" id="headingNine">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false"
+          aria-controls="collapseNine">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-file-text-o"></i>การบันทึกข้อมูลในโปรแกรม สปสช.
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseNine" class="collapse show" aria-labelledby="headingNine">
+      <div class="card-body">
+        <form [formGroup]="requestsForm">
+          <!-- <div class="form-row">
+            <div class="col-md-12">
+              <div class="form-row form-inline">
+                <div class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" id="SSOSavedTrue" name="savetoNHSOStatus" value="Yes"
+                    formControlName="savetoNHSOStatus">
+                  <label class="custom-control-label" for="SSOSavedTrue">บันทึกแล้ว</label>
+                </div>
+                <div class="mr-3 form-group">
+                  <label for="input-ssosavedate" class="col-form-label">วันที่บันทึก</label>
+                  <div class="input-group input-group-sm">
+                    <input class="form-control" id="input-ssosavedate" #dpSSOSaveDate="bsDatepicker" bsDatepicker
+                      [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="savetoNHSODate">
+                    <span class="input-group-append">
+                      <button class="btn btn-outline-secondary" (click)="dpSSOSaveDate.toggle()">
+                        <i class="far fa-calendar-alt"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <div class="input-group w-100">
+                    <label for="input-ssoSaveName" class="col-form-label">ผู้ลงผล</label>
+                    <input type="text" class="form-control form-control-sm w-100" id="input-ssoSaveName"
+                      placeholder="ผู้ลงผล" formControlName="savetoNHSOByID">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="form-row">
+            <div class="col-md-12">
+              <div class="form-row form-inline">
+                <div class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" id="SSOSavedTrue" name="savetoNHSOStatus" value="Yes"
+                    formControlName="savetoNHSOStatus">
+                  <label class="custom-control-label" for="SSOSavedTrue">บันทึกแล้ว</label>
+                </div>
+                <div class="mr-3 form-group">
+                  <label for="input-ssosavedate" class="col-form-label">วันที่บันทึก</label>
+                  <div class="input-group input-group-sm">
+                    <input class="form-control" id="input-ssosavedate" #dpSSOSaveDate="bsDatepicker" bsDatepicker
+                      [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="savetoNHSODate">
+                    <span class="input-group-append">
+                      <button class="btn btn-outline-secondary" (click)="dpSSOSaveDate.toggle()">
+                        <i class="far fa-calendar-alt"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="form-group col-md-5">
+                  <div class="input-group w-100">
+                    <label for="input-ssoSaveName" class="col-form-label">ผู้บันทึก</label>
+                    <input type="text" class="form-control form-control-sm w-100" id="input-ssoSaveName"
+                      placeholder="ผู้บันทึก" formControlName="savetoNHSOByID">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-2">
+              <div class="form-row form-inline">
+                <div class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" id="SSOSavedFalse" name="savetoNHSOStatus" value="No"
+                    formControlName="savetoNHSOStatus">
+                  <label class="custom-control-label" for="SSOSavedFalse">ไม่บันทึก เพราะ</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-12">
+              <div class="form-row form-inline">
+                <div class="custom-control custom-radio indent-100">
+                  <input type="radio" class="custom-control-input" id="SSOSavedNot" name="nonSaveToNHSOFlag"
+                    value="NotEligible" formControlName="nonSaveToNHSOFlag">
+                  <label class="custom-control-label" for="SSOSavedNot">ไม่ได้รับสิทธิ์</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-12">
+              <div class="form-row form-inline">
+                <div class="custom-control custom-radio indent-100">
+                  <input type="radio" class="custom-control-input" id="SSOSavedOther" name="nonSaveToNHSOFlag"
+                    value="Other" formControlName="nonSaveToNHSOFlag">
+                  <label class="custom-control-label" for="SSOSavedOther">อื่น ๆ</label>
+                </div>
+                <input type="text" class="form-control form-control-sm w-50" id="input-41" placeholder="อื่น ๆ"
+                  formControlName="nonSaveToNHSORemark">
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <div class="mt-2 border card border-danger">
+          <div class="card-body">
+            <form [formGroup]="requestsForm">
+              <label for="" class="col-form-label">การชำระเงิน<span class="required-asterisk">*</span></label>
+              <div class="form-row form-inline col-sm-12">
+                <div class="custom-control col-sm-12">
+                  <mat-radio-group class="receive-radio-group" formControlName="paymentFlag">
+                    <div class="form-group form-inline">
+                      <mat-radio-button value="CashPayment" (change)="radioPaymentFlagChange($event)" checked>
+                        เงินสด
+                      </mat-radio-button>
+                      <label for="" class="col-form-label">ใบเสร็จเลขที่</label>
+                      <input type="text" class="form-control form-control-sm" id="input-paymentNo" placeholder=""
+                        formControlName="paymentNo">
+                    </div>
+                    <div class="mb-2 form-group">
+                      <mat-radio-button value="SSOPayment" (change)="radioPaymentFlagChange($event)">แจ้งหนี้
+                        สปสช.
+                      </mat-radio-button>
+                    </div>
+                    <div class="mb-2 form-group">
+                      <mat-radio-button value="SitePayment" (change)="radioPaymentFlagChange($event)">
+                        แจ้งหนี้หน่วยงานส่งตรวจ
+                      </mat-radio-button>
+                    </div>
+                    <div class="mb-2 form-group">
+                      <mat-radio-button value="AnyJobPayment" (change)="radioPaymentFlagChange($event)">
+                        โครงการตรวจต่าง
+                        ๆ
+                      </mat-radio-button>
+                    </div>
+                    <div class="mb-2 form-group form-inline">
+                      <mat-radio-button value="OtherPayment" (change)="radioPaymentFlagChange($event)">อื่น ๆ
+                      </mat-radio-button>
+                      <input type="text" class="form-control form-control-sm" id="input-paymentOther" placeholder=""
+                        formControlName="paymentOther">
+                    </div>
+                  </mat-radio-group>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div> <!-- จบ การบันทึกข้อมูลในโปรแกรม สปสช. -->
+
+  <!-- ผลการตรวจคัดกรองภาวะครรภ์เป็นพิษ -->
+  <div class="card" hidden>
+    <div class="card-header" id="headingTen">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false"
+          aria-controls="collapseTen">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-file-text-o"></i>ผลการตรวจคัดกรองภาวะครรภ์เป็นพิษ
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseTen" class="collapse show" aria-labelledby="headingTen">
+      <div class="card-body">
+        <form>
+          <div class="form-row">
+            <div class="container table-responsive">
+              <table class="table table-striped table-hover ">
+                <thead class="thead-light">
+                  <th>รายการตรวจ (Test)</th>
+                  <th>ผลการตรวจ (Value)</th>
+                  <th>หน่วย (Unit)</th>
+                  <th>CORR. MOM</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>AFP</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>hCGb</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>INHIBIN</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>UE3UPD</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> <!-- ผลการตรวจคัดกรองภาวะครรภ์เป็นพิษ -->
+
+  <!-- ผลการประเมินความเสี่ยง -->
+  <div class="card" hidden>
+    <div class="card-header" id="headingEleven">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseEleven"
+          aria-expanded="false" aria-controls="collapseEleven">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-file-text-o"></i>ผลการประเมินความเสี่ยง
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseEleven" class="collapse show" aria-labelledby="headingEleven">
+      <div class="card-body">
+        <form [formGroup]="requestsForm">
+          <div class="form-row">
+            <div class="form-row form-inline">
+              <div class="form-group indent-50">
+                <label for="input-analystdate" class="col-form-label">วันที่วิเคราะห์</label>
+                <div class="input-group input-group-sm">
+                  <input class="form-control" id="input-analystdate" #dpAnalystDate="bsDatepicker" bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="analystDate">
+                  <span class="input-group-append">
+                    <button class="btn btn-outline-secondary" (click)="dpAnalystDate.toggle()">
+                      <i class="far fa-calendar-alt"></i>
+                    </button>
+                  </span>
+                </div>
+                <!-- <input type="date" class="form-control form-control-sm" id="input-42" placeholder="วันที่วิเคราะห์"> -->
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="form-row">
+            <div class="container table-responsive">
+              <table class="table table-striped table-hover ">
+                <thead class="thead-light">
+                  <th></th>
+                  <th>ค่าความเสี่ยง</th>
+                  <th>ค่า Cut-off ความเสี่ยง</th>
+                  <th>ผลการประเมินความเสี่ยง</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <!-- <td>Pre-eclampsia &lt; 32 weeks</td> -->
+                    <td>T21</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <!-- <td>Pre-eclampsia &lt; 34 weeks</td> -->
+                    <td>T18</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <!-- <td>Pre-eclampsia &lt; 37 weeks</td> -->
+                    <td>T13</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <!-- <td>Pre-eclampsia &gt; 37 weeks</td> -->
+                    <td>NTD</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> <!-- จบ ผลการประเมินความเสี่ยง -->
+
+</div>
+
+
+
+<div class="container-fluid no-padding">
+
+  <div class="row" hidden>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h4>Choose your gender</h4>
+          <div class="form-group">
+            <label class="mr-3">
+              <input type="radio" class="mr-1" name="gender"> Male
+            </label>
+            <label class="mr-3">
+              <input type="radio" class="mr-1" name="gender"> Female
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ข้อมูลแบบ tabs -->
+  <div class="row" hidden>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <mat-tab-group dynamicHeight>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">post_add</mat-icon>ลงทะเบียนตัวอย่าง
+              </ng-template>
+              <ng-template matTabContent>
+                <!-- <app-register-sample-tab></app-register-sample-tab> -->
+              </ng-template>
+            </mat-tab>
+
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">list</mat-icon>ข้อมูลหน่วยงานที่ส่งตรวจ
+              </ng-template>
+              <ng-template matTabContent>
+                <!-- <app-agency-tab></app-agency-tab> -->
+              </ng-template>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">list</mat-icon>ข้อมูลหญิงตั้งครรภ์
+              </ng-template>
+              <ng-template matTabContent>
+                <!-- <app-pregnant-info-tab></app-pregnant-info-tab> -->
+              </ng-template>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">list</mat-icon>ประวัติการตั้งครรภ์
+              </ng-template>
+              <ng-template matTabContent>
+                <!-- <app-pregnancy-history-tab></app-pregnancy-history-tab> -->
+              </ng-template>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">list</mat-icon>อายุครรภ์
+              </ng-template>
+              <ng-template matTabContent>
+                <!-- <app-gestational-age-tab></app-gestational-age-tab> -->
+              </ng-template>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">list</mat-icon>ULTRASOUND
+              </ng-template>
+              <ng-template matTabContent>
+                <!-- <app-ultrasound-tab></app-ultrasound-tab> -->
+              </ng-template>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">list</mat-icon>ความดันโลหิต
+              </ng-template>
+              <ng-template matTabContent>
+                <!-- <app-blood-pressure-tab></app-blood-pressure-tab> -->
+              </ng-template>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">list</mat-icon>การเจาะเก็บตัวอย่างเลือด
+              </ng-template>
+              <ng-template matTabContent>
+                <!-- <app-blood-samples-tab></app-blood-samples-tab> -->
+              </ng-template>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">list</mat-icon>การบันทึกข้อมูลในโปรแกรม สปสช.
+              </ng-template>
+              <ng-template matTabContent>
+                <!-- <app-nhso-record-info-tab></app-nhso-record-info-tab> -->
+              </ng-template>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">list</mat-icon>ผลการตรวจคัดกรองภาวะครรภ์เป็นพิษ
+              </ng-template>
+              <ng-template matTabContent>
+                <!-- <app-pregnancy-toxic-results-tab></app-pregnancy-toxic-results-tab> -->
+              </ng-template>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">list</mat-icon>ผลการประเมินความเสี่ยง
+              </ng-template>
+              <ng-template matTabContent>
+                <!-- <app-risk-assessment-results-tab></app-risk-assessment-results-tab> -->
+              </ng-template>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end ข้อมูลแบบ tabs -->
+
+</div>

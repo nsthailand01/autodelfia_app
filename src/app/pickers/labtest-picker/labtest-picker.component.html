@@ -1,0 +1,170 @@
+<div class="modal-content" style="z-index:1000000">
+  <ngx-loading [show]="isLoading"></ngx-loading>
+
+  <div class="modal-header">
+    <h4 class="modal-title pull-left page-title font-kanit">{{ title }}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+
+    <!--<div class="pull-right">
+      <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>-->
+
+    <div class="form-group">
+      <div class="table-responsive-md">
+        <table id="tableCustomer" class="table table-hover table-sm table-striped"> 
+          <thead>
+            <tr>
+              <!--<th scope="col" class="sticky-col first-col text-center">ลำดับ</th>-->
+              <th scope="col" class="sticky-col first-col text-center">ครั้งที่</th>
+              <td>Labnumber</td>
+              <td>ผลการตรวจ AFP</td>
+              <td>หน่วย (Unit)</td>
+              <td>CORR. MOM</td>
+              <td>ผลการตรวจ HCGB</td>
+              <td>หน่วย (Unit)</td>
+              <td>CORR. MOM</td>
+              <td>ผลการตรวจ INHIBIN</td>
+              <td>หน่วย (Unit)</td>
+              <td>CORR. MOM</td>
+              <td>ผลการตรวจ UE3UPD</td>
+              <td>หน่วย (Unit)</td>
+              <td>CORR. MOM</td>
+
+
+              <td>วันที่วิเคราะห์</td>
+
+              <td>ค่าความเสี่ยง T21</td>
+              <td>ค่าCut-off ความเเสี่ยง T21</td>
+              <td>ผลการประมิน6ความเสี่ยง T21</td>
+
+              <td>ค่าความเสี่ยง T18</td>
+              <td>ค่าCut-off ความเเสี่ยง T18</td>
+              <td>ผลการประมิน6ความเสี่ยง T18</td>
+
+              <td>ค่าความเสี่ยง T13</td>
+              <td>ค่าCut-off ความเเสี่ยง T13</td>
+              <td>ผลการประมิน6ความเสี่ยง T13</td>
+
+
+              <td>ค่าความเสี่ยง NTD</td>
+              <td>ค่าCut-off ความเเสี่ยง NTD</td>
+              <td>ผลการประมิน6ความเสี่ยง NTD</td>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="!ListNewFunction?.length">
+              <td colspan="100" class="text-center">
+                ไม่มีรายการ
+              </td>
+            </tr>
+
+            <tr *ngFor="let item of ListNewFunction | paginate: pageConfig; let i = index" (click)="highlightRow(item)"
+                (dblclick)="onSelected()" [ngClass]="{'highlight' : item == selectedItem}">
+              <!--<th scope="row" class="sticky-col first-col text-center">
+    {{( (pageConfig.currentPage - 1) * pageConfig.itemsPerPage + i + 1) | number:'0.0-0' }}
+  </th>-->
+              <td class="sticky-col first-col text-center">{{item.round}}</td>
+              <td>{{item.labnumber}}</td>
+              <td>{{item.ansValuePlain_AFP}}</td>
+              <td>U/mL</td>
+              <td>{{item.ansValueCorrMoM_AFP}}</td>
+              <td>{{item.ansValuePlain_HCGB}}</td>
+              <td>ng/mL</td>
+              <td>{{item.ansValueCorrMoM_HCGB}}</td>
+
+              <td>{{item.ansValuePlain_INHIBIN}}</td>
+              <td>pg/mL</td>
+              <td>{{item.ansValueCorrMoM_INHIBIN}}</td>
+
+              <td>{{item.ansValuePlain_UE3UPD}}</td>
+              <td>nmol/L</td>
+              <td>{{item.ansValueCorrMoM_UE3UPD}}</td>
+
+              <td>{{item.analystDate | localDatetimePipe}}</td>
+
+              <td>
+                {{item.riskValueT21}}
+              </td>
+              <td>
+                {{item.riskCutOffT21}}
+              </td>
+              <td>
+                <span *ngIf="item.riskAssessmentValueT21 == 1 " style="color: #007bff !important;">
+                  ความเสี่ยงต่ำ (Low Risk)
+                </span>
+                <span *ngIf="item.riskAssessmentValueT21 == 2 " style="color: red !important;">
+                  ความเสี่ยงสูง (High Risk)
+                </span>
+              </td>
+
+              <td>
+                {{item.riskValueT18}}
+              </td>
+              <td>
+                {{item.riskCutOffT18}}
+              </td>
+              <td>
+                <span *ngIf="item.riskAssessmentValueT18 == 1 " style="color: #007bff !important;">
+                  ความเสี่ยงต่ำ (Low Risk)
+                </span>
+                <span *ngIf="item.riskAssessmentValueT18 == 2 " style="color: red !important;">
+                  ความเสี่ยงสูง (High Risk)
+                </span>
+              </td>
+
+
+              <td>
+                {{item.riskValueT13}}
+              </td>
+              <td>
+                {{item.riskCutOffT13}}
+              </td>
+              <td>
+                <span *ngIf="item.riskAssessmentValueT13 == 1 " style="color: #007bff !important;">
+                  ความเสี่ยงต่ำ (Low Risk)
+                </span>
+                <span *ngIf="item.riskAssessmentValueT13 == 2 " style="color: red !important;">
+                  ความเสี่ยงสูง (High Risk)
+                </span>
+              </td>
+
+              <td>
+                {{item.riskValueNTD}}
+              </td>
+              <td>
+                {{item.riskCutOffNTD}}
+              </td>
+              <td>
+                <span *ngIf="item.riskAssessmentValueNTD == 1 " style="color: #007bff !important;">
+                  ความเสี่ยงต่ำ (Low Risk)
+                </span>
+                <span *ngIf="item.riskAssessmentValueNTD == 2 " style="color: red !important;">
+                  ความเสี่ยงสูง (High Risk)
+                </span>
+              </td>
+
+
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pull-right">
+      <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
+  </div>
+  <div class="modal-footer text-center">
+    <div class="container">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">Close</button>
+
+    </div>
+  </div>
+</div>

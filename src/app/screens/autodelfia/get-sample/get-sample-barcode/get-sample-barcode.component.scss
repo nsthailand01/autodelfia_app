@@ -1,0 +1,175 @@
+@import '../../../../../assets/css/my-table.scss';
+
+.input-group .form-control {
+  margin: 0px !important;
+}
+
+.input-group {
+  align-self: flex-start;
+}
+
+.row {
+  margin: 0.38rem !important;
+}
+
+.container {
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 1rem;
+}
+
+.content {
+  width: 60%;
+  background-color: seashell;
+  border: 1px solid burlywood;
+  padding: 12px;
+}
+
+/* Landscape tablets and medium desktops */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .content {
+    width: 60%;
+  }
+}
+
+/* Landscape phones and portrait tablets */
+@media (max-width: 767px) {
+  .content {
+    width: 100%;
+  }
+}
+
+.mat-card-actions {
+  margin: 20px;
+}
+
+// .panel {
+//   // max-height: 400px;
+//   // overflow: hidden;
+
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+// }
+
+// select {
+//   color: red; // color of the selected option
+
+//   option {
+//     color: green; // color of all the other options
+//   }
+// }
+
+.redText {
+  color: red;
+}
+
+.greenText {
+  color: green;
+}
+
+.blueText {
+  color: blue;
+}
+
+/*@import '../../../../assets/css/my-table.scss';*/
+
+.my-container {
+  // min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 1rem;
+  padding-top: 0;
+}
+
+.my-content {
+  width: 100vw;
+  background-color: seashell;
+  border: 1px solid burlywood;
+  padding: 12px;
+  // padding-top: 0;
+}
+
+.form-inline .col-form-label {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 3px;
+}
+
+.input-group .form-control {
+  margin: 0px !important;
+}
+
+.input-group {
+  align-self: flex-start;
+}
+
+.mat-stepper-horizontal-line {
+  flex: none !important;
+}
+
+.my-radio-group {
+  display: flex;
+  flex-direction: inline-grid;
+  /* display: inline-grid; */
+  /* display: grid; */
+  margin: 5px 0;
+}
+
+.hover-class:hover {
+  background-color: red;
+}
+
+// a.disabled {
+//   pointer-events: none;
+//   cursor: default;
+//   color: rosybrown;
+// }
+
+.far.disabled,
+.far[disabled],
+.disabled > .far,
+[disabled] > .far {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+a.disabled {
+  color: gray;
+  cursor: not-allowed;
+  pointer-events: none;
+  // text-decoration: underline;
+}
+
+.text-right {
+  justify-content: flex-end;
+}
+
+.third-col {
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+  left: 95px;
+}
+
+/* Disable Number Arrow */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+
+
+.styChk{
+
+  transform:scale(1.3)
+
+}

@@ -1,0 +1,42 @@
+<div class="modal-content" style="z-index:888888">
+
+  <div class="modal-header">
+    <h4 class="modal-title pull-left page-title font-kanit">{{title}}
+    </h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <i class="fas fa-times-circle"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!--<form [formGroup]="itemform">
+    <div class="form-row">
+      <div class="col-md">
+        <label for="input-fname" class="col-form-label">ชื่อ</label>
+        <input type="text" id="input-fname" class="form-control form-control-sm" formControlName="DoctorFirstName">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md">
+        <label for="input-lname" class="col-form-label">นามสกุล</label>
+        <input type="text" id="input-lname" class="form-control form-control-sm" formControlName="DoctorLastName">
+      </div>
+    </div>-->
+    <!--</form>-->
+    <div class="form-row">
+      <div class="col-md">
+        <label for="input-fname" class="col-form-label">ชื่อ</label>
+        <input type="text" id="input-fname" class="form-control form-control-sm" autocomplete="off">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md">
+        <label for="input-lname" class="col-form-label">นามสกุล</label>
+        <input type="text" id="input-lname" class="form-control form-control-sm" autocomplete="off">
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary"  (click) ="btnSave()">Save</button>
+  </div>
+</div>

@@ -1,0 +1,902 @@
+<div class="card pt-0">
+  <div class="card-body pt-0">
+
+    <section>
+      <!-- <div class="table-responsive-md"> -->
+      <div style="display: flex; flex-direction: row;">
+        <button mat-mini-fab color="primary" class="mb-1 mr-1 hover-class" (click)="addNewRow(itemLists.length)"
+          [hidden]="!canNew">
+          <mat-icon>add</mat-icon>
+        </button>
+
+
+        <!--<form [formGroup]="requestsForm">
+          <input type="hidden" formControlName="hdrequestID"/>
+        </form>-->
+
+        <div style="overflow-x:auto;" class="table-responsive">
+          <table class="font-thkrub" width="100%">
+            <!-- class = table table-hover table-responsive-md table-striped-->
+            <thead class="thead-light">
+              <tr>
+                <th scope="col" class="sticky-col first-col text-center" style="width: 50px;">ลำดับ</th>
+                <th scope="col" class="sticky-col second-col text-center"
+                    style="width: 60px; padding-left: 2px; padding-right: 2px;">
+                  <mat-checkbox class="mt-2" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)"
+                                [disabled]="!multiSelection">
+                    เลือก
+                  </mat-checkbox>
+                </th>
+                <th class="sticky-col third-col text-center">Action</th>
+                <th>สถานะ</th>
+                <!-- <th>RJ</th> -->
+                <!-- <th>CM</th> -->
+                <!-- <th>RC</th> -->
+                <th>วันที่บันทึก</th>
+                <th>วันที่เจาะเลือด</th>
+                <th>วันที่รับตัวอย่าง</th>
+                <th>เลขที่ใบนำส่ง</th>
+                <th>เลขที่ตัวอย่าง</th>
+                <th>หน่วยงานส่งตรวจ</th>
+                <th>ชื่อ-สกุล</th>
+                <th>HN</th>
+                <th>บัตรประชาชน</th>
+                <th>เบอร์โทรศัพท์</th>
+                <th>สาเหตุการปฏิเสธสิ่งส่งตรวจ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!itemLists?.length">
+                <td colspan="100" class="text-center">
+                  ไม่มีข้อมูล
+                </td>
+              </tr>
+
+              <!-- [ngStyle]="{'color': (item.isNew || item.isEdit) && (requester == 'sent-sample') ? 'red' : 'black' }" -->
+              <!-- [ngClass]="{'text-red': item.requestStatus == 'Rejected', 'text-purple': (item.requestStatus != 'Rejected') && (!item.babeIdCardNo)}" -->
+              <tr *ngFor="let item of itemLists | paginate:  pageListConfig; let idx = index"
+                  [ngStyle]="{'color':item.inputCompleted ? 'black' : 'red' }">
+                <td scope="row" class="sticky-col first-col text-center">
+                  {{
+( (pageConfig.currentPage - 1) *
+                  pageConfig.itemsPerPage + idx + 1) | number:'0.0-0'
+                  }}
+                </td>
+                <td class="sticky-col second-col text-center">
+                  <mat-checkbox (click)="$event.stopPropagation()" (change)="onCheckedChange($event, item)"
+                                [checked]="item.isSelected" [(ngModel)]="item.isSelected" [disabled]="!multiSelection">
+                  </mat-checkbox>
+                </td>
+
+                <td class="text-center">
+
+                  <div style="font-size: 24px;" class="ml-2 mr-2">
+                    <span (click)="onPrintBarcodeClick(item)">
+                      <i class="fa-solid fa-barcode fa-sm mr-2 text-blue" style="cursor: pointer;"></i>
+                    </span>
+                    <span (click)="doPrintNewForm(item)">
+                      <i class="fa fa-print fa-sm mr-2 text-orange" style="cursor: pointer;" title="พิมพ์ใบส่งตรวจ Quad Test"></i>
+                    </span>
+                    <!-- <ng-container *ngIf="referenceName == 'receive'; then receive else sample "></ng-container>
+  <ng-template #receive>
+    <a href="javascript:" class="edit"><i class="material-icons" aria-hidden="true" title="Edit"
+        (click)="updateProfile(item.requestID)">&#xE254;</i></a>
+  </ng-template>
+  <ng-template #sample>
+    <a href="javascript:" class="edit mr-2"><i class="material-icons" aria-hidden="true" title="Edit"
+        (click)="openModalEdit(requestsPatientTemplate, item)">&#xE254;</i></a>
+  </ng-template> -->
+
+                    <ng-container *ngIf="item.requestStatus === 'Shipment'; else disabledEditShipment">
+                      <a href="javascript:" class="mr-2" title="แก้ไขใบนำส่ง" (click)="doEditShipment(item)">
+                        <i class="fa-solid fa-envelope-circle-check text-green"></i>
+                      </a>
+                    </ng-container>
+                    <ng-template #disabledEditShipment>
+                      <a href="javascript:" class="mr-2" title="แก้ไขใบนำส่ง"
+                         style="color: rgb(171, 220, 134); cursor: not-allowed;">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                      </a>
+                    </ng-template>
+
+
+
+                    <a href="javascript:" class="edit {{clEdit1}}">
+                      <i class="material-icons" aria-hidden="true" title="Edit"
+                         (click)="editRequests(item.requestID)">&#xE254;</i>
+                    </a>
+
+
+
+
+
+                    <!--<div class="{{clEdit2}}">-->
+                    <ng-container *ngIf="item.requestStatus === 'Draft' || item.requestStatus === 'Shipment'">
+                      <a href="javascript:" class="edit {{clEdit2}}">
+                        <i class="material-icons" aria-hidden="true" title="Edit"
+                           (click)="editRequests(item.requestID)">&#xE254;</i>
+                      </a>
+                    </ng-container>
+
+                    <ng-container *ngIf="item.requestStatus != 'Draft' && item.requestStatus != 'Shipment'">
+                      <a href="javascript:" class="edit  {{clEdit3}}">
+                        <i class="material-icons" aria-hidden="true" title="Edit"
+                           style="color:#dabaea; cursor: not-allowed;">&#xE254;</i>
+                      </a>
+                    </ng-container>
+                    <!--</div>-->
+
+
+
+
+                    <ng-container *ngIf="item.requestStatus !== 'Draft'; else canDelete">
+                      <a href="javascript:" class="delete" style="color: rgb(252, 157, 157); cursor: not-allowed;">
+                        <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
+                      </a>
+                    </ng-container>
+                    <ng-template #canDelete>
+                      <a href="javascript:" class="delete" style="color: red;" (click)="onDeleteItem(item)">
+                        <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
+                      </a>
+                    </ng-template>
+                  </div>
+
+                </td>
+                <!-- <td>{{item.requestStatus}}</td> -->
+                <td>
+                  <span class="material-icons"
+                        style="color: rgb(201, 0, 237); display:table-cell; vertical-align:middle;"
+                        *ngIf="['Draft'].includes(item.requestStatus)">description</span>
+
+                  <span class="material-icons"
+                        style="color: rgb(126, 126, 245); display:table-cell; vertical-align:middle;"
+                        *ngIf="['Pending'].includes(item.requestStatus)">pending</span>
+
+                  <span class="material-icons" style="color: orangered; display:table-cell; vertical-align:middle;"
+                        *ngIf="['In-Process'].includes(item.requestStatus)">pending_actions</span>
+
+                  <span class="material-icons" style="color: green; display:table-cell; vertical-align:middle;"
+                        *ngIf="['Completed Report'].includes(item.requestStatus)">done_all</span>
+
+                  <span style="display:table-cell; vertical-align:middle;">{{item.requestStatus}}</span>
+                </td>
+                <!-- <td class="text-center"><span *ngIf="item.requestStatus == 'Rejected'"><i
+        class="fa-solid fa-triangle-exclamation text-red" title="Rejected"
+        style="font-size: 24px;cursor: pointer;"></i></span></td>
+  <td class="text-center"><span *ngIf="item.receiptRemark && item.requestStatus == 'Rejected'"
+      (click)="onCMClick(item)"><i class="fa-regular fa-comments text-green"
+        style="font-size: 24px;cursor: pointer;" title="{{item.receiptRemark}}"></i></span></td>
+  <td class="text-center"><span *ngIf="!item.babeIdCardNo"><i
+        class="fa-regular fa-address-card text-purple" style="font-size: 24px;cursor: pointer;"
+        title="บัตรประชาชนลูกเป็นค่าว่าง"></i></span></td> -->
+                <!-- วันที่บันทึก -->
+                <td>{{item.createdDate | localDatetimePipe}}</td>
+                <!-- วันที่เจาะเลือด -->
+                <td>{{item.sampleDate | localDatetimePipe}}</td>
+                <!-- วันที่รับตัวอย่าง -->
+                <td>{{item.receiveDate | localDatetimePipe}}</td>
+                <!-- เลขที่ใบนำส่ง -->
+                <td>{{item.shiptoNo}}</td>
+                <!-- เลขที่ตัวอย่าง -->
+                <td>{{item.labNumber}}</td>
+                <!-- หน่วยงานส่งตรวจ -->
+                <td>{{item.siteName}}</td>
+                <!-- ชื่อ-สกุล [คนไข้] -->
+                <td>{{item.firstName}} {{item.lastName}}</td>
+                <!-- ชื่อ-สกุล [คนไข้] -->
+                <td>{{item.hN}}</td>
+                <!-- บัตรประชาชน -->
+                <td>{{item.identityCard}}</td>
+                <!-- เบอร์โทรศัพท์ -->
+                <td>{{item.phoneNo}}</td>
+
+                <td>
+
+                  <div *ngIf="item.filterPaperCompleteness === '99'">
+                    <span title="{{item.receiptRemark}}">{{item.receiptRemark}}</span>
+                  </div>
+                  <div *ngIf="item.filterPaperCompleteness != '99'">
+                    <span title="{{item.refuseName}}">{{item.refuseName}}</span>
+                  </div>
+
+
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+      <div style="margin-top: 5px;">
+        <div class="float-left">
+          Size:
+          <select class="selectpicker" (change)="handlePageSizeChange($event)"
+                  [(ngModel)]="pageListConfig.itemsPerPage">
+            <option *ngFor="let size of listPageSizes" [ngValue]="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+
+        <div class="float-right">
+          <pagination-controls id="itemListPage" (pageChange)="pageListChanged($event)"></pagination-controls>
+        </div><br>
+        <!--<pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>-->
+      </div>
+
+    </section>
+
+  </div>
+</div>
+
+<!-- Popup ข้อมูลคนไข้ -->
+<ng-template #requestsPatientTemplate>
+  <div class="modal-header">
+    <div>
+      <img src="assets/img/baby.png" mat-card-avatar />
+      <mat-card-title>ข้อมูลคนไข้</mat-card-title>
+    </div>
+    <p class="ml-3 text-primary">[Sample No.: {{this.requestsForm.get('sampleNo').value}}]</p>
+    <!-- <h1 class="modal-title pull-left">ข้อมูลคนไข้</h1> -->
+    <button type="button" class="close pull-right" aria-label="Close" (click)="onCloseProfile()">
+      <i class="fas fa-times-circle"></i>
+    </button>
+  </div>
+
+  <mat-horizontal-stepper [linear]="isLinear" #stepper labelPosition="end" [selectedIndex]="selectedIndex"
+    (selectionChange)="onStepChange($event)">
+    <!-- ข้อมูลมารดา -->
+    <mat-step [stepControl]="requestsForm" label="ข้อมูลมารดา">
+      <div class="my-container">
+        <div class="my-content">
+          <form [formGroup]="requestsForm">
+            <ng-template matStepLabel>ข้อมูลมารดา</ng-template>
+
+            <div class="mb-3">
+              <img src="assets/img/nbs/mother2.png" mat-card-avatar class="mr-2" />
+              <mat-card-title>ข้อมูลมารดา</mat-card-title>
+            </div>
+
+            <form [formGroup]="requestsForm">
+              <div class="form-row form-inline">
+                <label for="input-sampleType" class="col-form-label col-2"
+                  style="justify-content: flex-end;">ชนิดตัวอย่าง</label>
+                <div class="input-group input-group-sm col">
+                  <select class="form-control form-control-sm" id="input-sampleType" formControlName="sampleType">
+                    <option [ngValue]="null" disabled>Choose an sample type</option>
+                    <option *ngFor="let sample of sampleTypes" [ngValue]="sample.value">
+                      {{ sample.text }}
+                    </option>
+                  </select>
+                </div>
+
+                <label for="input-siteName" class="col-form-label text-primary col-2"
+                  style="justify-content: flex-end;">หน่วยงาน</label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm" id="input-siteName" placeholder=""
+                    formControlName="siteName" readonly>
+                  <div class="input-group-append">
+                    <button class="m-0 btn btn-outline-info" type="button" (click)="openMSSitePicker()"
+                      style="z-index: 1;">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-patienTitle" class="col-form-label col-2"
+                  style="justify-content: flex-end;">คำนำหน้า</label>
+                <div class="input-group input-group-sm col">
+                  <select class="form-control form-control-sm" id="input-patienTitle" formControlName="title">
+                    <option value="" selected hidden>Choose here</option>
+                    <option value="นาง">นาง</option>
+                    <option value="นางสาว">นางสาว</option>
+                    <option value="เด็กหญิง">เด็กหญิง</option>
+                  </select>
+                </div>
+
+                <label for="input-patienTitle" class="col-form-label col-2" style="justify-content: flex-end;"></label>
+                <div class="input-group input-group-sm col"></div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-firstName" class="col-form-label col-2 text-red"
+                  style="justify-content: flex-end;">ชื่อมารดา<span class="required-asterisk">*</span></label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm col" id="input-firstName" placeholder="ชื่อ"
+                    formControlName="firstName">
+                </div>
+
+                <label for="input-lastName" class="col-form-label col-2 text-red"
+                  style="justify-content: flex-end;">สกุลมารดา<span class="required-asterisk">*</span></label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm col" id="input-lastName" placeholder="สกุล"
+                    formControlName="lastName">
+                </div>
+              </div>
+
+              <div class="d-flex form-row form-inline align-items-center my-auto" role="form">
+                <label class="col-form-label col-2" style="justify-content: flex-end;">สัญชาติ</label>
+                <div class="input-group input-group-sm my-auto col">
+                  <mat-radio-group class="my-radio-group" name="momNationality" formControlName="momNationality">
+                    <mat-radio-button value="Thai">ไทย</mat-radio-button>
+                    <mat-radio-button value="Foreigner">ต่างชาติ</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+
+                <mat-checkbox class="my-auto" formControlName="isFatherIdCard">บัตรบิดา</mat-checkbox>
+
+                <label for="input-identityCard" class="col-form-label col-2" style="justify-content: flex-end;"
+                  [ngClass]="{ 'text-red': requestsForm.get('momNationality').value != 'Foreigner'}">บัตรประชาชน
+                  <span class="required-asterisk"
+                    *ngIf="requestsForm.get('momNationality').value == 'Thai'">*</span></label>
+
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm" id="input-identityCard"
+                    placeholder="บัตรประชาชน" formControlName="identityCard" mask="0 0000 00000 00 0">
+                </div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-momPassportNo" class="col-form-label col-2"
+                  style="justify-content: flex-end;">พาสปอร์ต</label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm col" id="input-momPassportNo"
+                    placeholder="พาสปอร์ต" formControlName="momPassportNo">
+                </div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-email" class="col-form-label col-2" style="justify-content: flex-end;">อีเมล</label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm col" id="input-email" placeholder="อีเมล"
+                    formControlName="email">
+                </div>
+
+                <label for="input-lineId" class="col-form-label col-2"
+                  style="justify-content: flex-end;">ไลน์ไอดี</label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm col" id="input-lineId" placeholder="ไลน์ไอดี"
+                    formControlName="lineId">
+                </div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-hN" class="col-form-label col-2" style="justify-content: flex-end;">HN</label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm" id="input-hN" formControlName="hN">
+                </div>
+
+                <label for="input-patienTitle" class="col-form-label col-2" style="justify-content: flex-end;"></label>
+                <div class="input-group input-group-sm col"></div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-address" class="col-form-label col-2"
+                  style="justify-content: flex-end;">ที่อยู่</label>
+                <div class="input-group input-group-sm col">
+                  <textarea class="form-control form-control-sm" rows="1" id="input-address" placeholder=""
+                    formControlName="address"></textarea>
+                </div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-street" class="col-form-label col-2" style="justify-content: flex-end;">ถนน</label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm" id="input-street" placeholder=""
+                    formControlName="street">
+                </div>
+
+                <label for="input-province" class="col-form-label col-2"
+                  style="justify-content: flex-end;">จังหวัด</label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm" id="input-province" placeholder=""
+                    formControlName="province">
+                  <div class="input-group-append">
+                    <button class="m-0 btn btn-outline-info" type="button" (click)="onOpenProvincePick()"
+                      style="z-index: 1;">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+
+
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-amphur" class="col-form-label col-2"
+                  style="justify-content: flex-end;">อำเภอ/เขต</label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm" id="input-amphur" placeholder=""
+                    formControlName="amphur">
+                  <div class="input-group-append">
+                    <button class="m-0 btn btn-outline-info" type="button" (click)="onOpenAmphurPick()"
+                      style="z-index: 1;">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <label for="input-district" class="col-form-label col-2"
+                  style="justify-content: flex-end;">ตำบล/แขวง</label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm" id="input-district" placeholder=""
+                    formControlName="district">
+                  <div class="input-group-append">
+                    <button class="m-0 btn btn-outline-info" type="button" (click)="onOpenDistrictPick()"
+                      style="z-index: 1;">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-phoneNo" class="col-form-label col-2"
+                  style="justify-content: flex-end;">โทรศัพท์</label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm" id="input-phoneNo" placeholder=""
+                    formControlName="phoneNo">
+                </div>
+
+                <label for="input-momMobileNo" class="col-form-label col-2 text-red"
+                  style="justify-content: flex-end;">โทรศัพท์มือถือ<span class="required-asterisk">*</span></label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm" id="input-momMobileNo" placeholder=""
+                    formControlName="momMobileNo" mask="000 000 0000">
+                </div>
+              </div>
+
+              <!-- <div class="form-row form-inline">
+                <label for="input-momGaAgeWeeks" class="col-form-label label-left col-4 text-red"
+                  style="justify-content: flex-end;">อายุครรภ์เมื่อคลอด (week)
+                  <span class="required-asterisk">*</span></label>
+                <div class="input-group input-group-sm col-2 pr-3">
+                  <input type="text" class="form-control form-control-sm text-center" id="input-momGaAgeWeeks"
+                    placeholder="" formControlName="momGaAgeWeeks" numbersOnly>
+                </div>
+
+                <label for="input-babeTwinNo" class="col-form-label col-2 pr-3"
+                  style="justify-content: flex-end;">ทารกมีแฝด</label>
+                <div class="input-group input-group-sm col">
+                  <mat-radio-group class="my-radio-group mr-2" name="babeHasTwinBabies"
+                    formControlName="babeHasTwinBabies">
+                    <mat-radio-button [checked]="requestsForm.value.babeHasTwinBabies === false" value="false">ไม่มี
+                    </mat-radio-button>
+                    <mat-radio-button [checked]="requestsForm.value.babeHasTwinBabies === true" value="true">มี
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+
+              </div> -->
+
+              <div class="form-row form-inline">
+                <label for="input-remark" class="col-form-label col-2"
+                  style="justify-content: flex-end;">หมายเหตุ</label>
+                <div class="input-group input-group-sm col">
+                  <textarea class="form-control form-control-sm" rows="1" id="input-remark" placeholder=""
+                    formControlName="remark"></textarea>
+                </div>
+              </div>
+            </form>
+
+            <div fxLayout="row" fxLayoutAlign="end end" class="mt-2">
+              <button mat-button matStepperNext class="btn btn-success mr-1">
+                <mat-icon class="mr-1">navigate_next</mat-icon>ถัดไป
+              </button>
+              <!-- <button class="btn btn-warning" (click)="saveChangeProfile()">Ok</button> -->
+              <button mat-raised-button color="warn" (click)="saveChangeSample()">
+                <mat-icon class="mr-1">save_alt</mat-icon>บันทึก
+              </button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </mat-step> <!-- ข้อมูลมารดา -->
+
+    <!-- ข้อมูลทารก -->
+    <mat-step [stepControl]="requestsForm">
+      <div class="my-container">
+        <div class="my-content">
+          <form [formGroup]="requestsForm">
+            <ng-template matStepLabel>ข้อมูลทารก</ng-template>
+
+            <div class="mb-3 d-flex justify-content-between">
+              <div>
+                <img src="assets/img/nbs/baby2.png" mat-card-avatar class="mr-2" />
+                <mat-card-title>ข้อมูลทารก</mat-card-title>
+              </div>
+              <div>
+                <form [formGroup]="requestsForm">
+                  <div class="form-row form-inline">
+                    <label for="input-sendTestTimes" class="col-form-label text-blue"
+                      style="justify-content: flex-end;">ส่งตรวจครั้งที่</label>
+                    <div class="input-group input-group-sm">
+                      <input type="number" onwheel="this.blur()"
+                        class="form-control form-control-sm border border-success text-center text-blue"
+                        id="input-sendTestTimes" placeholder="" formControlName="sendTestTimes">
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <form [formGroup]="requestsForm">
+              <div class="form-row form-inline">
+                <label for="input-babeFirstName" class="col-form-label col-2"
+                  style="justify-content: flex-end;">ชื่อ</label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm col" id="input-babeFirstName"
+                    placeholder="ชื่อ" formControlName="babeFirstName">
+                </div>
+
+                <label for="input-babeLastName" class="col-form-label col-2"
+                  style="justify-content: flex-end;">สกุล</label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm col" id="input-babeLastName" placeholder="สกุล"
+                    formControlName="babeLastName">
+                </div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-babeIdCardNo" class="col-form-label col-2"
+                  style="justify-content: flex-end;">บัตรประชาชน</label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm" id="input-babeIdCardNo" placeholder=""
+                    formControlName="babeIdCardNo" mask="0 0000 00000 00 0">
+                </div>
+                <label for="input-babeHn" class="col-form-label col-2 text-red"
+                  style="justify-content: flex-end;">HN<span class="required-asterisk">*</span></label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm" id="input-babeHn" formControlName="babeHn">
+                </div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label class="col-form-label col-2 text-red" style="justify-content: flex-end;">เพศ<span
+                    class="required-asterisk">*</span></label>
+                <div class="input-group input-group-sm col">
+                  <mat-radio-group class="my-radio-group" name="babeGender" formControlName="babeGender">
+                    <mat-radio-button value="Male">ชาย</mat-radio-button>
+                    <mat-radio-button value="Female">หญิง</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+
+                <label for="input-babeWeight" class="col-form-label col-3 text-red"
+                  style="justify-content: flex-end;">น้ำหนักแรกเกิด (g)<span class="required-asterisk">*</span></label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm text-center" id="input-babeWeight"
+                    placeholder="น้ำหนักแรกเกิด (g)" formControlName="babeWeight" mask="0000">
+                </div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-momGaAgeWeeks" class="col-form-label label-left col-3 text-red"
+                  style="justify-content: flex-end;">อายุครรภ์เมื่อคลอด (week)
+                  <span class="required-asterisk">*</span></label>
+                <div class="input-group input-group-sm col-3 pr-3">
+                  <input type="text" class="form-control form-control-sm text-center" id="input-momGaAgeWeeks"
+                    placeholder="" formControlName="momGaAgeWeeks" mask="00" numbersOnly>
+                </div>
+
+                <label for="input-babeTwinNo" class="col-form-label co
+                l-2 pr-3" style="justify-content: flex-end;">ทารกมีแฝด</label>
+                <div class="input-group input-group-sm col">
+                  <mat-radio-group class="my-radio-group mr-2" name="babeHasTwinBabies"
+                    formControlName="babeHasTwinBabies">
+                    <mat-radio-button [checked]="requestsForm.value.babeHasTwinBabies === false" [value]=false>ไม่มี
+                    </mat-radio-button>
+                    <mat-radio-button [checked]="requestsForm.value.babeHasTwinBabies === true" [value]=true>มี
+                    </mat-radio-button>
+                  </mat-radio-group>
+                  <label for="input-babeTwinNo" class="col-form-label text-sm"
+                    style="justify-content: flex-end;">ลำดับที่</label>
+                  <input type="text" class="form-control form-control-sm col text-center" id="input-babeTwinNo"
+                    placeholder="" formControlName="babeTwinNo" numbersOnly>
+                </div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-babeDateOfBirth" class="col-form-label col-2 text-red"
+                  style="justify-content: flex-end;">วันเดือนปีเกิด<span class="required-asterisk">*</span></label>
+                <div class="input-group input-group-sm col">
+                  <input class="form-control" id="input-babeDateOfBirth" #dpBirthDay="bsDatepicker" bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="babeDateOfBirth"
+                    (bsValueChange)="onDateAndTimeChange()">
+                  <span class="input-group-append">
+                    <button class="btn btn-outline-info" (click)="dpBirthDay.toggle()">
+                      <i class="far fa-calendar-alt"></i>
+                    </button>
+                  </span>
+                </div>
+
+                <label class="col-form-label col-2" style="justify-content: flex-end;">เวลาเกิด</label>
+                <div class="input-group input-group-sm col">
+                  <ngx-timepicker-field [format]="24" [defaultTime]="'23:11'" formControlName="babeTimeOfBirth"
+                    (timeChanged)="onDateAndTimeChange()">
+                  </ngx-timepicker-field>
+                </div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-babeBloodDrawDate" class="col-form-label col-2 text-red"
+                  style="justify-content: flex-end;">วันเจาะเลือด<span class="required-asterisk">*</span></label>
+                <div class="input-group input-group-sm col">
+                  <input class="form-control" id="input-babeBloodDrawDate" #dpBloodDrawDate="bsDatepicker" bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="babeBloodDrawDate"
+                    (bsValueChange)="onDateAndTimeChange()">
+                  <span class="input-group-append">
+                    <button class="btn btn-outline-info" (click)="dpBloodDrawDate.toggle()">
+                      <i class="far fa-calendar-alt"></i>
+                    </button>
+                  </span>
+                </div>
+
+                <label class="col-form-label col-2" style="justify-content: flex-end;">เวลาเจาะเลือด</label>
+                <div class="input-group input-group-sm col">
+                  <ngx-timepicker-field [format]="24" [defaultTime]="'23:11'" formControlName="babeBloodDrawTime"
+                    (timeChanged)="onDateAndTimeChange()">
+                  </ngx-timepicker-field>
+                </div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-ageInHours" class="col-form-label text-blue col-2"
+                  style="justify-content: flex-end;">อายุ</label>
+                <div class="input-group input-group-sm col-2">
+                  <input type="number" class="form-control form-control-sm text-blue text-center" id="input-ageInHours"
+                    placeholder="อายุ" [ngModel]="ageInHours | number:'1.2-2'" [ngModelOptions]="{standalone: true}"
+                    readonly>
+                </div>
+                <span class="text-blue">ชั่วโมง</span>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-bloodWorker" class="col-form-label col-2"
+                  style="justify-content: flex-end;">เจ้าหน้าที่เจาะเลือด</label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm" id="input-bloodWorker" placeholder=""
+                    formControlName="bloodWorker">
+                </div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-babeDiseaseName" class="col-form-label col-2"
+                  style="justify-content: flex-end;">ชื่อโรค (ถ้าเป็น)</label>
+                <div class="input-group input-group-sm col">
+                  <input type="text" class="form-control form-control-sm" id="input-babeDiseaseName" placeholder=""
+                    formControlName="babeDiseaseName">
+                </div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-babeAntibioticName" class="col-form-label col-2"
+                  style="justify-content: flex-end;">ยาปฏิชีวนะ</label>
+                <div class="input-group input-group-sm col">
+                  <mat-radio-group class="my-radio-group mr-3" name="babeAntibioticFlag"
+                    formControlName="babeAntibioticFlag">
+                    <mat-radio-button [checked]="requestsForm.value.babeAntibioticFlag === false" [value]=false>
+                      ไม่ได้รับ
+                    </mat-radio-button>
+                    <mat-radio-button [checked]="requestsForm.value.babeAntibioticFlag === true" [value]=true>ได้รับ
+                      (ระบุชื่อ)</mat-radio-button>
+                  </mat-radio-group>
+                  <input type="text" class="form-control form-control-sm" id="input-babeAntibioticName" placeholder=""
+                    formControlName="babeAntibioticName">
+                </div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label class="col-form-label col-2" style="justify-content: flex-end;">ได้รับนม</label>
+                <div class="input-group input-group-sm col">
+                  <mat-radio-group class="my-radio-group" name="babeGetMilk" formControlName="babeGetMilk">
+                    <mat-radio-button [checked]="requestsForm.value.babeGetMilk === true" [value]=true>ได้รับ
+                    </mat-radio-button>
+                    <mat-radio-button [checked]="requestsForm.value.babeGetMilk === false" [value]=false>ไม่ได้รับ
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+
+                <label class="col-form-label col-2" style="justify-content: flex-end;">ได้รับเลือด</label>
+                <div class="input-group input-group-sm col">
+                  <mat-radio-group class="my-radio-group" name="babeGetBlood" formControlName="babeGetBlood">
+                    <mat-radio-button [checked]="requestsForm.value.babeGetBlood === true" [value]=true>ได้รับ
+                    </mat-radio-button>
+                    <mat-radio-button [checked]="requestsForm.value.babeGetBlood === false" [value]=false>ไม่ได้รับ
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+
+              </div>
+
+              <div class="form-row form-inline">
+                <label class="col-form-label col-4" style="justify-content: flex-end;">Total Parenteral Nutrition
+                  (TPN)</label>
+                <div class="input-group input-group-sm col">
+                  <mat-radio-group class="my-radio-group" name="babeGetTpn" formControlName="babeGetTpn">
+                    <mat-radio-button [checked]="requestsForm.value.babeGetTpn === true" [value]=true>ได้รับ
+                    </mat-radio-button>
+                    <mat-radio-button [checked]="requestsForm.value.babeGetTpn === false" [value]=false>ไม่ได้รับ
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+
+              <div class="form-row form-inline">
+                <label for="input-babeRemark" class="col-form-label col-2"
+                  style="justify-content: flex-end;">หมายเหตุ</label>
+                <div class="input-group input-group-sm col">
+                  <textarea class="form-control form-control-sm" rows="1" id="input-babeRemark" placeholder=""
+                    formControlName="babeRemark"></textarea>
+                </div>
+              </div>
+            </form>
+
+            <div fxLayout="row" fxLayoutAlign="end end" class="mt-2">
+              <button mat-button matStepperPrevious class="btn btn-success btn-sm mr-1">
+                <mat-icon class="mr-1">navigate_before</mat-icon>ย้อนกลับ
+              </button>
+              <!-- <button class="btn btn-danger btn-sm" type="button" (click)="saveChangeProfile()">
+                <i class="far fa-save mr-2"></i>Ok</button> -->
+              <button mat-raised-button color="warn" (click)="saveChangeSample()">
+                <mat-icon class="mr-1">save_alt</mat-icon>บันทึก
+              </button>
+              <!-- <button mat-raised-button color="accent" (click)="saveChangeProfile()">Ok</button> -->
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+      <form [formGroup]="requestsForm" hidden>
+        <ng-template matStepLabel>ข้อมูลทารก</ng-template>
+
+        <!-- ประวัติการตั้งครรภ์ -->
+        <div class="card">
+          <div class="pt-1 card-body">
+            <h4 class="card-title">ข้อมูลทารก<span class="required-asterisk">*</span></h4>
+            <div class="card-text">
+
+              <form [formGroup]="requestsForm">
+                <div class="form-row">
+                  <div class="input-group">
+                    <label for="input-24" class="col-form-label col-md-3">ตั้งครรภ์ครั้งที่</label>
+                    <input type="number" class="form-control form-control-sm col-md-2" id="input-24"
+                      placeholder="ตั้งครรภ์ครั้งที่" formControlName="pregnantNo">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="input-group">
+                    <label for="input-25" class="col-form-label col-md-3">จำนวนทารกในครรภ์</label>
+                    <mat-radio-group class="my-radio-group mt-2" formControlName="pregnantFlag">
+                      <mat-radio-button value="1">ครรภ์เดี่ยว
+                      </mat-radio-button>
+                      <mat-radio-button value="2">ครรภ์แฝด (ไม่สามารถส่งตรวจได้)</mat-radio-button>
+                      <mat-radio-button value="0">จำนวนทารกในครรภ์</mat-radio-button>
+                    </mat-radio-group>
+                    <input type="number" width="50px" class="form-control form-control-sm col-md-1"
+                      id="input-numberofOther" formControlName="numberofOther">
+                  </div>
+                </div>
+                <!-- <div class="form-row">
+                  <div class="input-group">
+                    <label class="col-form-label col-md-3" for="PregnantNature">ตั้งครรภ์ธรรมชาติ</label>
+                    <mat-checkbox class="mt-1" [checked]="pregnantNatureChecked"> ระบุ </mat-checkbox>
+                    <input type="text" width="50px" class="form-control form-control-sm col-md-3"
+                      formControlName="pregnantTypeOther" (input)="pregnantTypeOtherChange($event)">
+                  </div>
+                </div> -->
+                <div class="form-row">
+                  <div class="input-group">
+                    <label class="col-form-label col-md-3">ตั้งครรภ์จากการผสมเทียม</label>
+                    <mat-radio-group class="my-radio-group mt-2" name="artificialInseminationFlag"
+                      formControlName="artificialInseminationFlag">
+                      <mat-radio-button value="0">ไม่มี</mat-radio-button>
+                      <mat-radio-button value="1">มี</mat-radio-button>
+                    </mat-radio-group>
+                    <span>
+                      <select class="form-control form-control-sm" id="input-artificialInseminationValue"
+                        formControlName="artificialInseminationValue">
+                        <option value="" selected hidden>Choose here</option>
+                        <option value="0">IVF</option>
+                        <option value="1">GIFT</option>
+                        <option value="2">ZIFT</option>
+                        <option value="3">Clomiphene treatment</option>
+                        <option value="4">Donor egg</option>
+                        <option value="5">Donor insemination</option>
+                        <option value="6">ICSI</option>
+                        <option value="7">Other</option>
+                      </select>
+                    </span>
+                    <!-- <mat-checkbox class="mt-1" [checked]="pregnantNatureChecked"> ระบุ </mat-checkbox>
+                    <input type="text" width="50px" class="form-control form-control-sm col-md-3"
+                      formControlName="pregnantTypeOther" (input)="pregnantTypeOtherChange($event)"> -->
+                  </div>
+                </div>
+
+                <div class="m-1 border form-row justify-content-center border-primary" style="border-radius: 5px 5px;">
+                  <div class="form-group col-md-3">
+                    <label for="input-ovumCollectDate" class="col-form-label">วันที่เก็บไข่</label>
+                    <div class="input-group input-group-sm">
+                      <input class="form-control" id="input-ovumCollectDate" #dpOvumCollectDate="bsDatepicker"
+                        bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="ovumCollectDate">
+                      <span class="input-group-append">
+                        <button class="btn btn-outline-secondary" (click)="dpOvumCollectDate.toggle()">
+                          <i class="far fa-calendar-alt"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="input-embryoTransferDate" class="col-form-label">วันที่ย้ายตัวอ่อน</label>
+                    <div class="input-group input-group-sm">
+                      <input class="form-control" id="input-embryoTransferDate" #dpEmbryoTransferDate="bsDatepicker"
+                        bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                        formControlName="embryoTransferDate">
+                      <span class="input-group-append">
+                        <button class="btn btn-outline-secondary" (click)="dpEmbryoTransferDate.toggle()">
+                          <i class="far fa-calendar-alt"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="input-donorBirthdate" class="col-form-label">วันเดือนปีเกิด Donor</label>
+                    <div class="input-group input-group-sm">
+                      <input class="form-control" id="input-donorBirthdate" #dpDonorBirthdate="bsDatepicker"
+                        bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" formControlName="donorBirthdate">
+                      <span class="input-group-append">
+                        <button class="btn btn-outline-secondary" (click)="dpDonorBirthdate.toggle()">
+                          <i class="far fa-calendar-alt"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="border card card-primary card-outline border-primary">
+                  <div class="card-body">
+
+                    <div formArrayName="patientMoreForms">
+                      <!-- <span>{{currentRequestId}}</span> -->
+                      <div *ngFor="let more of moreForms?.controls; let idx = index" [formGroupName]="idx">
+                        <div class="form-row">
+                          <div class="input-group">
+                            <!-- <label for="">{{idx}}# </label> -->
+                            <label for="" class="col-form-label col-form-label-w500 col-md-8">{{
+                              more?.value?.patientMoreText
+                              }}</label>
+                            <mat-radio-group class="my-radio-group mt-2" formControlName="value"
+                              [value]="more?.value?.value">
+                              <!-- <span class="mr-3">{{more?.value?.value}}</span> -->
+                              <mat-radio-button value="1" (change)="radioChange($event)" name="patientMore"
+                                [checked]="more.value.value == '1'? true : false">มี</mat-radio-button>
+                              <mat-radio-button value="0" (change)="radioChange($event)" name="patientMore"
+                                [checked]="more.value.value == '0'? true : false">ไม่มี</mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div> <!-- จบ ประวัติการตั้งครรภ์ -->
+
+        <div fxLayout="row" fxLayoutAlign="end end">
+          <button mat-button matStepperPrevious class="mr-1 btn btn-warning">ย้อนกลับ</button>
+          <button mat-button matStepperNext class="btn btn-success">ถัดไป</button>
+        </div>
+      </form>
+    </mat-step> <!-- ข้อมูลทารก -->
+
+
+  </mat-horizontal-stepper>
+</ng-template> <!-- Popup ข้อมูลคนไข้ -->

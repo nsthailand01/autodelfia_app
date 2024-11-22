@@ -1,0 +1,61 @@
+<app-breadcrumb-navigator pageTitle="กำหนดกลุ่มการทดสอบ" currentPageName="กำหนดกลุ่มการทดสอบ">
+</app-breadcrumb-navigator>
+
+<!-- toolbar button -->
+<div class="form-footer mb-2">
+  <button type="submit" class="btn btn-dark shadow-dark m-1" (click)="goBack()">
+    <i class="fa fa-times mr-1"></i>Cancel
+  </button>
+  <button type="submit" class="btn btn-success shadow-success m-1" (click)="doSave()"><i
+      class="fa fa-check-square-o mr-1"></i>Save
+  </button>
+</div> <!-- end toolbar button -->
+
+<!-- <div>
+  {{this.msSiteGroupForm.value |json}}
+</div> -->
+
+<div id="accordion">
+  <!-- กลุ่มการทดสอบ -->
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOnex" aria-expanded="true"
+          aria-controls="collapseOne">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-user-circle-o"></i>กลุ่มการทดสอบ
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+      <div class="card-body">
+        <form [formGroup]="msLabGroupForm">
+          <div class="form-row">
+            <div class="col-md-12">
+              <label for="input-labGroupCode" class="col-form-label">รหัสกลุ่มการทดสอบ</label>
+              <input type="text" class="form-control form-control-sm" id="input-labGroupCode"
+                formControlName="labGroupCode">
+            </div>
+            <div class="col-md-12">
+              <label for="input-labGroupName" class="col-form-label">ชื่อกลุ่มการทดสอบ</label>
+              <input type="text" class="form-control form-control-sm" id="input-labGroupName"
+                formControlName="labGroupName">
+            </div>
+            <div class="col-md-12">
+              <label for="input-labGroupNameEng" class="col-form-label">ชื่อกลุ่มการทดสอบ (Eng)</label>
+              <input type="text" class="form-control form-control-sm" id="input-labGroupNameEng"
+                formControlName="labGroupNameEng">
+            </div>
+            <div class="col-md-12">
+              <label for="input-remark" class="col-form-label">Remark</label>
+              <textarea class="form-control form-control-sm" id="input-remark" formControlName="remark"></textarea>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> <!-- จบ กลุ่มการทดสอบ -->
+
+</div>

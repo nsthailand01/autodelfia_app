@@ -1,0 +1,72 @@
+<div fxLayout fxLayout.lt-md="column wrap" fxLayoutAlign="start center" fxLayoutGap.gt-sm="250px"
+  fxLayoutGap.lt.md="20px">
+  <div>
+    <a mat-flat-button color="primary" (click)="onCreateNew()">
+      <i class="fa fa-plus-circle mr-2" aria-hidden="true"></i>Create New</a>
+  </div>
+  <mat-form-field fxFlex="40%">
+    <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
+</div>
+
+<table mat-table [dataSource]="dataSource" matSort matSortStart="desc" (matSortChange)="customSort($event)">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear width="25px">No.</th>
+    <td mat-cell *matCellDef="let element; let i = index;">
+      {{ (i+1) + (this.paginator.pageIndex * this.paginator.pageSize) | number:'1.0' }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="templateType">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Template Type </th>
+    <td mat-cell *matCellDef="let element"> {{ element.TemplateType }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="templateName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Template Name </th>
+    <td mat-cell *matCellDef="let element"> {{ element.TemplateName }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="columnDelimiter">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Column Delimiter </th>
+    <td mat-cell *matCellDef="let element"> {{ element.ColumnDelimiter }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="fileEncoding">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> File Encoding </th>
+    <td mat-cell *matCellDef="let element"> {{ element.FileEncoding }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="headerRow">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Header Row </th>
+    <td mat-cell *matCellDef="let element"> {{ element.HeaderRow }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="firstDataRow">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> First Data Row </th>
+    <td mat-cell *matCellDef="let element"> {{ element.FirstDataRow }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="details">
+    <th mat-header-cell *matHeaderCellDef> Details </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button color="primary" (click)="redirectToDetails(element.TemplateID)">
+        <mat-icon class="mat-18">reorder</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef> Delete </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button color="warn" (click)="redirectToDelete(element.TemplateID)">
+        <mat-icon class="mat-18">delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-paginator [pageSize]="200" [pageSizeOptions]="[100, 200, 300, 400, 500, 1000]">
+</mat-paginator>

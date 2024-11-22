@@ -1,0 +1,292 @@
+<!--<ngx-loading [show]="loading"></ngx-loading>-->
+
+<mat-expansion-panel #matExpansionRangePanel expanded class="mb-3 panel">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-card-header>
+        <div>
+          <img src="assets/img/nbs/childbirth.png" mat-card-avatar />
+          <mat-card-title>รับตัวอย่าง (สแกนบาร์โค้ด)</mat-card-title>
+        </div>
+      </mat-card-header>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <!-- <p>เลือกช่วงข้อมูลเพื่อทำการค้นหา</p> -->
+  <section>
+    <div class="input-group input-group-lg mb-1">
+      <div class="input-group-prepend">
+        <span class="input-group-text bg-warning"><i class="fas fa-barcode"></i></span>
+      </div>
+      <input id="txtSearch1" #searchcontrol type="text" class="form-control border border-warning" placeholder="Scan Barcode"
+             aria-label="Scan Barcode" (keyup.enter)="enterSearch($event)" [(ngModel)]="searchText" autofocus>
+
+      <input id="txtSearch2" #searchcontrol type="text" class="form-control border border-warning d-none" placeholder="Scan Barcode"
+             aria-label="Scan Barcode" (blur)="enterSearch2($event.target.value)" [(ngModel)]="searchText" autofocus>
+    </div>
+    <footer class="blockquote-footer mt-0">หมายเลขตัวอย่าง (Sample No.)</footer>
+
+    <div class="container mt-0 pt-0">
+      <div class="content">
+        <form [formGroup]="optionsForm">
+          <div class="form-group row form-inline">
+            <label for="input-siteName" class="col-form-label text-red col-3"
+                   style="justify-content: flex-end;">ชนิดตัวอย่าง</label>
+            <select class="form-control form-control-sm col" formControlName="sampleType">
+              <option [ngValue]="null" disabled>Choose an sample type</option>
+              <option *ngFor="let sample of sampleTypes" [ngValue]="sample.value">
+                {{ sample.text }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group row form-inline">
+            <label for="input-siteName" class="col-form-label text-red col-3"
+                   style="justify-content: flex-end;">สถานะ</label>
+            <select class="form-control form-control-sm col" formControlName="sampleStatus" (change)="onSelectChange($event)">
+              <option [ngValue]="null" disabled>Choose an sample status</option>
+              <!--<option *ngFor="let status of sampleStatus" [ngValue]="status.value">
+          {{ status.text }}
+        </option>-->
+              <option value="Received">
+                Received
+              </option>
+              <option value="Rejected">
+                Rejected
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group row form-inline">
+            <label for="input-paperResult" class="col-form-label col-3"
+                   [ngClass]="{'text-red': optionsForm.get('sampleType').value == 'Paper' }"
+                   style="justify-content: flex-end;">สาเหตุการปฏิเสธสิ่งส่งตรวจ</label>
+            <select id="input-paperResult" class="form-control form-control-sm col" formControlName="paperResult" disabled>
+              <!--<option [ngValue]="0" disabled>Choose an paper result</option>-->
+              <option [ngValue]="0"></option>
+              <!--<option *ngFor="let result of paperResults" [ngValue]="result.value"
+        [disabled]="optionsForm.get('sampleType').value != 'Paper' && optionsForm.get('sampleType').value != 'กระดาษ'"
+        [ngClass]="{'': result.value != '1', 'greenText': result.value == '1'}">-->
+              <option *ngFor="let result of paperResults" [ngValue]="result.value">
+                {{ result.text }}
+              </option>
+              <!--</option>-->
+            </select>
+          </div>
+
+          <div class="form-group row form-inline">
+            <label  for="input-remark" class="col-form-label col-3" style="justify-content: flex-end;">หมายเหตุ</label>
+            <textarea class="form-control form-control-sm col" id="input-remark" formControlName="remark"></textarea>
+          </div>
+
+        </form>
+        <!--<input id="BtnEnter" #inputField class="" (keyup.enter)="onEnterPress()">-->
+      </div>
+    </div>
+  </section>
+
+</mat-expansion-panel>
+
+<div class="d-flex justify-content-center text-white w-100 mb-3">
+  <div class="row btn-toolbar">
+    <button id="btnSavedata" class="btn btn-danger btn-sm mr-2" type="button" (click)="doSaveReceiptSample()" [disabled]="!isSaveable">
+      <i class="far fa-check-circle mr-2"></i>รับตัวอย่าง
+    </button>
+    <button class="btn btn-primary btn-sm mr-2" type="button" (click)="goBack()">
+      <i class="fa fa-mail-reply mr-2"></i>ย้อนกลับ
+    </button>
+  </div>
+  <div class="form-check mt-2 ml-3">
+    <input id="ckBarcode" class="form-check-input styChk" type="checkbox" (change)="onCheckboxChange($event)">
+    <label for="ckBarcode" class="form-check-label text-bold" style="color:black;">สแกนบาร์โค้ดแบบ Auto</label>
+  </div>
+</div>
+
+<mat-expansion-panel #matExpansionPatientDetailPanel2 expanded class="mb-3">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-card-header>
+        <div>
+          <img src="assets/img/nbs/baby.png" mat-card-avatar />
+          <mat-card-title>ข้อมูลคนไข้</mat-card-title>
+        </div>
+      </mat-card-header>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <!--<app-samples-list-tab #samplesListTab>
+  </app-samples-list-tab>-->
+
+
+  <!--ตารางคนไข้-->
+
+  <div class="card pt-0">
+    <div class="card-body pt-0">
+      <div style="display: flex; flex-direction: row;">
+        <!--<button mat-mini-fab color="primary" class="mb-1 mr-1 hover-class" (click)="onCreateNew()">
+      <mat-icon>add</mat-icon>
+    </button>-->
+        <div style="overflow-x:auto;" class="table-responsive">
+          <table class=" font-thkrub" width="100%">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col" class="sticky-col first-col text-center" style="width: 50px;">ลำดับ</th>
+                <th scope="col" class="sticky-col second-col text-center"
+                    style="width: 60px; padding-left: 2px; padding-right: 2px;">
+
+
+                  <mat-checkbox class="mt-2" (change)="checkAllCheckBox($event)"
+                                [disabled]="!multiSelection">
+                    เลือก
+                  </mat-checkbox>
+
+
+                </th>
+                <th class="sticky-col third-col text-center">Action</th>
+                <th>สถานะ</th>
+                <th>วันที่บันทึก</th>
+                <th>วันที่เจาะเลือด</th>
+                <th>วันที่รับตัวอย่าง</th>
+                <th>เลขที่ใบนำส่ง</th>
+                <th>เลขที่ตัวอย่าง</th>
+                <th>หน่วยงานส่งตรวจ</th>
+                <th>ชื่อ-สกุล</th>
+                <th>HN</th>
+                <th>บัตรประชาชน</th>
+                <th>เบอร์โทรศัพท์</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!itemLists?.length">
+                <td colspan="100" class="text-center">
+                  ไม่มีข้อมูล
+                </td>
+              </tr>
+
+              <!--<tr *ngFor="let item of itemLists | paginate: pageListConfig; let idx = index">-->
+              <tr *ngFor="let item of itemLists | paginate: pageListConfig; let idx = index"
+                  [ngStyle]="{'color': (item.isNew || item.isEdit) && (requester == 'sent-sample') ? 'red' : 'black' }"
+                  [ngClass]="{'text-red': item.requestStatus == 'Rejected', 'text-purple': (item.requestStatus != 'Rejected')}">
+                <td scope="row" class="sticky-col first-col text-center">
+                  {{((pageListConfig.currentPage - 1) * pageListConfig.itemsPerPage + idx + 1) | number:'0.0-0'}}
+                </td>
+
+                <!--CheckBox-->
+                <td class="sticky-col second-col text-center">
+                  <!--<mat-checkbox (click)="setRowSelectedCheck($event)" (change)="onCheckedChange($event, item)"
+               [checked]="item.isSelected" [(ngModel)]="item.isSelected" [disabled]="!multiSelection">
+              </mat-checkbox>-->
+                  <mat-checkbox (click)="setRowSelectedCheck($event)"
+                                (change)="$event ? selection.toggle(item) : null"
+                                [checked]="item.isSelected" [(ngModel)]="item.isSelected" [disabled]="!multiSelection">
+                  </mat-checkbox>
+                </td>
+
+                <!--ItemAnother-->
+                <td class="sticky-col third-col text-center">
+
+                  <div style="font-size: 24px;" class="ml-2 mr-2">
+                    <span (click)="onPrintBarcodeClick(item)">
+                      <i class="fa-solid fa-barcode fa-sm mr-2 text-blue" style="cursor: pointer;"></i>
+                    </span>
+
+                    <!--<span (click)="doPrintRegisterForm(item)">
+                  <i class="fa fa-print fa-sm mr-2 text-orange" style="cursor: pointer;"></i>
+                </span>-->
+                    <!--<ng-container *ngIf="referenceName == 'receive'; then receive else sample "></ng-container>-->
+                    <!--<ng-template #receive>-->
+                    <a href="javascript:" class="edit">
+                      <i class="material-icons" aria-hidden="true" title="Edit"
+                         (click)="redirectToDetails(item.sentSampleID)">&#xE254;</i>
+                    </a>
+                    <!--</ng-template>-->
+
+                    <ng-container *ngIf="item.requestStatus === 'Shipment'; else disabledEditShipment">
+                      <a href="javascript:" class="mr-2" title="แก้ไขใบนำส่ง" (click)="doEditShipment(item)">
+                        <i class="fa-solid fa-envelope-circle-check text-green"></i>
+                      </a>
+                    </ng-container>
+                    <ng-template #disabledEditShipment>
+                      <a href="javascript:" class="mr-2" title="แก้ไขใบนำส่ง"
+                         style="color: rgb(171, 220, 134); cursor: not-allowed;">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                      </a>
+                    </ng-template>
+
+                    <ng-container *ngIf="item.requestStatus !== 'Draft'; else canDelete">
+                      <!-- <i class="delete disabled far fa-trash-alt fa-lg" style="color: rgb(252, 157, 157);"></i> -->
+                      <a href="javascript:" class="delete" style="color: rgb(252, 157, 157); cursor: not-allowed;">
+                        <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
+                      </a>
+                    </ng-container>
+                    <ng-template #canDelete>
+                      <!-- <i class="delete far fa-trash-alt fa-lg" style="cursor: pointer;" (click)="onDeleteItem(idx)"></i> -->
+                      <a href="javascript:" class="delete" style="color: red;" (click)="redirectToDelete(item.SentSampleID)">
+                        <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
+                      </a>
+                    </ng-template>
+                  </div>
+
+                </td>
+                <!--สถานะ-->
+                <td>
+                  <span style="cursor: pointer;" title="{{item.requestStatus}} {{item.receiptRemark}}">{{item.requestStatus}}</span>
+                </td>
+                <!-- วันที่บันทึก -->
+                <td>{{item.createdDate | localDatetimePipe}}</td>
+                <!-- วันที่เจาะเลือด -->
+                <td>{{item.sampleDate | localDatetimePipe}}</td>
+                <!-- วันที่รับตัวอย่าง -->
+                <td>{{item.receiveDate | localDatetimePipe}}</td>
+                <!-- เลขที่ใบนำส่ง -->
+                <td>{{item.shiptoNo}}</td>
+                <!-- เลขที่ตัวอย่าง -->
+                <td>{{item.labNumber}}</td>
+                <!-- หน่วยงานส่งตรวจ -->
+                <td>{{item.siteName}}</td>
+                <!-- ชื่อ-สกุล [คนไข้] -->
+                <td>{{item.firstName}} {{item.lastName}}</td>
+                <!-- ชื่อ-สกุล [คนไข้] -->
+                <td>{{item.hN}}</td>
+                <!-- บัตรประชาชน -->
+                <td>{{item.identityCard}}</td>
+                <!-- เบอร์โทรศัพท์ -->
+                <td>{{item.phoneNo}}</td>
+                <td class="d-none">{{item.requestID}}</td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+
+      <div style="margin-top: 5px;">
+        <div class="float-left">
+          Size:
+          <select class="selectpicker" (change)="handlePageSizeChange($event)"
+                  [(ngModel)]="pageListConfig.itemsPerPage">
+            <option *ngFor="let size of listPageSizes" [ngValue]="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+
+        <div class="float-right">
+          <pagination-controls id="itemListPage" (pageChange)="pageListChanged($event)"></pagination-controls>
+        </div><br>
+
+      </div>
+
+
+    </div>
+  </div>
+
+
+  <!--ตารางคนไข้-->
+
+
+
+</mat-expansion-panel>
+
+
+<button id="testBtn" (click) ="TestFunction()"></button>

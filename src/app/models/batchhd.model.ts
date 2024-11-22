@@ -1,0 +1,37 @@
+import { BaseModel } from './base.model';
+export class BatchHDModel extends BaseModel {
+  batchID: string = '';
+  spParmLastBatchID: string = '';
+  sentSampleID: string = null;
+  sentSampleName: string = '';
+  batchNo: string = '';
+  batchDate: Date = null;
+  siteID: string = null;
+  receiveNo: string = '';
+  receiveDate: Date = null;
+  currentLabNo: string = '';
+  receivebyEmpID: string = null;
+  deptID: string = null;
+  analystDays: number = 1;
+  dueDate: Date = null;
+  profileID: string = null;
+  profileName: string = '';
+  testCode: string = '';
+  sampleTypeID: number = null;
+  sampleTypeCode: string = '';
+  sampleTypeName: string = '';
+  numberOFSamples: number = 1;
+  numberOFBarcode: number = 1;
+  employeeID: string = null;
+  userName: string = '';
+  receiveFlag: string = '';
+  documentStatus: string = '';
+  createdBy: string = '';
+  createdDate: Date = new Date();
+  modifiedBy: string = '';
+  isDeleted: number = 0;
+  modifiedDate: Date = new Date();
+  remark: string = '';
+  newStatus: string = '';
+  siteCode: string = '';
+}

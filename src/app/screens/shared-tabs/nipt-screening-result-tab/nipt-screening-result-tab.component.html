@@ -1,0 +1,170 @@
+<!-- ผลการวินิจฉัยจากการเจาะน้ำคร่ำ -->
+<div class="card m-2">
+    <div class="card-header" id="headingAmniotic">
+        <h5 class="mb-my-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseAmniotic"
+                aria-expanded="false" aria-controls="collapseAmniotic">
+                <h4 class="form-header text-uppercase">
+                    <i class="fa fa-file-text-o"></i>ผลการวินิจฉัยจากการเจาะน้ำคร่ำ
+                </h4>
+            </button>
+        </h5>
+    </div>
+
+    <div id="collapseAmniotic" class="collapse show" aria-labelledby="headingAmniotic">
+        <div class="card-body">
+            <form [formGroup]="requestsForm">
+
+                <div class="form-row form-inline mb-2">
+                    <div class="form-group indent-20">
+                        <label for="input-amnioticDate" class="col-form-label">วันที่เจาะน้ำคร่ำ</label>
+                        <div class="input-group input-group-sm">
+                            <input class="form-control col-6" id="input-amnioticDate" #dpAmnioticDate="bsDatepicker"
+                                bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                formControlName="amnioticDate">
+                            <span class="input-group-append">
+                                <button class="btn btn-outline-secondary" (click)="dpAmnioticDate.toggle()">
+                                    <i class="far fa-calendar-alt"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row form-inline mb-2">
+                    <div class="col-12">
+                        <div class="input-group indent-20">
+                            <label for="input-amnioticLab"
+                                class="col-form-label">ห้องปฏิบัติการที่ทำการตรวจวิเคราะห์น้ำคร่ำ</label>
+                            <input type="text" style="width: 100%" class="form-control form-control-sm col-11"
+                                id="input-amnioticLab" placeholder="" formControlName="amnioticLab">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row form-inline mb-2">
+                    <div class="input-group indent-20">
+                        <label for="input-amnioticGAWeek" class="col-form-label">อายุครรภ์ ณ วันที่เจาะน้ำคร่ำ</label>
+                        <input type="number" class="form-control form-control-sm col-sm-2 text-center"
+                            id="input-amnioticGAWeek" placeholder="" formControlName="amnioticGAWeek"> <label
+                            class="mr-2 ml-2">Weeks</label>
+                        <input type="number" class="form-control form-control-sm col-sm-2 text-center"
+                            id="input-amnioticGADays" placeholder="" formControlName="amnioticGADays"> <label
+                            class="mr-2 ml-2">Days</label>
+                    </div>
+                </div>
+
+                <div class="form-row form-inline mb-2">
+                    <div class="input-group indent-20">
+                        <label for="input-amnioticAnalysTechnique" class="col-form-label">เทคนิคการตรวจวิเคราะห์</label>
+                        <select class="form-control form-control-sm" formControlName="amnioticAnalysTechnique"
+                            (change)="changeTechnique($event)" id="input-amnioticAnalysTechnique">
+                            <option [ngValue]="null" disabled>Choose your item</option>
+                            <option *ngFor="let tech of allTechnique" [value]="tech.name">
+                                {{ tech.text }}
+                            </option>
+                        </select>
+
+                        <!-- <input type="text" style="width: 100%" class="form-control form-control-sm col-sm-5 ml-2"
+              id="input-amnioticLab" placeholder="" formControlName="amnioticLab"> -->
+
+                    </div>
+                </div>
+
+                <div class="form-row form-inline mb-2">
+                    <div class="col-12">
+                        <div class="input-group indent-80">
+                            <label for="input-amnioticOtherTechnique" class="col-form-label">เทคนิคอื่น ๆ</label>
+                            <input type="text" style="width: 100%" class="form-control form-control-sm col-11 ml-2"
+                                id="input-amnioticOtherTechnique" placeholder=""
+                                formControlName="amnioticOtherTechnique">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row form-inline mb-2">
+                    <div class="input-group indent-20">
+                        <label for="input-amnioticChromosomeAbnormal" class="col-form-label">ผลการวิเคราะห์
+                            (Results)</label>
+                        <select class="form-control form-control-sm" formControlName="amnioticChromosomeAbnormal"
+                            (change)="changeTechnique($event)" id="input-amnioticChromosomeAbnormal">
+                            <option [ngValue]="null" disabled>Choose your item</option>
+                            <option *ngFor="let ab of abnormalLists" [value]="ab.name">
+                                {{ ab.text }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row form-inline mb-2">
+                    <div class="col-12">
+                        <div class="input-group indent-80">
+                            <label for="input-amnioticOtherAbnormal" class="col-form-label">อื่น ๆ</label>
+                            <input type="text" class="form-control form-control-sm col-11 ml-2"
+                                id="input-amnioticOtherAbnormal" placeholder="" formControlName="amnioticOtherAbnormal">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row form-inline mb-2">
+                    <div class="input-group indent-20">
+                        <label for="input-amnioticMiscarriage" class="col-form-label">การแท้งจากการเจาะน้ำคร่ำ
+                            (Miscarriage)</label>
+                        <mat-radio-group class="mt-2" formControlName="amnioticMiscarriage"
+                            id="input-amnioticMiscarriage">
+                            <mat-radio-button value="No Miscarriage">ไม่เกิดการแท้ง
+                            </mat-radio-button>
+                            <mat-radio-button value="Miscarriage">เกิดการแท้ง</mat-radio-button>
+                            <mat-radio-button value="Not Specified">ไม่ระบุ</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+
+                <div class="form-row form-inline mb-2">
+                    <div class="input-group indent-20">
+                        <label for="input-amnioticAnalysisReportFile" class="col-form-label">ใบรายงานผลการตรวจวิเคราะห์
+                            (PDF,JPEG)</label>
+
+                        <input type="file" #fileUpload placeholder="Choose file" accept=".jpg, .jpeg, .png, .pdf"
+                            onclick="value = null" (change)="onSelectFile($event)" style="display:none;">
+                        <button type="button" class="btn btn-info btn-sm" (click)="fileUpload.click()"
+                            [disabled]="!requestsForm.get('labNumber').value">
+                            <i class="fa fa-upload mr-1"></i>Choose file
+                        </button>
+
+                        <ng-template [ngIf]="requestsForm.get('amnioticAnalysisReportFile').value">
+                            <div class="ml-1 pt-2">
+                                <a href="javascript:0" (click)="downloadAmnioticFile()"
+                                    style="color: blue; cursor: pointer;">
+                                    {{ requestsForm.get('amnioticAnalysisReportFile').value }}</a>
+                            </div>
+                        </ng-template>
+
+                    </div>
+                </div>
+
+                <div class="form-row form-inline mb-2">
+                    <div class="input-group indent-20">
+                        <label for="input-amnioticRecorder" class="col-form-label">ผู้บันทึก</label>
+                        <input type="text" style="width: 100%" class="form-control form-control-sm col-sm-5 ml-2"
+                            id="input-amnioticRecorder" placeholder="" formControlName="amnioticRecorder">
+                        <label for="input-amnioticPhoneNo" class="col-form-label ml-2">เบอร์โทรศัพท์</label>
+                        <input type="text" style="width: 100%" class="form-control form-control-sm col-sm-5 ml-2"
+                            id="input-amnioticPhoneNo" placeholder="" formControlName="amnioticPhoneNo">
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="col-md-12 text-center">
+                    <button type="button" class="btn btn-primary mr-3" (click)="callParentSave()"
+                        [disabled]="!requestsForm.get('labNumber').value"><i
+                            class="fa fa-floppy-o mr-1"></i>บันทึก</button>
+                    <button type="button" class="btn btn-warning" (click)="doClearAmnioticData()"><i
+                            class="fa fa-trash-o mr-1"></i>ล้างข้อมูล</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div> <!-- จบ ผลการวินิจฉัยจากการเจาะน้ำคร่ำ -->

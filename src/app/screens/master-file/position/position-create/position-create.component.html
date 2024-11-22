@@ -1,0 +1,104 @@
+<app-breadcrumb-navigator pageTitle="กำหนดตำแหน่ง" currentPageName="กำหนดตำแหน่ง"></app-breadcrumb-navigator>
+
+<!-- toolbar button -->
+<div class="form-footer mb-2">
+  <button type="submit" class="btn btn-dark shadow-dark m-1" (click)="goBack()">
+    <i class="fa fa-times mr-1"></i>Cancel
+  </button>
+  <button type="submit" class="btn btn-success shadow-success m-1" (click)="doSave()"><i
+      class="fa fa-check-square-o mr-1"></i>Save
+  </button>
+</div> <!-- end toolbar button -->
+
+<!-- <div>
+  {{this.msPositionForm.value |json}}
+</div> -->
+
+<div id="accordion">
+  <!-- ชนิดตัวอย่าง -->
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOnex" aria-expanded="true"
+          aria-controls="collapseOne">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-user-circle-o"></i>กำหนดตำแหน่ง
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+      <div class="card-body">
+        <form [formGroup]="msPositionForm">
+          <div class="form-row">
+            <div class="col-md-12">
+              <label for="input-positionCode" class="col-form-label">รหัสตำแหน่ง</label>
+              <input type="text" class="form-control form-control-sm" id="input-positionCode"
+                formControlName="positionCode">
+            </div>
+            <div class="col-md-12">
+              <label for="input-positionName" class="col-form-label">ชื่อตำแหน่ง</label>
+              <input type="text" class="form-control form-control-sm" id="input-positionName"
+                formControlName="positionName">
+            </div>
+            <div class="col-md-12">
+              <label for="input-positionNameEng" class="col-form-label">ชื่อตำแหน่ง (Eng)</label>
+              <input type="text" class="form-control form-control-sm" id="input-positionNameEng"
+                formControlName="positionNameEng">
+            </div>
+            <div class="col-md-12">
+              <label for="input-remark" class="col-form-label">Remark</label>
+              <textarea class="form-control form-control-sm" id="input-remark" formControlName="remark"></textarea>
+            </div>
+
+            <!-- <div class="form-group col-md-3">
+              <label for="input-siteid" class="col-form-label">Site Code</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-siteid" placeholder=""
+                  formControlName="siteID">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-9">
+              <label for="input-siteName" class="col-form-label">Site Name</label>
+              <input type="text" class="form-control form-control-sm" id="input-siteName" formControlName="siteName"
+                readonly>
+            </div> -->
+
+            <!-- <div class="w-100"></div>
+            <div class="form-group col-md-3">
+              <label for="input-deptid" class="col-form-label">Department Code</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-deptid" placeholder=""
+                  formControlName="deptID">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-9">
+              <label for="input-deptName" class="col-form-label">Department Name</label>
+              <input type="text" class="form-control form-control-sm" id="input-deptName" formControlName="deptName"
+                readonly>
+            </div>
+
+
+            <div class="col-md-12">
+              <label for="input-parentPosition" class="col-form-label">Parent Position</label>
+              <input type="text" class="form-control form-control-sm" id="input-parentPosition"
+                formControlName="parentPositionID">
+            </div> -->
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> <!-- จบ ชนิดตัวอย่าง -->
+
+</div>

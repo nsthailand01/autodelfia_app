@@ -1,0 +1,61 @@
+<app-breadcrumb-navigator pageTitle="กำหนดกลุ่มหน่วยงาน" currentPageName="กำหนดกลุ่มหน่วยงาน">
+</app-breadcrumb-navigator>
+
+<!-- toolbar button -->
+<div class="form-footer mb-2">
+  <button type="submit" class="btn btn-dark shadow-dark m-1" (click)="goBack()">
+    <i class="fa fa-times mr-1"></i>Cancel
+  </button>
+  <button type="submit" class="btn btn-success shadow-success m-1" (click)="doSave()"><i
+      class="fa fa-check-square-o mr-1"></i>Save
+  </button>
+</div> <!-- end toolbar button -->
+
+<!-- <div>
+  {{this.msSiteGroupForm.value |json}}
+</div> -->
+
+<div id="accordion">
+  <!-- ชนิดตัวอย่าง -->
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOnex" aria-expanded="true"
+          aria-controls="collapseOne">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-user-circle-o"></i>กำหนดกลุ่มหน่วยงาน
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+      <div class="card-body">
+        <form [formGroup]="msSiteGroupForm">
+          <div class="form-row">
+            <div class="col-md-12">
+              <label for="input-siteGroupCode" class="col-form-label">รหัสกลุ่มหน่วยงาน</label>
+              <input type="text" class="form-control form-control-sm" id="input-siteGroupCode"
+                formControlName="siteGroupCode">
+            </div>
+            <div class="col-md-12">
+              <label for="input-siteGroupName" class="col-form-label">ชื่อกลุ่มหน่วยงาน</label>
+              <input type="text" class="form-control form-control-sm" id="input-siteGroupName"
+                formControlName="siteGroupName">
+            </div>
+            <div class="col-md-12">
+              <label for="input-siteGroupNameEng" class="col-form-label">ชื่อกลุ่มหน่วยงาน (Eng)</label>
+              <input type="text" class="form-control form-control-sm" id="input-siteGroupNameEng"
+                formControlName="siteGroupNameEng">
+            </div>
+            <div class="col-md-12">
+              <label for="input-remark" class="col-form-label">Remark</label>
+              <textarea class="form-control form-control-sm" id="input-remark" formControlName="remark"></textarea>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> <!-- จบ ชนิดตัวอย่าง -->
+
+</div>

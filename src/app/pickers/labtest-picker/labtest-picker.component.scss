@@ -1,0 +1,56 @@
+@import "../../../assets/css/my-table.scss";
+table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.my-container {
+  // min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 1rem;
+  padding-top: 0;
+}
+
+.my-content {
+  width: 100vw;
+  background-color: seashell;
+  border: 1px solid burlywood;
+  padding: 12px;
+  // padding-top: 0;
+}
+
+.first-col {
+  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
+  left: 0px;
+}
+
+.second-col {
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  left: 50px;
+}
+
+.third-col {
+  width: 180px;
+  min-width: 180px;
+  max-width: 180px;
+  left: 110px;
+}
+
+
+
+#tableCustomer {
+  border: 1px solid #ddd; /* Border color for the entire table */
+}
+
+#tableCustomer td {
+  border: 1px solid #ddd; /* Border color for header and data cells */
+  padding: 8px; /* Add padding to cells for better spacing */
+}
+

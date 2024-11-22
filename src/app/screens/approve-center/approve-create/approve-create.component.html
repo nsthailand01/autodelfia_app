@@ -1,0 +1,753 @@
+<app-breadcrumb-navigator pageTitle="Approve Center" currentPageName="Approve Center"
+                          listPageUrl="/approve-center/create">
+</app-breadcrumb-navigator>
+
+<!-- <ng-template #customLoadingTemplate>
+  <div class="custom-class">
+    <h3>
+      Loading...
+    </h3>
+    <button (click)="showAlert()">
+      Click me!
+    </button>
+  </div>
+</ng-template> -->
+<!-- <ngx-spinner [fullScreen]="true" type="ball-clip-rotate-multiple" size="medium">
+  <p class="loading">Loading Awesomeness...</p>
+</ngx-spinner> -->
+<!-- <form class="form-inline" action="/action_page.php">
+  <label for="email">Username:</label>
+  <input type="email" class="form-control" id="email" placeholder="Enter Username" name="email">
+  <label for="pwd">Password:</label>
+  <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd">
+  <button type="button" class="btn btn-danger">Login</button>
+  <button type="button" class="btn btn-secondary">Register</button>
+</form> -->
+<!-- <div class="form-row">
+  <label for="txtLabNo" class="col-form-label-sm col-sm-1">Lab No.</label>
+  <div class="col-sm-3 ">
+    <input type="text" readonly class="form-control form-control-sm" id="txtLabNo" formControlName="labNumber">
+  </div>
+  <label for="txtName" class="col-form-label-sm col-sm-1">Name</label>
+  <div class="col-sm">
+    <input type="text" readonly class="form-control form-control-sm" id="txtName" formControlName="fullName">
+  </div>
+</div> -->
+
+<div class="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                aria-controls="collapseOne">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-user-circle-o"></i>Approve Center
+          </h4>
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+
+      <!-- <ng-container *ngIf="defaultValue.forScienceCenter; then forScienCenter else forOriginalSite">
+      </ng-container>
+      <ng-template #forScienCenter>
+        <p>forScienCenter</p>
+      </ng-template>
+      <ng-template #forOriginalSite>
+        <p>forOriginalSite</p>
+      </ng-template> -->
+
+      <form [formGroup]="rangeForm">
+        <div class="card card-primary card-outline boder border-primary p-2 mb-1 mt-0">
+          <div class="card-body p-1">
+            <div class="form-row m-0" style="height: 30px;">
+              <h3 class="font-kanit" style="height: 25px;">เงื่อนไขการเรียกข้อมูล</h3>
+            </div>
+
+            <div class="form-row">
+
+              <div class="col-sm-2">
+                <mat-form-field appearance="fill">
+                  <div class="d-flex flex-column justify-content-end">
+                    <mat-label>Choose an date range</mat-label>
+                    <mat-select [(ngModel)]="rangeSelectedValue" [ngModelOptions]="{standalone: true}"
+                                (selectionChange)="onRangeChange()">
+                      <mat-option value="LastYear">Last Year</mat-option>
+                      <mat-option value="LastMonth">Last Month</mat-option>
+                      <mat-option value="LastWeek">Last Week</mat-option>
+                      <mat-option value="ThisYear">This Year</mat-option>
+                      <mat-option value="ThisMonth">This Month</mat-option>
+                      <mat-option value="ThisWeek">This Week</mat-option>
+                      <mat-option value="Today">Today</mat-option>
+                      <mat-option value="All">All</mat-option>
+                    </mat-select>
+                  </div>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-2">
+                <label for="input-rangeFromSentSampleDate" class="col-form-label"
+                       style="text-align: left">จากวันที่</label>
+                <div class="input-group input-group-sm">
+                  <input class="form-control" id="input-rangeFromSentSampleDate"
+                         #dpRangeFromSentSampleDate="bsDatepicker" bsDatepicker formControlName="fromDate"
+                         [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" required>
+                  <span class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button"
+                            (click)="dpRangeFromSentSampleDate.toggle()">
+                      <i class="far fa-calendar-alt"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <label for="input-rangeToSentSampleDate" class="col-form-label"
+                       style="text-align: left">ถึงวันที่</label>
+                <div class="input-group input-group-sm">
+                  <input class="form-control" id="input-rangeToSentSampleDate" #dpRangeToSentSampleDate="bsDatepicker"
+                         bsDatepicker formControlName="toDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" required>
+                  <span class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" (click)="dpRangeToSentSampleDate.toggle()">
+                      <i class="far fa-calendar-alt"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <label for="input-rangeSite" class="col-form-label" style="text-align: left;">Site</label>
+                <div class="input-group input-group-sm">
+                  <input type="text" class="form-control form-control-sm" id="input-rangeSite" placeholder=""
+                         formControlName="siteName" readonly>
+                  <span class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" style="z-index: 1;" (click)="clearSite()"
+                            [disabled]="!this.defaultValue.forScienceCenter">
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </span>
+                  <span class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" style="z-index: 1;"
+                            (click)="openMSSitePicker()" [disabled]="!this.defaultValue.forScienceCenter">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-sm-2">
+                <label for="input-rangeLabNo" class="col-form-label-sm" style="text-align: left;">Lab No.</label>
+                <input type="text" class="form-control form-control-sm" id="input-rangeLabNo"
+                       formControlName="labNumber">
+              </div>
+
+              <div class="w-100"></div>
+              <div class="d-flex flex-column justify-content-end mt-1 ml-1">
+                <a id="btnsearchclick" mat-flat-button color="warn" class="mr-2" (click)="onRetrieveClick()">
+                  <i class="fa fa-arrow-down mr-2" aria-hidden="true"></i>ค้นหา
+                </a>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </form>
+
+      <div class="card-body pt-1">
+        <form>
+
+          <div class="form-row p-0 m-0">
+            <div class="form-check">
+              <mat-checkbox class="m-2" [(ngModel)]="isReceived" [ngModelOptions]="{standalone: true}"
+                            (change)="onStatusCheckedChange($event, 'Received')">
+                Received
+              </mat-checkbox>
+            </div>
+            <div class="form-check">
+              <mat-checkbox class="m-2" [(ngModel)]="isReported" [ngModelOptions]="{standalone: true}"
+                            (change)="onStatusCheckedChange($event, 'Reported')">
+                Reported
+              </mat-checkbox>
+            </div>
+            <div class="form-check">
+              <mat-checkbox class="m-2" [(ngModel)]="isApproved" [ngModelOptions]="{standalone: true}"
+                            (change)="onStatusCheckedChange($event, 'Approved')">
+                Approved
+              </mat-checkbox>
+            </div>
+
+
+
+          </div>
+
+          <!-- <div style="width: 100%; height: 500px; background: whitesmoke"> -->
+          <div class="height-max" style="background: whitesmoke;">
+            <as-split unit="percent" direction="horizontal">
+              <as-split-area [size]="33" minSize="2">
+                <div class="filter-text m-1">
+                  <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter Text">
+                </div>
+
+                <div #tableContainer class="table-container mat-elevation-z8" (mousedown)="onMouseDown($event)">
+                  <div #tableScrollable class="table-scrollable">
+                    <table mat-table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="asc"
+                           matSortDisableClear class="layout display responsive-table topics">
+                      <tr style="display:none!important">
+                        <!-- Column -->
+                        <ng-container matColumnDef="listNo">
+                          <th mat-header-cell *matHeaderCellDef disableClear width="35px">#</th>
+                          <td mat-cell *matCellDef="let request; let i = index;">
+                            {{ (i+1) + (this.paginator?.pageIndex * this.paginator?.pageSize) | number:'1.0' }}
+                          </td>
+                        </ng-container>
+
+                        <!-- Column -->
+                        <ng-container matColumnDef="status">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header width="70px">Status</th>
+                          <td mat-cell *matCellDef="let request">
+                            <span *ngIf="request.requestStatus == 'Pending'" class="badge bg-yellow">
+                              {{ request.requestStatus }}
+                            </span>
+                            <span *ngIf="request.requestStatus == 'Shipment'" class="badge" style="background-color: #9932CC !important; color: white; ">
+                              {{ request.requestStatus }}
+                            </span>
+                            <span *ngIf="request.requestStatus == 'Reported'" class="badge bg-green">
+                              {{ request.requestStatus }}
+                            </span>
+                            <span *ngIf="request.requestStatus == 'Approved'" class="badge bg-primary">
+                              {{ request.requestStatus }}
+                            </span>
+                            <span *ngIf="request.requestStatus == 'In-Process'" class="badge" style="background-color: #9932CC !important; color: white; ">
+                              {{ request.requestStatus }}
+                            </span>
+                            <span *ngIf="request.requestStatus == 'Received'" class="badge bg-yellow">
+                              {{ request.requestStatus }}
+                            </span>
+                            <span *ngIf="request.requestStatus == 'Rejected'" class="badge" style="background-color: red !important; color: white; ">
+                              {{ request.requestStatus }}
+                            </span>
+                            <span *ngIf="request.requestStatus == ''" class="badge" style="background-color: #9932CC !important; color: white; ">
+                              {{ request.requestStatus }}
+                            </span>
+                          </td>
+
+                        </ng-container>
+
+                        <!--<ng-container matColumnDef="labNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header width="100px">Lab No.</th>
+        <td mat-cell *matCellDef="let request">
+        {{ request.labNumber }}
+
+        </td>
+      </ng-container>-->
+
+                        <ng-container matColumnDef="recal">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header width="30px">Recal</th>
+                          <td mat-cell *matCellDef="let request">
+                            <ng-container *ngIf="request.requests_Recal === 'Recal'">
+                              <span class="badge" style="background-color: blueviolet !important; color: white; ">{{ request.requests_Recal }}</span>
+                            </ng-container>
+                            <ng-container *ngIf="request.requests_Recal != 'Recal'">
+                              <span></span>
+                            </ng-container>
+                          </td>
+                        </ng-container>
+
+
+
+                        <ng-container matColumnDef="labNumber">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header width="100px">Lab No.</th>
+                          <td mat-cell *matCellDef="let request">
+                            <ng-container *ngIf="request.riskAssessmentValueT21 === '2' || request.riskAssessmentValueT18 === '2' || request.riskAssessmentValueT13 === '2' || request.riskAssessmentValueNTD === '2' ">
+                              <span style="color: red">{{ request.labNumber }}</span>
+                            </ng-container>
+                            <ng-container *ngIf="request.riskAssessmentValueT21 != '2' && request.riskAssessmentValueT18 != '2' && request.riskAssessmentValueT13 != '2' && request.riskAssessmentValueNTD != '2' ">
+                              <span style="color: black">{{ request.labNumber }}</span>
+                            </ng-container>
+                          </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="hn">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header width="10px">Hn</th>
+                          <td mat-cell *matCellDef="let request">
+                            <span style="color: black; " class="text-center ml-2">{{ request.hN }}</span>
+                          </td>
+                        </ng-container>
+
+
+                        <!-- Column -->
+                        <!--<ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let request">{{ request.fullName }}</td>
+      </ng-container>-->
+                        <ng-container matColumnDef="fullName">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                          <td mat-cell *matCellDef="let request">
+                            <ng-container *ngIf="request.riskAssessmentValueT21 === '2' || request.riskAssessmentValueT18 === '2' || request.riskAssessmentValueT13 === '2' || request.riskAssessmentValueNTD === '2' ">
+                              <span style="color: red">  <i class="fa fa-exclamation-circle" aria-hidden="true" title="ค่าความเสี่ยงสูง" style="font-size:16px;"></i> {{ request.fullName }} </span>
+                            </ng-container>
+                            <ng-container *ngIf="request.riskAssessmentValueT21 != '2' && request.riskAssessmentValueT18 != '2' && request.riskAssessmentValueT13 != '2' && request.riskAssessmentValueNTD != '2' ">
+                              <span style="color: black" class="ml-2">{{ request.fullName }}</span>
+                            </ng-container>
+                          </td>
+                        </ng-container>
+
+
+
+
+
+                      </tr>
+
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                      <tr mat-row *matRowDef="let row; let idx = index; columns: displayedColumns;"
+                          [ngClass]="{'highlight-row': selectedRowIndex == idx}" (click)="setRowSelected(row, idx)">
+                      </tr>
+                    </table>
+                  </div>
+
+                  <!-- <div *ngIf="pageEvent">
+                    <h5>Page Change Event Properties</h5>
+                    <div>List length: {{pageEvent.length}}</div>
+                    <div>Page size: {{pageEvent.pageSize}}</div>
+                    <div>Page index: {{pageEvent.pageIndex}}</div>
+                  </div> -->
+
+                  <mat-paginator appStylePaginator showFirstLastButtons fixed [pageSize]="pageSize"
+                                 [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = $event">
+                  </mat-paginator>
+
+                </div>
+              </as-split-area>
+
+
+              <as-split-area [size]="67" minSize="2" style="position: relative; overflow: hidden;">
+
+                <div class="card card-primary card-outline border border-primary m-2">
+                  <div class="card-body">
+
+                    <form [formGroup]="requestsForm">
+                      <div class="form-row">
+                        <label for="txtLabNo" class="col-form-label-sm col-sm-1">Lab No.</label>
+                        <div class="col-sm-3 ">
+                          <input type="text" readonly class="form-control form-control-sm" id="txtLabNo"
+                                 formControlName="labNumber">
+                        </div>
+                        <label for="txtName" class="col-form-label-sm col-sm-1">Name</label>
+                        <div class="col-sm">
+                          <input type="text" readonly class="form-control form-control-sm" id="txtName"
+                                 formControlName="fullName">
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                        <label for="txtGender" class="col-form-label-sm col-sm-1">Sex</label>
+                        <div class="col-sm-3 inputspace">
+                          <input type="text" readonly class="form-control form-control-sm" id="txtGender"
+                                 formControlName="sex">
+                        </div>
+                        <label for="txtAge" class="col-form-label-sm col-sm-1">Age</label>
+                        <div class="col-sm-1 inputspace">
+                          <input type="text" readonly class="form-control form-control-sm" id="txtAge" [(ngModel)]="age"
+                                 [ngModelOptions]="{standalone: true}">
+                        </div>
+                        <label for="txtHn" class="col-form-label-sm col-sm">H.N</label>
+                        <div class="col-sm-4 inputspace">
+                          <input type="text" readonly class="form-control form-control-sm" id="txtHn"
+                                 formControlName="hN">
+                        </div>
+                      </div>
+                    </form>
+
+                  </div>
+                </div>
+
+                <form [formGroup]="requestsForm">
+                  <input type="hidden" formControlName="approveByID" />
+                  <input type="hidden" formControlName="doctorAppvDate" />
+                  <input type="hidden" formControlName="reportByID" />
+                  <input type="hidden" formControlName="labAppvDate" />
+                </form>
+
+                <form [formGroup]="requestsForm">
+
+                  <div class="d-flex form-footer m-2">
+                    <button id="btn1" type="button" class="btn btn-md btn-success shadow-success m-1"
+                            [disabled]="(requestStatus == 'Approved' || userType != 'ScienceCenter'|| requestStatus == 'Reported')"
+                            (click)="onReportClick()">
+                      <i class="fa fa-check-square-o mr-1"></i>Report
+                    </button>
+                    <button id="btn2" type="button" class="btn btn-md btn-primary shadow-primary m-1" (click)="onApproveClick()"
+                            [disabled]="(requestStatus == 'Pending' || userType != 'ScienceCenter' || requestStatus == 'Approved' || requestStatus == 'In-Process')">
+                      <i class="fa fa-check-square-o mr-1"></i>Approve
+                    </button>
+                    <button id="btn3" type="button" class="btn btn-md btn-warning shadow-warning m-1" (click)="onPrintClick()"
+                            [disabled]="requestStatus == 'Pending' || requestStatus == 'Reported'|| requestStatus == 'In-Process'">
+                      <i class="fa fa-print mr-1" aria-hidden="true"></i>Print
+                    </button>
+                    <button id="btnrecal" type="button" class="btn btn-md  shadow-warning m-1" style="background-color:blueviolet; color:white;" (click)="onRecalClick()">
+                      <i class="fa fa-floppy-o" aria-hidden="true"></i> Recal
+                    </button>
+                    <div class="ml-auto">
+                      <button class="btn btn-md btn-info" (click)="clicknewfunctionHistoryMain()"><i class="fa fa-history" aria-hidden="true"></i> เช็คประวัติ</button>
+                      <button class="btn btn-danger btn-md mr-2 m-1" type="button" (click)="doExportNshoClick()">
+                        <i class="fas fa-share mr-2" aria-hidden="true"></i>Export Excel (นำส่ง สปสช.)
+                      </button>
+                    </div>
+                  </div>
+                </form>
+
+                <form [formGroup]="requestsForm">
+                  <div class="form-row form-inline">
+                    <div class="input-group input-group-sm flex-fill">
+                      <label for="input-reportComment" class="col-form-label col-sm-2 text-right">
+                        Report
+                        comment
+                      </label>
+                      <input type="text" class="form-control form-control-sm mr-2" id="input-reportComment"
+                             placeholder="Report comment" formControlName="labAppvComment"
+                             [readonly]="requestStatus == 'Approved'">
+                    </div>
+                  </div>
+                  <div class="form-row form-inline">
+                    <div class="input-group input-group-sm flex-fill">
+                      <label for="input-approveComment" class="col-form-label col-sm-2 text-right">
+                        Approve
+                        comment
+                      </label>
+                      <input type="text" class="form-control form-control-sm mr-2" id="input-approveComment"
+                             placeholder="Approve comment" formControlName="doctorAppvComment"
+                             [readonly]="requestStatus == 'Pending'">
+                    </div>
+                  </div>
+                </form>
+
+                <div class="container-fluid no-padding">
+                  <div class="card card-green card-outline">
+                    <div class="card-body">
+
+                      <mat-tab-group dynamicHeight (selectedTabChange)="selectedTabChange($event)">
+                        <mat-tab>
+                          <ng-template mat-tab-label>
+                            <mat-icon>biotech</mat-icon>Test Result
+                          </ng-template>
+                          <ng-template matTabContent>
+                            <mat-tab-group>
+                              <mat-tab>
+                                <ng-template mat-tab-label>
+                                  <mat-icon>info</mat-icon>&nbsp;Quad Test
+                                </ng-template>
+                                <app-test-result-tab [requestsForm]="requestsForm" [selectedRowIndex]="selectedRowIndex"
+                                                     (saveEvent)="doAmnioticSave($event)"></app-test-result-tab>
+                                <!-- <app-diagnostic-result-amniotic-tab [requestsForm]="requestsForm">
+                                </app-diagnostic-result-amniotic-tab> -->
+                              </mat-tab>
+                              <mat-tab>
+                                <ng-template mat-tab-label>
+                                  <mat-icon>info</mat-icon>&nbsp;NIPT
+                                </ng-template>
+                                <app-nipt-result-tab [requestsForm]="requestsForm"></app-nipt-result-tab>
+                              </mat-tab>
+
+                              <mat-tab>
+                                <ng-template mat-tab-label>
+                                  <mat-icon>info</mat-icon>&nbsp;ผลการเจาะน้ำคร่ำ
+                                </ng-template>
+                                <app-nipt-screening-result-tab [requestsForm]="requestsForm"
+                                                               (saveEvent)="doAmnioticSave($event)">
+                                </app-nipt-screening-result-tab>
+                              </mat-tab>
+                            </mat-tab-group>
+                          </ng-template>
+                        </mat-tab>
+                        <mat-tab>
+                          <ng-template mat-tab-label>
+                            <mat-icon class="example-tab-icon">pregnant_woman</mat-icon>Patient
+                          </ng-template>
+                          <ng-template matTabContent>
+                            <app-patient-profile-tab [requestsForm]="this.requestsForm">
+                            </app-patient-profile-tab>
+                            <!-- <app-samples-tab [itemLists]="this.requestLists" [itemToDelete]="requestToDelete"
+                            [sentSampleForm]="sentSampleForm" [requestFoms]="this.requestForms"
+                            (itemsChangeEvent)="updateItemChanged($event)"></app-samples-tab> -->
+                          </ng-template>
+                        </mat-tab>
+                      </mat-tab-group>
+
+                      <hr />
+
+                    </div>
+
+                  </div>
+                </div>
+
+              </as-split-area>
+            </as-split>
+          </div>
+          <!-- </div> -->
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div #confirmPass id="ModalPasswordConfirm" class="modal fade" tabindex="-1" role="dialog" data-backdrop="false"
+     style="background-color: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title">Confirm Password</h1>
+      </div>
+
+      <div class="modal-body">
+        <input type="password" name="password" class="form-control form-control-sm" id="input-password"
+               placeholder="Password" [(ngModel)]="userPassword" #username="ngModel" required>
+        <!-- <div class="error-text" *ngIf="username.hasError('required') && username.touched">
+          <p>Please enter password</p>
+        </div> -->
+        <div *ngIf="username.hasError('required') && (username.dirty || username.touched)" class="help-block"
+             style="color: red"><small>Please enter password</small></div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onConfirmPassword()">Confirm</button>
+        <button class="btn btn-warning" href="javascript:" #closebutton data-dismiss="modal">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div #confirmPassx class="modal fade" id="ModalPasswordConfirmx" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <!-- <form> -->
+        <!-----Form start-->
+        <div class="row">
+          <div class="col-lg-6 col-md-12">
+            <div class="form-group">
+              <label>User Name</label>
+              <input class="form-control" required>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-12">
+            <div class="form-group">
+              <label>Password</label>
+              <input class="form-control" type="text" [(ngModel)]="userPassword" required>
+            </div>
+            <!-- <div class="error-text"
+                  *ngIf="addCustomerForm.controls.lastName.hasError('required') && addCustomerForm.controls.lastName.touched">
+                  <p>Please enter last name</p>
+                </div> -->
+          </div>
+        </div>
+        <!-- </form> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="closeModal" (click)="onConfirmPassword()">Save</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div #printOptionRef class="modal fade" id="printOptionRef" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title">Print Option</h1>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="row-option">
+          <div class="column-option">
+            <label class="text-left mb-0">เลือกรายงาน</label>
+            <mat-radio-group class="newline-radio-group" [(ngModel)]="reportOption"
+                             (change)="onReportOptionChange($event)">
+              <mat-radio-button [value]="1" [checked]='true'>Quad Test</mat-radio-button>
+              <mat-radio-button [value]="2">NIPT</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div class="column-option">
+            <label class="text-left mb-0">เลือกรูปแบบการพิมพ์</label>
+            <mat-radio-group class="newline-radio-group" [(ngModel)]="printReportOption"
+                             (change)="onReportOptionChange($event)">
+              <mat-radio-button [value]="1">พิมพ์เฉพาะรายงาน</mat-radio-button>
+              <mat-radio-button [value]="2">พิมพ์รายงานพร้อมใบปะหน้า</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onConfirmPrintOption()">Confirm</button>
+        <button class="btn btn-warning" href="javascript:" #closebutton data-dismiss="modal">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div #exportNhsoRangeRef class="modal fade" id="exportNhsoRangeRef" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title">Export Excel (นำส่ง สปสช.)</h1>
+        <button type="button" class="close pull-right" aria-label="Close"
+                (click)="onCloseModalRef('#exportNhsoRangeRef')">
+          <i class="fas fa-times-circle"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <form [formGroup]="exportNhsoRangeForm">
+
+          <div class="form-group form-row">
+            <label for="input-slpayment" class="col-form-label col-3" style="justify-content: flex-end;">หน่วยงาน</label>
+            <div class="input-group input-group-sm col">
+              <input type="text" class="form-control form-control-sm" id="input-siteName" placeholder=""
+                     formControlName="siteName" [readonly]="(!forScienceCenter)">
+              <div class="input-group-append">
+                <button id="btnclear" class="btn btn-outline-secondary {{clCheckHospital2}}" type="button" style="z-index: 1;" (click)="clearSite2()">
+                  <i class="fa fa-times"></i>
+                </button>
+                <button class="m-0 btn btn-outline-info {{clCheckHospital}}" type="button" (click)="openMSSitePicker2()" style="z-index: 1;">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="form-group form-row">
+            <label for="input-fromCreateDate" class="col-form-label col-3">วันที่อนุมัติ</label>
+            <div class="input-group input-group-sm col">
+              <input class="form-control form-control-sm" id="input-fromCreateDate"
+                     #dpFromSentSampleDate="bsDatepicker" bsDatepicker formControlName="fromCreateDate"
+                     [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+              <div class="input-group-append">
+                <button class="btn btn-outline-info" type="button" (click)="dpFromSentSampleDate.toggle()"
+                        style="z-index: 1;">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+
+            <label for="input-toCreateDate" class="col-form-label col-2">ถึง</label>
+            <div class="input-group input-group-sm col">
+              <input class="form-control form-control-sm" id="input-toCreateDate" #dpToSentSampleDate="bsDatepicker"
+                     bsDatepicker formControlName="toCreateDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+              <div class="input-group-append">
+                <button class="btn btn-outline-info" type="button" (click)="dpToSentSampleDate.toggle()"
+                        style="z-index: 1;">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!--สัญชาติ-->
+          <div class="form-group form-row">
+            <label class="col-form-label col-3">สัญชาติ</label>
+            <div class="input-group input-group-sm col">
+              <mat-radio-group class="pl-2 tp-radio-group" formControlName="nationality">
+                <br />
+                <mat-radio-button class="tp-radio-button" value="all">ทั้งหมด</mat-radio-button><br />
+                <mat-radio-button class="tp-radio-button" value="thaiOnly">เฉพาะคนไทย</mat-radio-button><br />
+                <mat-radio-button class="tp-radio-button" value="foreignerOnly">เฉพาะต่างชาติ</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+
+          <div class="form-group form-row">
+            <label for="input-slpayment" class="col-form-label col-3"
+                   style="justify-content: flex-end;">สิทธิเบิกจ่าย</label>
+            <div class="input-group input-group-sm col">
+              <select class="form-control form-control-sm" id="input-slpayment" [(ngModel)]="selectedpayment" formControlName="slpayment">
+                <!--<option [ngValue]="null" disabled selected>กรุณาเลือกสิทธิเบิกจ่าย</option>-->
+                <!--<option *ngFor="let sso of ssoRights" [ngValue]="sso.value">
+                  {{ sso.text }}
+                </option>-->
+                <option ngValue="SSOPayment" class="font-weight-bold">สปสช</option>
+                <option ngValue="CashPayment" class="font-weight-bold">เงินสด</option>
+                <option ngValue="SitePayment" class="font-weight-bold">แจ้งหนี้หน่วยงานส่งตรวจ</option>
+                <option ngValue="AnyJobPayment" class="font-weight-bold">โครงการต่างๆ</option>
+                <option ngValue="OtherPayment" class="font-weight-bold">อื่นๆ</option>
+                <option ngValue="all" class="text-red font-weight-bold">ทุกสิทธิเบิกจ่าย</option>
+              </select>
+            </div>
+          </div>
+        </form>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" (click)="onConfirmExportNhsoRange()">
+          <i class="fas fa-share mr-2"
+             aria-hidden="true"></i>นำส่ง
+        </button>
+        <button class="btn btn-warning btn-sm" href="javascript:" #closebutton data-dismiss="modal">ยกเลิก</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!--<div id="testmodal" class="modal-content" style="z-index:90000">
+  <div class="modal-header">
+    
+  </div>
+  <div class="modal-body">
+    </div>
+  <div class="modal-footer">
+  
+  </div>
+</div>-->
+
+
+<div class="modal fade" id="testmodal" tabindex="-1" data-toggle="modal" data-keyboard="false" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:90000">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!--<h5 class="modal-title" id="testmodal">Recal</h5>-->
+        <h2 class="modal-title" style="font-weight:bold; font-size:16px;">Recal</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="col-12 col-lg-6"></div>
+         <h3 class="col-form-label col-12 col-md-12">คุณต้องการ Recal ใช่หรือไม่ ?</h3>
+            </div>
+          </div>
+          <div class="modal-footer text-center'">
+            <div class="container">
+              <button type="button" class="btn btn-primary" (click)="btnConfirmNew()"> <i class="fa fa-floppy-o" aria-hidden="true"></i> ยืนยัน</button>
+              <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal"> <i class="fa fa-times" aria-hidden="true"></i> ยกเลิก</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

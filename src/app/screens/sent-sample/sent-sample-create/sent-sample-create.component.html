@@ -1,0 +1,240 @@
+<!-- <div>
+  permissions: {{ permissions[0] }} and {{ permissions[1] }}
+</div>
+<hr> -->
+
+<app-breadcrumb-navigator pageTitle="ใบนำส่ง" currentPageName="ใบนำส่ง" listPageUrl="/sent-sample/lists">
+</app-breadcrumb-navigator>
+
+<!-- toolbar button -->
+<div>
+  <div class="h-100 d-inline-block">
+    <button type="button" class="btn btn-info waves-effect waves-light mr-1" (click)="onNewClick()">
+      <i class="far fa-file mr-1" aria-hidden="true"></i> New</button>
+    <button type="button" class="btn btn-md btn-danger shadow-danger m-1" (click)="goBack()">
+      <i class="fa fa-times mr-1"></i>Cancel
+    </button>
+    <button type="submit" class="btn btn-md btn-success shadow-success m-1" (click)="doSave()" [disabled]="isReceived">
+      <i class="fa fa-check-square-o mr-1"></i>Save
+    </button>
+    <button type="button" class="btn btn-md btn-primary shadow-primary m-1" (click)="doSentSample()"
+      [disabled]="(isReceived || (!inputCompleted && !forScienceCenter))">
+      <i class="fa fa-check-square-o mr-1"></i>Sent
+    </button>
+  </div>
+  <div class="h-100 d-inline-block">
+    <span id="round-corners" *ngIf="isReceived" style="color: red;" class="mr-3">รับตัวอย่างแล้ว ทะเบียนรับเลขที่ :
+      {{receiveNo}}</span>
+    <span id="round-corners" class="text-center" *ngIf="!inputCompleted" style="color: red;">ข้อมูล "คนไข้" ไม่ครบถ้วน
+      กรุณากรอกข้อมูลให้ครบ</span>
+  </div>
+
+</div> <!-- end toolbar button -->
+
+<div class="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+          aria-controls="collapseOne">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-user-circle-o"></i>ใบนำส่ง
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+      <div class="card-body">
+        <form [formGroup]="sentSampleForm">
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="input-siteid" class="col-form-label">Site</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-siteid" placeholder=""
+                  formControlName="siteName" readonly>
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="openMSSitePicker()"
+                    style="z-index: 1;">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="input-sentToSiteID" class="col-form-label">Sent to Site</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-sentToSiteID" placeholder=""
+                  formControlName="sentToSiteName" readonly>
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="openSiteParentPicker()"
+                    style="z-index: 1;">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="input-1" class="col-form-label">เลขที่ใบนำส่ง (ถ้ามี)</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-1" placeholder=""
+                  formControlName="sentSampleNo">
+                <!-- <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" style="z-index: 1;" (click)="doGetRunning()">
+                    <i class="fas fa-running"></i>
+                  </button>
+                </span> -->
+              </div>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label for="input-batchdate" class="col-form-label">วันที่นำส่ง</label>
+              <div class="input-group input-group-sm">
+                <input class="form-control" id="input-batchdate" #dpBatchDate="bsDatepicker" bsDatepicker
+                  formControlName="sentSampleDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                  (bsValueChange)="dateInputChange($event)">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="dpBatchDate.toggle()"
+                    style="z-index: 1;">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="input-employeeID" class="col-form-label">ผู้รวบรวมนำส่งตัวอย่าง</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-employeeID" placeholder=""
+                  formControlName="employeeName" readonly>
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="openEmployeePicker()"
+                    style="z-index: 1;">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="form-row">
+            <!-- <div class="form-group col-md-6">
+              <label for="input-username" class="col-form-label">Username</label>
+              <input type="text" class="form-control form-control-sm" id="input-username" placeholder=""
+                formControlName="userName" readonly>
+            </div> -->
+            <div class="form-group col-md-6">
+              <label for="input-ownerOfFeverDoctor" class="col-form-label">หมอเจ้าของไข้</label>
+              <input type="text" class="form-control form-control-sm" id="input-ownerOfFeverDoctor" placeholder=""
+                formControlName="ownerOfFeverDoctor">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="input-profile" class="col-form-label">วัตถุประสงค์</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-profile" placeholder="วัตถุประสงค์"
+                  formControlName="profileName" (blur)="onProfileBlur($event)">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="openProfilePicker()">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label for="input-sampletype" class="col-form-label">ชนิดตัวอย่าง</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm" id="input-sampletype" placeholder="ชนิดตัวอย่าง"
+                  formControlName="sampleTypeName" (blur)="onSampleTypeBlur($event)">
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="openSampleTypePicker()">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group col-md-2">
+              <label for="input-numberOFSamples" class="col-form-label">จำนวนตัวอย่าง</label>
+              <input type="number" class="form-control form-control-sm" id="input-numberOFSamples" placeholder=""
+                formControlName="numberOFSamples" (change)="onNumberOfSampleChanged($event)">
+            </div>
+
+            <!-- <div class="form-group col-md-4">
+              <label for="input-sampletype" class="col-form-label">ชนิดตัวอย่าง</label>
+              <div class="input-group input-group-sm">
+                <select class="form-control form-control-sm" [(ngModel)]="selectedSampleType"
+                  (change)="onSampleTypeChange($event)" [ngModelOptions]="{standalone: true}">
+                  <option value="" selected hidden>Choose sample</option>
+                  <option *ngFor="let stype of sampleTypeObjCombo" [ngValue]="stype">{{ stype.sampleTypeName }}</option>
+                </select>
+              </div>
+            </div> -->
+
+            <div class="form-group col-md-2">
+              <label for="input-numberOfAnalyst" class="col-form-label">จำนวนวิเคราะห์ Down</label>
+              <input type="number" class="form-control form-control-sm" id="input-numberOfAnalyst"
+                formControlName="numberOfAnalyst">
+            </div>
+            <div class="form-group col-md-2">
+              <label for="input-numberOfPregnantToxic" class="col-form-label">จำนวนครรภ์เป็นพิษ</label>
+              <input type="number" class="form-control form-control-sm" id="input-numberOfPregnantToxic"
+                formControlName="numberOfPregnantToxic">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-6">
+              <label for="input-remark" class="col-form-label">Remark</label>
+              <textarea class="form-control form-control-sm" id="input-remark" formControlName="remark"></textarea>
+            </div>
+          </div>
+
+          <!-- <div class="form-row ml-1 mt-3">
+            <div fxLayoutAlign="center center">
+              <mat-checkbox [(ngModel)]="isDeleted" [ngModelOptions]="{standalone: true}">Is Deleted</mat-checkbox>
+            </div>
+          </div> -->
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- <div>
+  {{ requestLists | json }}
+</div> -->
+
+<!-- Data Detail -->
+<div class="container-fluid no-padding">
+  <div class="card card-green card-outline">
+    <div class="card-body">
+
+      <mat-tab-group dynamicHeight (selectedTabChange)="selectedTabChange($event)">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">post_add</mat-icon>Samples
+          </ng-template>
+          <ng-template matTabContent>
+            <app-samples-tab [itemLists]="this.requestLists" [itemToDelete]="requestToDelete"
+              [sentSampleForm]="sentSampleForm" [requestFomsArray]="this.requestFormsArray"
+              (itemsChangeEvent)="updateItemChanged($event)"></app-samples-tab>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+
+      <hr />
+
+    </div>
+
+  </div>
+</div> <!-- Data Detail -->

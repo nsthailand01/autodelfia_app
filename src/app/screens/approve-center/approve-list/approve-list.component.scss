@@ -1,0 +1,28 @@
+.splitter {
+  width: 100%;
+  height: 200px;
+  display: flex;
+}
+
+#seperator {
+  cursor: col-resize;
+  background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/vsizegrip.png) center center no-repeat #535353;
+  width: 10px;
+  height: 100px;
+  min-width: 10px;
+}
+
+#first {
+  background-color: green;
+  border-width: 1px;
+  width: 30%;
+  height: 100px;
+  min-width: 10px;
+}
+
+#second {
+  background-color: red;
+  width: 100%;
+  height: 100px;
+  min-width: 10px;
+}

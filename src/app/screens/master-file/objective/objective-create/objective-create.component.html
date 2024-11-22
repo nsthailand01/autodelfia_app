@@ -1,0 +1,85 @@
+<app-breadcrumb-navigator pageTitle="วัตถุประสงค์" currentPageName="วัตถุประสงค์"></app-breadcrumb-navigator>
+
+<!-- toolbar button -->
+<div class="form-footer mb-2">
+  <button type="submit" class="btn btn-dark shadow-dark m-1" (click)="goBack()">
+    <i class="fa fa-times mr-1"></i>Cancel
+  </button>
+  <button type="submit" class="btn btn-success shadow-success m-1" (click)="doSave()"><i
+      class="fa fa-check-square-o mr-1"></i>Save
+  </button>
+</div> <!-- end toolbar button -->
+
+<!-- <div>
+  {{this.sampleTypeForm.value |json}}
+</div> -->
+
+<div id="accordion">
+  <!-- วัตถุประสงค์ -->
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-my-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOnex" aria-expanded="true"
+          aria-controls="collapseOne">
+          <h4 class="form-header text-uppercase">
+            <i class="fa fa-user-circle-o"></i>วัตถุประสงค์
+          </h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+      <div class="card-body">
+        <form [formGroup]="labProfileForm">
+          <div class="form-row">
+            <div class="col-md-12">
+              <div class="form-check">
+                <mat-checkbox [(ngModel)]="isDefault" [ngModelOptions]="{standalone: true}"
+                  (change)="onDefaultCheckedChange($event)">Default
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-12">
+              <label for="input-profilecode" class="col-form-label">รหัสวัตถุประสงค์</label>
+              <input type="text" class="form-control form-control-sm" id="input-profilecode"
+                formControlName="profileCode">
+            </div>
+            <div class="col-md-12">
+              <label for="input-profilename" class="col-form-label">ชื่อวัตถุประสงค์</label>
+              <input type="text" class="form-control form-control-sm" id="input-profilename"
+                formControlName="profileName">
+            </div>
+            <div class="col-md-12">
+              <label for="input-profilenameeng" class="col-form-label">ชื่อวัตถุประสงค์ (Eng)</label>
+              <input type="text" class="form-control form-control-sm" id="input-profilenameeng"
+                formControlName="profileNameEng">
+            </div>
+
+            <div class="col-md-12">
+              <label for="input-textClose" class="col-form-label">Close Text Export</label>
+              <input type="text" class="form-control form-control-sm" id="input-textClose"
+                formControlName="textCloseExportData">
+            </div>
+            <!-- <div class="col-md-12">
+              <label for="input-siteid" class="col-form-label">Site</label>
+              <input type="text" class="form-control form-control-sm" id="input-siteid" formControlName="siteID">
+            </div> -->
+
+            <!-- <label for="" class="col-form-label">Picture</label>
+            <div class="form-group col-md">
+              <img *ngIf="!imageBaseData" class="img-signature mr-3" [src]="dom.bypassSecurityTrustUrl(imgsrc)">
+              <img id="imgSignature" *ngIf="imageBaseData" class="img-signature mr-3" [src]="imageBaseData">
+
+              <input type="file" #file placeholder="Choose file" accept="image/*" (change)="fileChange($event)"
+                style="display:none;">
+              <button type="button" class="btn btn-success btn-sm" (click)="file.click()">Upload Picture</button>
+            </div> -->
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> <!-- จบ ชนิดตัวอย่าง -->
+
+</div>
